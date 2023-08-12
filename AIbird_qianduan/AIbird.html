@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BirdNET Audio Analysis</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div id="menu">
+        <h1>BirdNET Audio Analysis</h1>
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+    </div>
+
+    <div class="content-container">
+        <div class="container">
+            <h1>BirdNET Audio Analysis</h1>
+            <p>Select an audio file and analyze it to identify bird sounds.</p>
+            <input type="file" id="audioFile" accept=".wav">
+            <button onclick="sendRequest()">Analyze Audio</button>
+            <pre id="responseOutput"></pre>
+        </div>
+    </div>
+
+
+    <script>
+        async function sendRequest() {
+            const apiUrl = "https://birdnet-2493140c584e.herokuapp.com/analyze";
+
+            const audioFile = document.getElementById('audioFile').files[0];
+            if (!audioFile) {
+                alert("Please select an audio file before sending the request.");
+                return;
+            }
+
+            const metadata = {
+                lat: -1,
+                lon: -1,
+                week: -1,
+                overlap: 0.0,
+                sensitivity: 1.0,
+                sf_thresh: 0.03,
+                pmode: "avg",
+                num_results: 5,
+                save: false
+            };
+
+            const formData = new FormData();
+            formData.append("audio", audioFile);
+            formData.append("meta", new Blob([JSON.stringify(metadata)], {
+                type: 'application/json'
+            }));
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const responseData = await response.json();
+                document.getElementById('responseOutput').textContent = JSON.stringify(responseData, null, 4);
+            } catch (error) {
+                console.error("Error:", error);
+            }
+        }
+    </script>
+</body>
+
+</html>
