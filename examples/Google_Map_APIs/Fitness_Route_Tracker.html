@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fitness Route Tracker</title>
+</head>
+
+<body>
+    <div id="map" style="height: 500px; width: 100%"></div>
+    <div id="speedDisplay">Speed: 0 m/s</div>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"
+        async defer></script>
+    <script>
+        let map;
+        let userPath;
+        let polyOptions;
+        let poly;
+        const aucklandlat = -36.8484;
+        const aucklandLng = 174.7633;
+        let userMarker;
+
+        function initMap() {
+            // Initialize the map centered on Auckland
+            map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 15,
+                center: { lat: aucklandlat, lng: aucklandLng }
+            });
+
+            userPath = new google.maps.MVCArray();
+            polyOptions = {
+                strokeColor: '#FF0000',
+                strokeOpacity: 0.8,
+                strokeWeight: 3,
+                map: map,
+                path: userPath
+            };
+
+            poly = new google.maps.Polyline(polyOptions);
+
+            // Tracking Location
+            trackLocation();
+        }
+
+        function trackLocation() {
+            if (navigator.geolocation) {
+                watchId = navigator.geolocation.watchPosition(showPosition, function (error) {
+                    alert("Error: " + error.message);
+                });
+            } else {
+                alert("Geolocation is not supported.");
+            }
+        }
+
+        function showPosition(position) {
+            console.log(position.coords.latitude, position.coords.longitude)
+
+            const latLng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+            userPath.push(latLng);
+
+            // Adjust the center and zoom of the map as the user moves
+            map.setCenter(latLng);
+
+            updateUserMarker(latLng);
+
+            // Display user's speed
+            let speed = position.coords.speed;
+            if (speed === null || speed === undefined) {
+                document.getElementById('speedDisplay').textContent = "Speed: N/A";
+            } else {
+                document.getElementById('speedDisplay').textContent = `Speed: ${speed.toFixed(2)} m/s`;
+            }
+        }
+
+        function updateUserMarker(latLng) {
+            if (!userMarker) {
+                userMarker = new google.maps.Marker({
+                    position: latLng,
+                    map: map,
+                    icon: {
+                        path: google.maps.SymbolPath.CIRCLE,
+                        scale: 10,
+                        fillOpacity: 1,
+                        strokeWeight: 2,
+                        fillColor: '#5384ED',
+                        strokeColor: '#ffffff',
+                    },
+                });
+            } else {
+                userMarker.setPosition(latLng);
+            }
+        }
+    </script>
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,1 @@
+These examples require access to the Google Maps APIs. The API call requires an API key, which you can obtain from https://developers.google.com/maps/documentation/javascript/get-api-key. Once you have the key, replace 'YOUR_API_KEY' in the .html file.

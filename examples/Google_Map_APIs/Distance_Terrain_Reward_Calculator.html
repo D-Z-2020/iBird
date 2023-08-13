@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Distance Terrain Reward Calculator</title>
+</head>
+
+<body>
+
+    <div id="map" style="height: 500px; width: 100%"></div>
+    <button onclick="calculateReward()">Calculate Reward</button>
+    <p id="distanceOutput"></p>
+    <p id="terrainOutput"></p>
+    <p id="rewardOutput"></p>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"
+        async defer></script>
+    <script>
+        let map;
+        let userPath;
+        const aucklandlat = -36.8484;
+        const aucklandLng = 174.7633;
+
+        function initMap() {
+            userPath = new google.maps.MVCArray();
+
+            // A route from Auckland Uni to Maungawhau
+            userPath.push(new google.maps.LatLng(-36.85174774203898, 174.7689463480801));
+            userPath.push(new google.maps.LatLng(-36.85607959683695, 174.76910306196262));
+            userPath.push(new google.maps.LatLng(-36.86066025489732, 174.7649003277385));
+            userPath.push(new google.maps.LatLng(-36.86721303199176, 174.76173999215));
+
+            userPath.push(new google.maps.LatLng(-36.87636904399926, 174.75745547552157));
+            userPath.push(new google.maps.LatLng(-36.87369587124826, 174.7619816971984));
+            userPath.push(new google.maps.LatLng(-36.87354893455264, 174.76441324207647));
+            userPath.push(new google.maps.LatLng(-36.87489829322099, 174.76459152821224));
+
+            map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 15,
+                center: userPath[0] || { lat: aucklandlat, lng: aucklandLng }
+            });
+
+            polyOptions = {
+                strokeColor: '#FF0000',
+                strokeOpacity: 0.8,
+                strokeWeight: 3,
+                map: map,
+                path: userPath
+            };
+
+            poly = new google.maps.Polyline(polyOptions);
+        }
+
+        function calculateReward() {
+            // send data in this format to store in mongodb database
+            const pathData = userPath.getArray().map(point => {
+                return {
+                    lat: point.lat(),
+                    lng: point.lng()
+                };
+            });
+            console.log(pathData)
+
+            let totalDistance = calculateDistance();
+
+            let totalElevationGain = calculateElevation(function (totalElevationGain) {
+                const distanceWeight = 1;
+                const elevationWeight = 10;
+                const reward = totalDistance * distanceWeight + totalElevationGain * elevationWeight;
+                updateDOM(totalDistance, totalElevationGain, reward);
+            });
+        }
+
+        function calculateElevation(callback) {
+            const elevator = new google.maps.ElevationService();
+            elevator.getElevationAlongPath({
+                'path': userPath.getArray(),
+                'samples': userPath.getArray().length
+            }, function (elevationData, status) {
+                if (status == 'OK') {
+                    let totalElevationGain = 0;
+                    for (let i = 0; i < elevationData.length - 1; i++) {
+                        let elevationChange = elevationData[i + 1].elevation - elevationData[i].elevation;
+                        if (elevationChange > 0) {
+                            totalElevationGain += elevationChange;
+                        }
+                    }
+                    callback(totalElevationGain);
+                } else {
+                    console.log('Error fetching elevation data: ' + status);
+                }
+            });
+        }
+
+        function calculateDistance() {
+            let totalDistance = 0;
+            for (let i = 0; i < userPath.getArray().length - 1; i++) {
+                totalDistance += google.maps.geometry.spherical.computeDistanceBetween(userPath.getAt(i), userPath.getAt(i + 1));
+            }
+
+            return totalDistance;
+        }
+
+        function updateDOM(totalDistance, totalElevationGain, reward) {
+            document.getElementById('distanceOutput').innerText = 'Total Distance: ' + totalDistance;
+            document.getElementById('terrainOutput').innerText = 'Total Elevation Gain: ' + totalElevationGain;
+            document.getElementById('rewardOutput').innerText = 'Reward: ' + reward;
+        }
+    </script>
+
+</body>
+
+</html>
