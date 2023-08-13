@@ -1,0 +1,1 @@
+This example requires access to the Bird Classifier by "iHeartAPIs". The API call needs an API key, which you can obtain from https://rapidapi.com/iHeartAPIs/api/bird-classifier/. Once you have the key, insert it into the "Simple_Bird_Image_Classifier_Client.html" file.

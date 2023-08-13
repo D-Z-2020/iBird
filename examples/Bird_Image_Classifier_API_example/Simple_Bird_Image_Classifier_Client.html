@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Bird Image Classifier</title>
+</head>
+
+<body>
+
+    <input type="file" id="birdImage">
+    <button onclick="uploadImage()">Upload and Classify</button>
+    <img id="uploadedImage" alt="Uploaded Bird" style="max-width: 300px; display: block;">
+    <div id="result"></div>
+
+    <script>
+        const X_RapidAPI_Key = "replace this with your api key, you can get one from https://rapidapi.com/iHeartAPIs/api/bird-classifier/"
+        function uploadImage() {
+            let imageFile = document.getElementById('birdImage').files[0];
+
+            if (!imageFile) {
+                alert('Please select an image.');
+                return;
+            }
+
+            document.getElementById('uploadedImage').src = URL.createObjectURL(imageFile);
+
+            let formData = new FormData();
+            formData.append('image', imageFile);
+
+            // use bird classifier api to predict bird
+            fetch('https://bird-classifier.p.rapidapi.com/BirdClassifier/prediction?results=5', {
+                method: 'POST',
+                headers: {
+                    'X-RapidAPI-Key': X_RapidAPI_Key,
+                    'X-RapidAPI-Host': 'bird-classifier.p.rapidapi.com'
+                },
+                body: formData
+            })
+                .then(data => {
+                    return data.json();
+                })
+                .then(data => {
+                    document.getElementById('result').textContent = JSON.stringify(data, null, 4);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+    </script>
+
+</body>
+
+</html>
