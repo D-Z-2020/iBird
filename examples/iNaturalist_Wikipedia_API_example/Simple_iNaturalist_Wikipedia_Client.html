@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple iNaturalist Wikipedia Client</title>
+</head>
+
+<body>
+
+    <h2>Enter bird name:</h2>
+    <input type="text" id="birdNameInput">
+    <button onclick="fetchBirdImageByName(document.getElementById('birdNameInput').value)">Fetch Bird Info</button>
+
+    <h3>Bird Information:</h3>
+    <img id="birdImage" alt="Bird Image" style="max-width: 300px;">
+    <img id="birdObservation" alt="Bird Observation" style="max-width: 300px;">
+    <p><strong>ID:</strong> <span id="id"></span></p>
+    <p><strong>Scientific Name:</strong> <span id="scientificName"></span></p>
+    <p><strong>Common Name:</strong> <span id="commondName"></span></p>
+    <p><strong>Observation Count:</strong> <span id="observationCount"></span></p>
+    <p><strong>Summary:</strong> <span id="summary"></span></p>
+    <pre id="responseOutput"></pre>
+
+    <script>
+        const fetchBirdImageByName = async (birdName) => {
+            if (!birdName) {
+                alert('Please enter a bird name!');
+                return;
+            }
+
+            // Query for information (/taxa endpoint)
+            const taxonApiUrl = `https://api.inaturalist.org/v1/taxa?q=${birdName}&rank=species`;
+            const taxonData = await fetch(taxonApiUrl).then(data => data.json());
+
+            if (taxonData.results && taxonData.results.length > 0 && await findBird(taxonData)) {
+                const birdTaxon = await findBird(taxonData);
+                const birdTaxonId = birdTaxon.id;
+                document.getElementById('id').textContent = birdTaxon.id;
+                document.getElementById('scientificName').textContent = birdTaxon.name;
+                document.getElementById('commondName').textContent = birdTaxon.preferred_common_name
+                document.getElementById('observationCount').textContent = birdTaxon.observations_count
+                document.getElementById('summary').textContent = await fetchWikipediaSummary(birdTaxon.wikipedia_url) || 'No summary available.';
+                document.getElementById('responseOutput').textContent = JSON.stringify(birdTaxon, null, 4);
+                document.getElementById('birdImage').src = birdTaxon.default_photo.medium_url;
+
+                // Query for Observations Using the Taxon ID (/observations endpoint)
+                const observationsApiUrl = `https://api.inaturalist.org/v1/observations?taxon_id=${birdTaxonId}&photos=true&order_by=votes&per_page=1`;
+                const observationsResponse = await fetch(observationsApiUrl);
+                const observationsData = await observationsResponse.json();
+
+                if (observationsData.results && observationsData.results.length > 0) {
+                    const imageUrl = observationsData.results[0].photos[0].url;
+                    document.getElementById('birdObservation').src = imageUrl;
+                } else {
+                    alert('No images found for this bird.');
+                }
+            } else {
+                alert('No matching bird found.');
+            }
+        };
+        
+        // check if the /taxa endpoint returns me some birds, if yes return the first bird(Aves)
+        const findBird = async (taxonData) => {
+            let birdFound = null;
+            for (const taxon of taxonData.results) {
+                if (taxon.iconic_taxon_name === 'Aves') {
+                    birdFound = taxon;
+                    break;
+                }
+            }
+            return birdFound;
+        }
+
+        const fetchWikipediaSummary = async (wikipedia_url) => {
+            title = wikipedia_url.split('/').pop();
+            
+            // Query for summary use wikipedia Api
+            const wikipediaApiUrl = `https://en.wikipedia.org/api/rest_v1/page/summary/${title}`;
+
+            const response = await fetch(wikipediaApiUrl);
+            const data = await response.json();
+
+            // contains the summary
+            return data.extract;  
+        }
+    </script>
+
+</body>
+
+</html>
