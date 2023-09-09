@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
 import NavigationButton from "../components/NavigationButton";
-import { startNewTrip, getActiveTrip, addLocation, endTrip } from "../api/api";
+import { startNewTrip, getActiveTrip, addLocation, endTrip, uploadImage } from "../api/api";
 import { useNavigate } from "react-router-dom";
 import TripMap from "../components/TripMap";
 import BirdImageUploader from "../components/BirdImageUploader";
+import BirdCamera from "../components/BirdCamera";
 
 const aucklandlat = -36.8484;
 const aucklandLng = 174.7633;
@@ -23,6 +24,27 @@ export default function Trip() {
     const [autoCentering, setAutoCentering] = useState(true);
     const token = localStorage.getItem("token");
     const navigate = useNavigate();
+
+    const handlePhotoCaptured = (dataUri) => {
+        // Convert Data URI to Blob
+        fetch(dataUri)
+            .then(res => res.blob())
+            .then(blob => {
+                // Convert Blob to File
+                const file = new File([blob], 'bird-photo.jpg', { type: 'image/jpeg' });
+
+                // upload the image
+                uploadImage(localStorage.getItem('token'), file, currentPosition, currentTimestamp)
+                    .then(res => {
+                        console.log('Successfully uploaded');
+                        fetchTripDetails();
+                    })
+                    .catch(error => {
+                        console.error('Error uploading image:', error);
+                    });
+
+            });
+    };
 
     const fetchTripDetails = () => {
         return getActiveTrip(token)
@@ -136,6 +158,7 @@ export default function Trip() {
             </button>
 
             <div id="speedDisplay">Speed: {speed ? `${speed.toFixed(2)} m/s` : "N/A"}</div>
+            <BirdCamera onPhotoCaptured={handlePhotoCaptured} />
 
             <TripMap
                 path={path}

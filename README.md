@@ -14,5 +14,5 @@ Before you begin, ensure you have installed the latest version of Node.js and np
 ### Frontend
 1. change directory to the frontend folder
 2. `npm install`
-3. `npm run vite`
+3. `npm run dev`
 4. You should see the application running under localhost:5173
