@@ -98,7 +98,19 @@ router.post("/addLocation", verifyToken, async (req, res) => {
 
 router.get("/getActiveTrip", verifyToken, async (req, res) => {
     const userId = req.user._id;
-    const trip = await Trip.findOne({ userId, isActive: true }).populate('images');
+
+    // This populates the images for a trip, and for each image, it populates the birdId
+    const trip = await Trip.findOne({ userId, isActive: true })
+        .populate([
+            {
+                path: 'images',
+                model: 'Image',
+                populate: {
+                    path: 'birdId',
+                    model: 'Bird'
+                }
+            }
+        ]);
 
     if (!trip) return res.send("No active trip");
 
@@ -118,7 +130,17 @@ router.get("/getTrip/:tripId", verifyToken, async (req, res) => {
     const userIdFromToken = req.user._id;
     const tripId = req.params.tripId;
 
-    const trip = await Trip.findById(tripId).populate('images');
+    // This populates the images for a trip, and for each image, it populates the birdId
+    const trip = await Trip.findById(tripId).populate([
+        {
+            path: 'images',
+            model: 'Image',
+            populate: {
+                path: 'birdId',
+                model: 'Bird'
+            }
+        }
+    ]);
 
     // If no trip is found with the given ID
     if (!trip) return res.status(404).send("Trip not found");

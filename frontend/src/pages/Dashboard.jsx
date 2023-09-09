@@ -25,6 +25,8 @@ export default function Dashboard() {
             <br />
             <NavigationButton path={`/users/${username}`} text="My Profile" state={{ from: location }} />
             <br />
+            <NavigationButton path = "/birds/collection" text = "Bird Collection" />
+            <br />
             <button onClick={handleLogout}>Logout</button>
         </div>
     )

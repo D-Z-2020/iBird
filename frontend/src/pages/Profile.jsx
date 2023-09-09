@@ -10,8 +10,7 @@ import { useFriendActions } from '../hooks/useFriendActions';
 export default function Profile() {
     const [id, setId] = useState();
     const paramUsername = useParams().username;
-    const location = useLocation();
-    const [previousPath, setPreviousPath] = useState(location.state?.from?.pathname || '/');
+    const previousPath = useLocation().state?.from?.pathname || '/';
     const { friends, fetchFriends } = useFriendData();
     const { username } = useContext(UserContext);
     const { handleAddFriend, handleRemoveFriend } = useFriendActions();
@@ -26,17 +25,9 @@ export default function Profile() {
             })
     }, []);
 
-    const determineBackPath = () => {
-        if (previousPath === '/' || previousPath === '/community' || previousPath === '/community/findfriends'
-            || previousPath === '/community/myfriends') {
-            return previousPath;
-        }
-        return '/';
-    };
-
     return (
         <div>
-            <NavigationButton path={determineBackPath()} text="back" />
+            <NavigationButton path={previousPath} text="back" />
             {id ?
                 <>
                     <p>User Name: {`${paramUsername}`}</p>

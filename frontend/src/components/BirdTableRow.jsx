@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { getImageByKey } from '../api/api';
+import { useNavigator } from '../hooks/useNavigator';
 
 export default function BirdTableRow({ image, setMapCenter, setSelectedImage }) {
     const [imageUrl, setImageUrl] = useState(null);
+    const navigateWithState = useNavigator();
 
     const handleBirdLocationClick = () => {
         setSelectedImage(null);
@@ -26,7 +28,12 @@ export default function BirdTableRow({ image, setMapCenter, setSelectedImage }) 
     return (
         <tr>
             <td>{imageUrl && <img src={imageUrl} alt="Bird" width="100" />}</td>
-            <td>{image.birdId}</td>
+            <td
+                onClick={() => navigateWithState(`/bird/${image.birdId.name}`, { replace: true })}
+                style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}>
+                {image.birdId.name}
+            </td>
+
             <td>{image.timestamp}</td>
             <td
                 onClick={() => handleBirdLocationClick()}

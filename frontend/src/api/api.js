@@ -40,6 +40,15 @@ const GET_IMAGE_URL = `${IMAGES_URL}/getImage`;
 
 
 
+
+const BIRDS_URL = `${API_BASE_URL}/birds`;
+
+const GET_AII_BIRDS_URL = `${BIRDS_URL}/getAllbirds`;
+const GET_MY_BIRDS_URL = `${BIRDS_URL}/getMybirds`;
+const GET_BIRD_URL = `${BIRDS_URL}/getBird`;
+
+
+
 // user register
 export const create = (username, password) => {
   return axios.post(CREATE_ACCOUNT_URL, { username, password });
@@ -177,6 +186,30 @@ export const uploadImage = (token, imageFile, location, timestamp) => {
 export const getImageByKey = (token, key) => {
   return axios.get(
     `${GET_IMAGE_URL}/${key}`,
+    { headers: { 'authorization': `Bearer ${token}` } }
+  );
+}
+
+
+// ============================================
+
+export const getAllbirds = (token) => {
+  return axios.get(
+    GET_AII_BIRDS_URL,
+    { headers: { 'authorization': `Bearer ${token}` } }
+  );
+}
+
+export const getMybirds = (token) => {
+  return axios.get(
+    GET_MY_BIRDS_URL,
+    { headers: { 'authorization': `Bearer ${token}` } }
+  );
+}
+
+export const getBird = (token, name) => {
+  return axios.get(
+    `${GET_BIRD_URL}/${name}`,
     { headers: { 'authorization': `Bearer ${token}` } }
   );
 }

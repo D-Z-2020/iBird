@@ -1,10 +1,8 @@
-import { useNavigate } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
 import { useFriendActions } from '../hooks/useFriendActions';
+import { useNavigator } from '../hooks/useNavigator';
 
 export default function UserList({ users, allowFriendActions = false, onFriendActionSuccess = () => { }, cantAddedFriendUsernames = [], excludedUsers = [] }) {
-    const navigate = useNavigate();
-    const location = useLocation();
+    const navigateWithState = useNavigator();
     const { handleAddFriend, handleRemoveFriend } = useFriendActions();
 
     return (
@@ -23,7 +21,7 @@ export default function UserList({ users, allowFriendActions = false, onFriendAc
                         &&
                         <tr key={user._id}>
                             <td
-                                onClick={() => navigate(`/users/${user.username}`, { replace: true, state: { from: location } })}
+                                onClick={() => navigateWithState(`/users/${user.username}`, { replace: true })}
                                 style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}>
                                 {user.username}
                             </td>

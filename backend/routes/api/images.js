@@ -1,5 +1,5 @@
 const express = require('express');
-const { Trip, Image } = require("../../db/schema");
+const { Trip, Image, User, Bird } = require("../../db/schema");
 const { verifyToken } = require("../../middleware/auth.js");
 const router = express.Router();
 const { v4: uuidv4 } = require('uuid');
@@ -55,11 +55,17 @@ router.post('/upload', verifyToken, upload.single('photo'), async (req, res) => 
         const location = req.body.location ? JSON.parse(req.body.location) : null;
         const timestamp = req.body.timestamp || new Date();
 
+        // Identify the bird using AI (for now, randomly select a bird)
+        const birdCount = await Bird.countDocuments();
+        const randomBird = await Bird.findOne().skip(Math.floor(Math.random() * birdCount));
+
+        // create image
         const newImage = new Image({
             s3Key: req.file.key,
             userId: req.user._id,
             location: location,
-            timestamp: timestamp
+            timestamp: timestamp,
+            birdId: randomBird._id
         });
 
         await newImage.save();
@@ -67,6 +73,13 @@ router.post('/upload', verifyToken, upload.single('photo'), async (req, res) => 
         // Update the trip's images array by pushing the new image's ObjectId
         activeTrip.images.push(newImage._id);
         await activeTrip.save();
+
+        // Check if the identified bird is already in the user's myBirds array
+        const user = await User.findById(req.user._id);
+        if (!user.myBirds.includes(randomBird._id)) {
+            user.myBirds.push(randomBird._id);
+            await user.save();
+        }
 
         res.status(201).send('Image uploaded successfully');
     } catch (error) {
