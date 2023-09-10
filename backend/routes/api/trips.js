@@ -13,7 +13,16 @@ router.post("/startNewTrip", verifyToken, async (req, res) => {
     const trip = await Trip.findOne({ userId, isActive: true });
     if (trip) return res.status(400).send("You can only have one active trip").populate('images');
 
-    const newTrip = await Trip.create({ userId });
+    // Check for required fields
+    if (typeof req.body.isEdugaming !== 'boolean' || !req.body.fitnessLevel) {
+        return res.status(400).send("Both isEdugaming and fitnessLevel are required");
+    }
+
+    const newTrip = await Trip.create({
+        userId: userId,
+        isEdugaming: req.body.isEdugaming,
+        fitnessLevel: req.body.fitnessLevel
+    });
 
     return res.status(201).json(newTrip);
 });

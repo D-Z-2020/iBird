@@ -19,6 +19,8 @@ const tripSchema = new Schema({
     timestamp: { type: Date, default: Date.now, required: true }
   }],
   isActive: { type: Boolean, default: true },
+  isEdugaming: {type: Boolean, required: true},
+  fitnessLevel: {type: String, enum : ['low','mid', 'high'], required: true},
   suspiciousLocation: { type: Boolean, default: false },
   images: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Image' }],
   startDate: { type: Date },

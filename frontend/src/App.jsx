@@ -16,6 +16,7 @@ import TripHistoryList from './pages/TripHistoryList';
 import TripHistory from './pages/TripHistory';
 import BirdDetails from './pages/BirdDetails';
 import BirdCollection from './pages/BirdCollection';
+import TripOption from './pages/TripOption';
 
 function App() {
   const [username, setUsername] = useState(null);
@@ -86,6 +87,15 @@ function App() {
           element={
             <RequiresAuth>
               <Start />
+            </RequiresAuth>
+          }
+        />
+
+        <Route
+          path="/start/option"
+          element={
+            <RequiresAuth>
+              <TripOption />
             </RequiresAuth>
           }
         />

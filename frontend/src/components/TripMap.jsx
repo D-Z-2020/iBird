@@ -82,7 +82,7 @@ export default function TripMap({ path, center, autoCentering, images, isHistory
                     />
                 )}
 
-                {images && images.map((image) => (
+                {trip && trip.isEdugaming && images && images.map((image) => (
                     <Marker
                         key={image._id}
                         position={{ lat: image.location.lat, lng: image.location.lng }}
@@ -106,7 +106,7 @@ export default function TripMap({ path, center, autoCentering, images, isHistory
                 ))}
 
             </GoogleMap>
-            <BirdTable trip={trip} setMapCenter={setMapCenter} setSelectedImage={setSelectedImage} />
+            {trip && trip.isEdugaming && <BirdTable trip={trip} setMapCenter={setMapCenter} setSelectedImage={setSelectedImage} />}
         </LoadScript>
     );
 }

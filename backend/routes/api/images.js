@@ -51,6 +51,10 @@ router.post('/upload', verifyToken, upload.single('photo'), async (req, res) => 
             return res.status(400).send('No active trip found. Please start a trip before uploading photos.');
         }
 
+        if (!activeTrip.isEdugaming) {
+            return res.status(403).send('EduGaming is not enabled for this trip. Cannot upload bird images.');
+        }
+
         // Get the location and timestamp from the request
         const location = req.body.location ? JSON.parse(req.body.location) : null;
         const timestamp = req.body.timestamp || new Date();

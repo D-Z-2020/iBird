@@ -124,8 +124,11 @@ export const removeFriend = (token, username) => {
 // =============================
 
 
-export const startNewTrip = (token) => {
-  return axios.post(START_NEW_TRIP_URL, {}, {
+export const startNewTrip = (token, isEdugaming, fitnessLevel) => {
+  return axios.post(START_NEW_TRIP_URL, {
+    isEdugaming: isEdugaming,
+    fitnessLevel: fitnessLevel
+  }, {
     headers: { authorization: `Bearer ${token}` }
   });
 }

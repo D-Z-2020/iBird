@@ -21,7 +21,9 @@ export default function Start() {
         <div>
             <NavigationButton path="/" text="back" />
             <br />
-            <NavigationButton path="/start/trip" text={hasActiveTrip ? "Resume Trip" : "Start a trip!"} />
+            {hasActiveTrip ?
+                <NavigationButton path="/start/trip" text={"Resume Trip"} /> :
+                <NavigationButton path="/start/option" text={"Start a trip!"} />}
             <br />
             <NavigationButton path={`/start/history`} text="Trip History" />
         </div>

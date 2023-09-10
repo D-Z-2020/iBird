@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import TripMap from "../components/TripMap";
 import BirdImageUploader from "../components/BirdImageUploader";
 import BirdCamera from "../components/BirdCamera";
+import { useLocation } from "react-router-dom";
 
 const aucklandlat = -36.8484;
 const aucklandLng = 174.7633;
@@ -24,6 +25,15 @@ export default function Trip() {
     const [autoCentering, setAutoCentering] = useState(true);
     const token = localStorage.getItem("token");
     const navigate = useNavigate();
+
+    const location = useLocation();
+    // Set the default options
+    const defaultOptions = {
+        isEdugaming: true,
+        fitnessLevel: 'mid'
+    };
+    // If options are provided in the location state, it'll overwrite the default options
+    const options = { ...defaultOptions, ...location.state };
 
     const handlePhotoCaptured = (dataUri) => {
         // Convert Data URI to Blob
@@ -57,7 +67,7 @@ export default function Trip() {
                     }));
                     setPath(existingPath);
                 } else {
-                    return startNewTrip(token)
+                    return startNewTrip(token, options.isEdugaming, options.fitnessLevel)
                         .then((res) => {
                             setTrip(res.data);
                         });
@@ -117,7 +127,7 @@ export default function Trip() {
                     setPath(existingPath);
                     trackLocation();
                 } else {
-                    startNewTrip(token)
+                    startNewTrip(token, options.isEdugaming, options.fitnessLevel)
                         .then((res) => {
                             setTrip(res.data);
                             trackLocation();
@@ -147,18 +157,18 @@ export default function Trip() {
         <div>
             <NavigationButton path="/start" text="back" />
             <button onClick={handleEndTrip}>End Trip</button>
-            <BirdImageUploader
+            {trip && trip.isEdugaming && <BirdImageUploader
                 onUploadComplete={fetchTripDetails}
                 location={currentPosition}
                 timestamp={currentTimestamp}
-            />
+            />}
 
             <button onClick={() => setAutoCentering(prev => !prev)}>
                 {autoCentering ? "Stop Centering" : "Resume Centering"}
             </button>
 
             <div id="speedDisplay">Speed: {speed ? `${speed.toFixed(2)} m/s` : "N/A"}</div>
-            <BirdCamera onPhotoCaptured={handlePhotoCaptured} />
+            {trip && trip.isEdugaming && <BirdCamera onPhotoCaptured={handlePhotoCaptured} />}
 
             <TripMap
                 path={path}
