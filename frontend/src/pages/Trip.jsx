@@ -6,7 +6,9 @@ import TripMap from "../components/TripMap";
 import BirdImageUploader from "../components/BirdImageUploader";
 import BirdCamera from "../components/BirdCamera";
 import { useLocation } from "react-router-dom";
-
+import FitnessGoalProgress from "../components/FitnessGoalProgress";
+import BirdSpecificGoalProgress from "../components/BirdSpecificGoalProgress";
+import BirdCountGoalProgress from "../components/BirdCountGoalProgress";
 const aucklandlat = -36.8484;
 const aucklandLng = 174.7633;
 
@@ -21,10 +23,12 @@ export default function Trip() {
     const [currentPosition, setCurrentPosition] = useState(center);
     const [speed, setSpeed] = useState(null);
     const [trip, setTrip] = useState(null);
+    const [tripForGoal, setTripForGoal] = useState(null);
     const [currentTimestamp, setCurrentTimestamp] = useState(null);
     const [autoCentering, setAutoCentering] = useState(true);
     const token = localStorage.getItem("token");
     const navigate = useNavigate();
+    console.log(tripForGoal);
 
     const location = useLocation();
     // Set the default options
@@ -61,6 +65,7 @@ export default function Trip() {
             .then(res => {
                 if (res.data && res.data.locations) {
                     setTrip(res.data);
+                    setTripForGoal(res.data);
                     const existingPath = res.data.locations.map(loc => ({
                         lat: loc.latitude,
                         lng: loc.longitude
@@ -103,7 +108,7 @@ export default function Trip() {
                         lat: loc.latitude,
                         lng: loc.longitude
                     }));
-
+                    setTripForGoal(res.data);
                     setPath(updatedPath);
                     setCurrentPosition(latLng);
                     setSpeed(position.coords.speed);
@@ -169,6 +174,10 @@ export default function Trip() {
 
             <div id="speedDisplay">Speed: {speed ? `${speed.toFixed(2)} m/s` : "N/A"}</div>
             {trip && trip.isEdugaming && <BirdCamera onPhotoCaptured={handlePhotoCaptured} />}
+            <FitnessGoalProgress trip={tripForGoal} />
+            {trip && trip.isEdugaming && <>
+                <BirdSpecificGoalProgress goals={tripForGoal?.birdSpecificGoals} />
+                <BirdCountGoalProgress goals={tripForGoal?.birdCountGoals} /></>}
 
             <TripMap
                 path={path}

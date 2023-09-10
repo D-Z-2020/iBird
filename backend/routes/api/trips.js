@@ -1,9 +1,17 @@
 const express = require('express');
-const { User, Trip } = require("../../db/schema");
+const { User, Trip, Bird } = require("../../db/schema");
 const { verifyToken } = require("../../middleware/auth.js");
 const router = express.Router();
 const { Client } = require("@googlemaps/google-maps-services-js");
 const axios = require('axios');
+
+const {
+    LEVEL_1_DISTANCE_GOAL,
+    LEVEL_2_DISTANCE_GOAL,
+    LEVEL_3_DISTANCE_GOAL,
+    LEVEL_1_ELEVATION_GOAL,
+    LEVEL_2_ELEVATION_GOAL,
+    LEVEL_3_ELEVATION_GOAL } = require('../../goals_setting/fitnessGoal');
 
 const client = new Client({});
 
@@ -18,12 +26,67 @@ router.post("/startNewTrip", verifyToken, async (req, res) => {
         return res.status(400).send("Both isEdugaming and fitnessLevel are required");
     }
 
-    const newTrip = await Trip.create({
-        userId: userId,
-        isEdugaming: req.body.isEdugaming,
-        fitnessLevel: req.body.fitnessLevel
-    });
+    let distanceGoal, elevationGoal;
+    switch (req.body.fitnessLevel) {
+        case 'low':
+            distanceGoal = LEVEL_1_DISTANCE_GOAL;
+            elevationGoal = LEVEL_1_ELEVATION_GOAL;
+            break;
+        case 'mid':
+            distanceGoal = LEVEL_2_DISTANCE_GOAL;
+            elevationGoal = LEVEL_2_ELEVATION_GOAL;
+            break;
+        case 'high':
+            distanceGoal = LEVEL_3_DISTANCE_GOAL;
+            elevationGoal = LEVEL_3_ELEVATION_GOAL;
+            break;
+        default:
+            return res.status(400).send("Invalid fitness level provided");
+    }
 
+    let newTrip;
+
+    if (req.body.isEdugaming) {
+        // get a random bird with rarity = level
+        const randomBirdArrays = await Bird.aggregate([
+            { $match: { rarity: 1 } },
+            { $sample: { size: 1 } }
+        ]).exec();
+        const bird = randomBirdArrays[0];
+
+        if (!bird) return res.status(500).send("Could not find a suitable bird");
+
+        const birdSpecificGoal = {
+            birdId: bird._id,
+            birdName: bird.name,
+            image: bird.images[0],
+            level: 1 // Starting level is 1 for the specific bird goal
+        };
+
+        const birdCountGoal = {
+            count: 1 * 3, // For level 1, user needs to find 3 birds
+            level: 1,
+            birdsFound: 0
+        };
+
+        newTrip = await Trip.create({
+            userId: userId,
+            isEdugaming: req.body.isEdugaming,
+            fitnessLevel: req.body.fitnessLevel,
+            distanceGoal: distanceGoal,
+            elevationGoal: elevationGoal,
+            birdSpecificGoals: [birdSpecificGoal],
+            birdCountGoals: [birdCountGoal]
+        });
+    } else {
+        newTrip = await Trip.create({
+            userId: userId,
+            isEdugaming: req.body.isEdugaming,
+            fitnessLevel: req.body.fitnessLevel,
+            distanceGoal: distanceGoal,
+            elevationGoal: elevationGoal
+        });
+    }
     return res.status(201).json(newTrip);
 });
 
@@ -55,17 +118,57 @@ router.post("/addLocation", verifyToken, async (req, res) => {
 
             // This value is in meters
             const distance = response.data.rows[0].elements[0].distance.value;
+            const originDistance = trip.distance;
             trip.distance += distance;
 
-            // calculate elevation gain
-            const path = trip.locations.map(loc => ({ lat: loc.latitude, lng: loc.longitude }));
+            const lastTwoPoints = [
+                { lat: lastLocation.latitude, lng: lastLocation.longitude },
+                { lat: latitude, lng: longitude }
+            ];
 
-            const totalElevationGain = await getElevationAlongPath(path);
+            const additionalElevationGain = await getElevationGainBetweenTwoPoints(lastTwoPoints);
+            const originElevation = trip.elevationGain;
 
-            if (totalElevationGain !== null) {
-                trip.elevationGain = totalElevationGain;
+            if (additionalElevationGain !== null) {
+                trip.elevationGain += additionalElevationGain;
+            }
+            console.log(trip.elevationGain)
+
+            // get goal, check if complete or not
+            const distanceGoal = trip.distanceGoal.distance;
+            const elevationGoal = trip.elevationGoal.elevationGain;
+            const distanceGoalDurationLimit = trip.distanceGoal.duration * 60 * 1000;
+            const elevationGoalDurationLimit = trip.elevationGoal.duration * 60 * 1000;
+            const duration = new Date(timestamp) - new Date(trip.startDate);
+
+            if (trip.distanceGoal.status === 'inProgress') {
+                trip.distanceGoal.endDistance = trip.distance;
+                trip.distanceGoal.endDate = new Date(timestamp);
+                if (trip.distance >= distanceGoal && duration <= distanceGoalDurationLimit) {
+                    distanceGoalSuccess = true;
+                    trip.distanceGoal.status = 'success';
+                }
+                if (duration > distanceGoalDurationLimit) {
+                    trip.distanceGoal.endDistance = originDistance;
+                    trip.distanceGoal.status = 'failed';
+                }
+
             }
 
+            if (trip.elevationGoal.status === 'inProgress') {
+                trip.elevationGoal.endElevationGain = trip.elevationGain;
+                trip.elevationGoal.endDate = new Date(timestamp);
+                if (trip.elevationGain >= elevationGoal && duration <= elevationGoalDurationLimit) {
+                    trip.elevationGoal.status = 'success';
+                }
+                if (duration > elevationGoalDurationLimit) {
+                    trip.elevationGoal.endElevationGain = originElevation;
+                    trip.elevationGoal.status = 'failed';
+                }
+            }
+
+
+            // check if the new time is invalid
             const timeDifference = new Date(timestamp) - new Date(lastLocation.timestamp);
 
             if (timeDifference > 1800000) { // 30 minutes in milliseconds
@@ -168,6 +271,30 @@ router.post("/endTrip", verifyToken, async (req, res) => {
     const trip = await Trip.findOne({ userId, isActive: true });
     if (!trip) return res.status(400).send("No active trip found.");
 
+    if (trip.distanceGoal.status === 'inProgress') {
+        trip.distanceGoal.status = 'failed';
+    }
+
+    if (trip.elevationGoal.status === 'inProgress') {
+        trip.elevationGoal.status = 'failed';
+    }
+
+    if (trip.isEdugaming) {
+        // Update bird-specific goals that are inProgress to failed
+        for (let goal of trip.birdSpecificGoals) {
+            if (goal.status === 'inProgress') {
+                goal.status = 'failed';
+            }
+        }
+
+        // Update bird count goals that are inProgress to failed
+        for (let goal of trip.birdCountGoals) {
+            if (goal.status === 'inProgress') {
+                goal.status = 'failed';
+            }
+        }
+    }
+
     trip.isActive = false;
     trip.endDate = Date.now();
     await trip.save();
@@ -175,9 +302,9 @@ router.post("/endTrip", verifyToken, async (req, res) => {
     return res.status(200).json(trip);
 });
 
-async function getElevationAlongPath(path) {
-    // If path length is less than 2, return elevation gain as 0
-    if (path.length < 2) {
+async function getElevationGainBetweenTwoPoints(path) {
+    // If array does not has 2 points, return elevation gain as 0
+    if (path.length !== 2) {
         return 0;
     }
 
@@ -189,20 +316,12 @@ async function getElevationAlongPath(path) {
         const response = await axios.get(`${basePath}?path=${pathString}&samples=${path.length}&key=${apiKey}`);
 
         if (response.data.status === 'OK') {
-            let totalElevationGain = 0;
             const elevationData = response.data.results;
-
-            // Iterate over the elevation points to compute elevation gain
-            for (let i = 0; i < elevationData.length - 1; i++) {
-                let elevationChange = elevationData[i + 1].elevation - elevationData[i].elevation;
-
-                // Add positive elevation changes to totalElevationGain
-                if (elevationChange > 0) {
-                    totalElevationGain += elevationChange;
-                }
-            }
-
-            return totalElevationGain;
+            console.log(path);
+            console.log("last " + elevationData[1].elevation);
+            console.log("first " + elevationData[0].elevation);
+            let elevationChange = elevationData[1].elevation - elevationData[0].elevation;
+            return elevationChange > 0 ? elevationChange : 0;
         } else {
             console.error("Error computing elevation gain:", error);
         }
