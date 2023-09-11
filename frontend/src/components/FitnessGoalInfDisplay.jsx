@@ -7,7 +7,7 @@ export default function FitnessGoalInfDisplay({ goal, currentValue, target, titl
         </>;
     }
     if (goal.status === "inProgress") {
-        return <p>{title}: {currentValue} / {target} meters ({(currentValue / target).toFixed(2)}%)</p>;
+        return <p>{title}: {currentValue} / {target} meters ({(currentValue / target).toFixed(2) * 100}%)</p>;
     }
     if (goal.status === "success") {
         return <>
