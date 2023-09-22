@@ -4,8 +4,8 @@ import TripMap from '../components/TripMap';
 import { getTripById } from '../api/api';
 import NavigationButton from '../components/NavigationButton';
 import FitnessGoalProgress from '../components/FitnessGoalProgress';
-import BirdSpecificGoalProgress from "../components/BirdSpecificGoalProgress";
 import BirdCountGoalProgress from "../components/BirdCountGoalProgress";
+import TripStatistics from '../components/TripStatistics';
 
 export default function TripHistory() {
     const { tripId } = useParams();
@@ -34,8 +34,8 @@ export default function TripHistory() {
         <div>
             <NavigationButton path="/start/history" text="back" />
             <h2>Trip History</h2>
+            <TripStatistics trip={trip} realSpeed={-1} />
             {trip && <FitnessGoalProgress trip={trip}/>}
-            <BirdSpecificGoalProgress goals={trip?.birdSpecificGoals}/>
             <BirdCountGoalProgress goals={trip?.birdCountGoals}/>
             {trip && <TripMap path={
                 tripPath} center={tripPath[0]} images={trip?.images} isHistory={true} trip={trip} />}

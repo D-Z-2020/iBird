@@ -8,10 +8,7 @@ const axios = require('axios');
 const {
     LEVEL_1_DISTANCE_GOAL,
     LEVEL_2_DISTANCE_GOAL,
-    LEVEL_3_DISTANCE_GOAL,
-    LEVEL_1_ELEVATION_GOAL,
-    LEVEL_2_ELEVATION_GOAL,
-    LEVEL_3_ELEVATION_GOAL } = require('../../goals_setting/fitnessGoal');
+    LEVEL_3_DISTANCE_GOAL} = require('../../goals_setting/fitnessGoal');
 
 const client = new Client({});
 
@@ -26,19 +23,16 @@ router.post("/startNewTrip", verifyToken, async (req, res) => {
         return res.status(400).send("Both isEdugaming and fitnessLevel are required");
     }
 
-    let distanceGoal, elevationGoal;
+    let distanceGoal;
     switch (req.body.fitnessLevel) {
         case 'low':
             distanceGoal = LEVEL_1_DISTANCE_GOAL;
-            elevationGoal = LEVEL_1_ELEVATION_GOAL;
             break;
         case 'mid':
             distanceGoal = LEVEL_2_DISTANCE_GOAL;
-            elevationGoal = LEVEL_2_ELEVATION_GOAL;
             break;
         case 'high':
             distanceGoal = LEVEL_3_DISTANCE_GOAL;
-            elevationGoal = LEVEL_3_ELEVATION_GOAL;
             break;
         default:
             return res.status(400).send("Invalid fitness level provided");
@@ -56,15 +50,8 @@ router.post("/startNewTrip", verifyToken, async (req, res) => {
 
         if (!bird) return res.status(500).send("Could not find a suitable bird");
 
-        const birdSpecificGoal = {
-            birdId: bird._id,
-            birdName: bird.name,
-            image: bird.images[0],
-            level: 1 // Starting level is 1 for the specific bird goal
-        };
-
         const birdCountGoal = {
-            count: 1 * 3, // For level 1, user needs to find 3 birds
+            count: 1, // For level 1, user needs to find 1 birds
             level: 1,
             birdsFound: 0
         };
@@ -74,8 +61,6 @@ router.post("/startNewTrip", verifyToken, async (req, res) => {
             isEdugaming: req.body.isEdugaming,
             fitnessLevel: req.body.fitnessLevel,
             distanceGoal: distanceGoal,
-            elevationGoal: elevationGoal,
-            birdSpecificGoals: [birdSpecificGoal],
             birdCountGoals: [birdCountGoal]
         });
     } else {
@@ -83,8 +68,7 @@ router.post("/startNewTrip", verifyToken, async (req, res) => {
             userId: userId,
             isEdugaming: req.body.isEdugaming,
             fitnessLevel: req.body.fitnessLevel,
-            distanceGoal: distanceGoal,
-            elevationGoal: elevationGoal
+            distanceGoal: distanceGoal
         });
     }
     return res.status(201).json(newTrip);
@@ -136,9 +120,7 @@ router.post("/addLocation", verifyToken, async (req, res) => {
 
             // get goal, check if complete or not
             const distanceGoal = trip.distanceGoal.distance;
-            const elevationGoal = trip.elevationGoal.elevationGain;
             const distanceGoalDurationLimit = trip.distanceGoal.duration * 60 * 1000;
-            const elevationGoalDurationLimit = trip.elevationGoal.duration * 60 * 1000;
             const duration = new Date(timestamp) - new Date(trip.startDate);
 
             if (trip.distanceGoal.status === 'inProgress') {
@@ -153,18 +135,6 @@ router.post("/addLocation", verifyToken, async (req, res) => {
                     trip.distanceGoal.status = 'failed';
                 }
 
-            }
-
-            if (trip.elevationGoal.status === 'inProgress') {
-                trip.elevationGoal.endElevationGain = trip.elevationGain;
-                trip.elevationGoal.endDate = new Date(timestamp);
-                if (trip.elevationGain >= elevationGoal && duration <= elevationGoalDurationLimit) {
-                    trip.elevationGoal.status = 'success';
-                }
-                if (duration > elevationGoalDurationLimit) {
-                    trip.elevationGoal.endElevationGain = originElevation;
-                    trip.elevationGoal.status = 'failed';
-                }
             }
 
 
@@ -275,18 +245,7 @@ router.post("/endTrip", verifyToken, async (req, res) => {
         trip.distanceGoal.status = 'failed';
     }
 
-    if (trip.elevationGoal.status === 'inProgress') {
-        trip.elevationGoal.status = 'failed';
-    }
-
     if (trip.isEdugaming) {
-        // Update bird-specific goals that are inProgress to failed
-        for (let goal of trip.birdSpecificGoals) {
-            if (goal.status === 'inProgress') {
-                goal.status = 'failed';
-            }
-        }
-
         // Update bird count goals that are inProgress to failed
         for (let goal of trip.birdCountGoals) {
             if (goal.status === 'inProgress') {

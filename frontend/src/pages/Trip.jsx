@@ -7,8 +7,9 @@ import BirdImageUploader from "../components/BirdImageUploader";
 import BirdCamera from "../components/BirdCamera";
 import { useLocation } from "react-router-dom";
 import FitnessGoalProgress from "../components/FitnessGoalProgress";
-import BirdSpecificGoalProgress from "../components/BirdSpecificGoalProgress";
 import BirdCountGoalProgress from "../components/BirdCountGoalProgress";
+import TripStatistics from "../components/TripStatistics";
+
 const aucklandlat = -36.8484;
 const aucklandLng = 174.7633;
 
@@ -172,11 +173,10 @@ export default function Trip() {
                 {autoCentering ? "Stop Centering" : "Resume Centering"}
             </button>
 
-            <div id="speedDisplay">Speed: {speed ? `${speed.toFixed(2)} m/s` : "N/A"}</div>
+            <TripStatistics trip={tripForGoal} realSpeed={speed}/>
             {trip && trip.isEdugaming && <BirdCamera onPhotoCaptured={handlePhotoCaptured} />}
             <FitnessGoalProgress trip={tripForGoal} />
             {trip && trip.isEdugaming && <>
-                <BirdSpecificGoalProgress goals={tripForGoal?.birdSpecificGoals} />
                 <BirdCountGoalProgress goals={tripForGoal?.birdCountGoals} /></>}
 
             <TripMap

@@ -45,7 +45,7 @@ export default function BirdCamera({ onPhotoCaptured }) {
                         </div>
                     ) : (
                         <div>
-                            <Camera onTakePhoto={(dataUri) => handleTakePhoto(dataUri)} />
+                            <Camera onTakePhoto={(dataUri) => handleTakePhoto(dataUri)} idealFacingMode="environment"/>
                             <button onClick={closeCamera}>Back</button>
                         </div>
                     )}

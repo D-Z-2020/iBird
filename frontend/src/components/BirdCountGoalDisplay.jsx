@@ -7,19 +7,19 @@ export default function BirdCountGoalDisplay({ goal }) {
         case 'inProgress':
             return (
                 <div>
-                    <p>Find {goal.birdsFound} / {goal.level * 3} birds</p>
+                    <p>Find {goal.birdsFound} / {goal.count} birds</p>
                 </div>
             );
         case 'success':
             return (
                 <div>
-                    <p>Find {goal.birdsFound} / {goal.level * 3} birds - Success!</p>
+                    <p>Find {goal.birdsFound} / {goal.count} birds - Success!</p>
                 </div>
             );
         case 'failed':
             return (
                 <div>
-                    <p>Find {goal.birdsFound} / {goal.level * 3} birds - Failed</p>
+                    <p>Find {goal.birdsFound} / {goal.count} birds - Failed</p>
                 </div>
             );
         default:

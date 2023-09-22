@@ -63,39 +63,15 @@ router.post('/upload', verifyToken, upload.single('photo'), async (req, res) => 
         const birdCount = await Bird.countDocuments();
         const randomBird = await Bird.findOne().skip(Math.floor(Math.random() * birdCount));
 
-
-
-        // Check if the identified bird matches the last specific bird goal
-        const lastBirdSpecificGoal = activeTrip.birdSpecificGoals[activeTrip.birdSpecificGoals.length - 1];
-        if (lastBirdSpecificGoal && lastBirdSpecificGoal.birdId.equals(randomBird._id)) {
-            lastBirdSpecificGoal.status = 'success';
-            const newLevel = Math.min(lastBirdSpecificGoal.level + 1, 3);  // increment level, max 3
-
-            // get a random bird with rarity = level
-            const randomBirdArrays = await Bird.aggregate([
-                { $match: { rarity: newLevel } },
-                { $sample: { size: 1 } }
-            ]).exec();
-            const bird = randomBirdArrays[0];
-
-            const newSpecificGoal = {
-                birdId: bird._id,
-                birdName: bird.name,
-                image: bird.images[0],
-                level: newLevel
-            };
-            activeTrip.birdSpecificGoals.push(newSpecificGoal);
-        }
-
         // Increase the bird count for the count-based goal and check if it matches the target
         const lastBirdCountGoal = activeTrip.birdCountGoals[activeTrip.birdCountGoals.length - 1];
         if (lastBirdCountGoal) {
             lastBirdCountGoal.birdsFound++;
-            if (lastBirdCountGoal.birdsFound >= lastBirdCountGoal.level * 3) {
+            if (lastBirdCountGoal.birdsFound >= lastBirdCountGoal.level) {
                 lastBirdCountGoal.status = 'success';
                 const newLevel = Math.min(lastBirdCountGoal.level + 1, 5);  // increment level, max 5
                 const newCountGoal = {
-                    count: newLevel * 3,
+                    count: newLevel,
                     level: newLevel
                 };
                 activeTrip.birdCountGoals.push(newCountGoal);

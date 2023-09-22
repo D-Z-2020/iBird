@@ -20,24 +20,6 @@ const distanceGoalSchema = new mongoose.Schema({
   endDistance: { type: Number }
 });
 
-const elevationGoalSchema = new mongoose.Schema({
-  elevationGain: { type: Number, required: true },  // in meters
-  duration: { type: Number, required: true },  // in minutes
-  level: { type: Number, enum: [1, 2, 3], required: true },
-  status: { type: String, enum: ['inProgress', 'success', 'failed'], default: 'inProgress' },
-  startDate: { type: Date, default: Date.now },
-  endDate: { type: Date },
-  endElevationGain: { type: Number }
-});
-
-const BirdSpecificGoalSchema = new mongoose.Schema({
-  birdId: { type: mongoose.Schema.Types.ObjectId, ref: 'Bird', required: true },
-  birdName: {type: String, required: true},
-  image: {type: String, required: true},
-  status: { type: String, enum: ['inProgress', 'success', 'failed'], default: 'inProgress' },
-  level: { type: Number, enum: [1, 2, 3], required: true } // bird to find with rarity = level
-});
-
 const BirdCountGoalSchema = new mongoose.Schema({
   count: { type: Number, required: true },
   status: { type: String, enum: ['inProgress', 'success', 'failed'], default: 'inProgress' },
@@ -58,8 +40,6 @@ const tripSchema = new Schema({
   isEdugaming: { type: Boolean, required: true },
   fitnessLevel: { type: String, enum: ['low', 'mid', 'high'], required: true },
   distanceGoal: distanceGoalSchema,
-  elevationGoal: elevationGoalSchema,
-  birdSpecificGoals: [BirdSpecificGoalSchema],
   birdCountGoals: [BirdCountGoalSchema],
   suspiciousLocation: { type: Boolean, default: false },
   images: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Image' }],
