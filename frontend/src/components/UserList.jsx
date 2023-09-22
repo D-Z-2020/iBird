@@ -16,7 +16,7 @@ export default function UserList({ users, allowFriendActions = false, onFriendAc
                     </tr>
                 </thead>
                 <tbody>
-                    {users.map((user) => (
+                    {users && users.map((user) => (
                         !excludedUsers.includes(user.username)
                         &&
                         <tr key={user._id}>

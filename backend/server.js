@@ -15,8 +15,14 @@ const routes = require("./routes");
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// set CORS to deal with the backend, frontend running on different hosts
-app.use(cors());
+// app.use(cors());
+
+app.use(cors({
+  origin: (origin, callback) => {
+    callback(null, true); // Always allow
+  },
+  credentials: true
+}));
 
 // Setup body-parser
 app.use(express.json());
@@ -34,5 +40,5 @@ app.get('/', (req, res) => {
 mongoose
   .connect(process.env.DB_URL, { useNewUrlParser: true })
   .then(() =>
-    app.listen(PORT, () => console.log(`iBird Server listening on port ${PORT}!`))
+    app.listen(PORT, '0.0.0.0', () => console.log(`iBird Server listening on port ${PORT}!`))
   );

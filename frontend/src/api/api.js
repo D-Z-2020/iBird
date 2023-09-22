@@ -63,7 +63,7 @@ export const login = (username, password) => {
 export const getUsernameFromToken = (token) => {
   return axios.get(
     TOKEN_TO_USERNAME_URL,
-    { headers: { authorization: `Bearer ${token}` } }
+    { headers: { authorization: `Bearer ${token}`, "ngrok-skip-browser-warning" : true } }
   );
 }
 
@@ -71,7 +71,7 @@ export const getUsernameFromToken = (token) => {
 export const getAllUsers = (token) => {
   return axios.get(
     USERS_URL,
-    { headers: { authorization: `Bearer ${token}` } }
+    { headers: { authorization: `Bearer ${token}`, "ngrok-skip-browser-warning" : true } }
   );
 }
 
@@ -79,7 +79,7 @@ export const getAllUsers = (token) => {
 export const getUserInfo = (token, username) => {
   return axios.get(
     `${USERS_URL}/${username}`,
-    { headers: { authorization: `Bearer ${token}` } }
+    { headers: { authorization: `Bearer ${token}`, "ngrok-skip-browser-warning" : true } }
   );
 }
 
@@ -87,7 +87,7 @@ export const getUserInfo = (token, username) => {
 export const searchUsernameSubstring = (token, username) => {
   return axios.get(
     `${SUBSTRING_USERNAME_SEARCH_URL}/${username}`,
-    { headers: { authorization: `Bearer ${token}` } }
+    { headers: { authorization: `Bearer ${token}`, "ngrok-skip-browser-warning" : true } }
   );
 }
 
@@ -98,21 +98,21 @@ export const searchUsernameSubstring = (token, username) => {
 export const getFriends = (token) => {
   return axios.get(
     GET_FRIENDS_URL,
-    { headers: { authorization: `Bearer ${token}` } }
+    { headers: { authorization: `Bearer ${token}`, "ngrok-skip-browser-warning" : true } }
   );
 }
 
 // add friend to a user
 export const addFriend = (token, username) => {
   return axios.post(ADD_FRIEND_URL, { username }, {
-    headers: { authorization: `Bearer ${token}` }
+    headers: { authorization: `Bearer ${token}`, "ngrok-skip-browser-warning" : true }
   });
 }
 
 // remove a friend
 export const removeFriend = (token, username) => {
   return axios.delete(REMOVE_FRIEND_URL, {
-    headers: { authorization: `Bearer ${token}` },
+    headers: { authorization: `Bearer ${token}`, "ngrok-skip-browser-warning" : true },
     data: { username }
   });
 }
@@ -129,40 +129,40 @@ export const startNewTrip = (token, isEdugaming, fitnessLevel) => {
     isEdugaming: isEdugaming,
     fitnessLevel: fitnessLevel
   }, {
-    headers: { authorization: `Bearer ${token}` }
+    headers: { authorization: `Bearer ${token}`, "ngrok-skip-browser-warning" : true }
   });
 }
 
 export const addLocation = (token, latitude, longitude, timestamp) => {
   return axios.post(ADD_LOCATION_URL, { latitude, longitude, timestamp }, {
-    headers: { authorization: `Bearer ${token}` }
+    headers: { authorization: `Bearer ${token}`, "ngrok-skip-browser-warning" : true }
   });
 }
 
 export const getActiveTrip = (token) => {
   return axios.get(
     GET_ACTIVE_TRIP_URL,
-    { headers: { authorization: `Bearer ${token}` } }
+    { headers: { authorization: `Bearer ${token}`, "ngrok-skip-browser-warning" : true } }
   );
 }
 
 export const getInactiveTrips = (token) => {
   return axios.get(
     GET_INACTIVE_TRIPS_URL,
-    { headers: { authorization: `Bearer ${token}` } }
+    { headers: { authorization: `Bearer ${token}`, "ngrok-skip-browser-warning" : true } }
   );
 }
 
 export const getTripById = (token, id) => {
   return axios.get(
     `${GET_TRIP_BY_ID_URL}/${id}`,
-    { headers: { authorization: `Bearer ${token}` } }
+    { headers: { authorization: `Bearer ${token}`, "ngrok-skip-browser-warning" : true } }
   );
 }
 
 export const endTrip = (token) => {
   return axios.post(END_TRIP_URL, {}, {
-    headers: { authorization: `Bearer ${token}` }
+    headers: { authorization: `Bearer ${token}`, "ngrok-skip-browser-warning" : true }
   });
 }
 
@@ -180,7 +180,8 @@ export const uploadImage = (token, imageFile, location, timestamp) => {
   return axios.post(UPLOAD_iMAGE_URL, formData, {
     headers: {
       'authorization': `Bearer ${token}`,
-      'Content-Type': 'multipart/form-data'
+      'Content-Type': 'multipart/form-data',
+      "ngrok-skip-browser-warning" : true
     }
   });
 }
@@ -189,7 +190,7 @@ export const uploadImage = (token, imageFile, location, timestamp) => {
 export const getImageByKey = (token, key) => {
   return axios.get(
     `${GET_IMAGE_URL}/${key}`,
-    { headers: { 'authorization': `Bearer ${token}` } }
+    { headers: { 'authorization': `Bearer ${token}`, "ngrok-skip-browser-warning" : true } }
   );
 }
 
@@ -199,20 +200,20 @@ export const getImageByKey = (token, key) => {
 export const getAllbirds = (token) => {
   return axios.get(
     GET_AII_BIRDS_URL,
-    { headers: { 'authorization': `Bearer ${token}` } }
+    { headers: { 'authorization': `Bearer ${token}`, "ngrok-skip-browser-warning" : true } }
   );
 }
 
 export const getMybirds = (token) => {
   return axios.get(
     GET_MY_BIRDS_URL,
-    { headers: { 'authorization': `Bearer ${token}` } }
+    { headers: { 'authorization': `Bearer ${token}`, "ngrok-skip-browser-warning" : true } }
   );
 }
 
 export const getBird = (token, name) => {
   return axios.get(
     `${GET_BIRD_URL}/${name}`,
-    { headers: { 'authorization': `Bearer ${token}` } }
+    { headers: { 'authorization': `Bearer ${token}`, "ngrok-skip-browser-warning" : true } }
   );
 }
