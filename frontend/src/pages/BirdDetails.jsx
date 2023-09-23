@@ -41,7 +41,7 @@ export default function BirdDetails() {
             <p><strong>Rarity:</strong> {bird.rarity}</p>
             <h3>Images:</h3>
             {bird.images.map((imgSrc, index) => (
-                <img key={index} src={imgSrc} alt={`${bird.name} image ${index}`} />
+                <img key={index} src={imgSrc} alt={`${bird.name} image ${index}`} style={{ width: "100%" }} />
             ))}
         </div>
     );

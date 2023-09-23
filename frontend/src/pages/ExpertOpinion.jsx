@@ -86,7 +86,7 @@ export default function ExpertOpinion() {
                 onClick={() => navigateWithState(`/birds/collection`, { replace: true })}>
                 View Bird Collection
             </button>
-            <h3>In Progress</h3>
+            <h3>Verify these Birds</h3>
             <ExpertImagesTable images={images.filter(img => img.expertStatus === 'inProgress')} handleUpdateClick={handleUpdateClick} />
 
             <h3>Done</h3>
@@ -99,8 +99,8 @@ export default function ExpertOpinion() {
                         <img src={selectedImage.imageUrl} style={{ width: '100%' }} />
                         <h3>Select a Bird</h3>
                         {birds.map(bird => (
-                            <div key={bird._id}>
-                                <img src={bird.images[0]} style={{ width: '30%' }} />
+                            <div key={bird._id} style={{ width: '20%', display: 'inline-block' }}>
+                                <img src={bird.images[0]} style={{ width: '90%' }} />
                                 <br />
                                 <button
                                     onClick={() => setSelectedBirdId(bird._id)}
@@ -118,10 +118,10 @@ export default function ExpertOpinion() {
                         >
                             No Bird
                         </button>
-                        <br />
-                        <br />
+                        <br /><br /><br />
                         <button onClick={handleSubmit}>Submit</button>
-                        <button onClick={handleClose}>Close</button>
+                        <br /><br />
+                        <button onClick={handleClose}>Cancel</button>
                     </div>
                 </div>
             )}

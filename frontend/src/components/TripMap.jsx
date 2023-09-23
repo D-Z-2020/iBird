@@ -95,9 +95,9 @@ export default function TripMap({ path, center, autoCentering, images, isHistory
                                 onCloseClick={() => setSelectedImage(null)}
                             >
                                 <div>
-                                    <h3>{selectedImage.birdId.name}</h3>
+                                    {selectedImage.birdId && <h3>{selectedImage.birdId.name}</h3>}
                                     {imageUrls[selectedImage.s3Key] &&
-                                        <img src={imageUrls[selectedImage.s3Key]} alt={selectedImage.birdId} style={{ width: '100px' }} />
+                                        <img src={imageUrls[selectedImage.s3Key]} style={{ width: '100px' }} />
                                     }
                                 </div>
                             </InfoWindow>
