@@ -18,10 +18,10 @@ const PORT = process.env.PORT || 3001;
 // app.use(cors());
 
 app.use(cors({
-  origin: (origin, callback) => {
-    callback(null, true); // Always allow
-  },
-  credentials: true
+    origin: (origin, callback) => {
+        callback(null, true); // Always allow
+    },
+    credentials: true
 }));
 
 // Setup body-parser
@@ -32,13 +32,13 @@ app.use("/routes", routes);
 
 // testing
 app.get('/', (req, res) => {
-  res.send('Hello World');
+    res.send('Hello World');
 });
 
 
 // connect DB, if success, start the server.
 mongoose
-  .connect(process.env.DB_URL, { useNewUrlParser: true })
-  .then(() =>
-    app.listen(PORT, '0.0.0.0', () => console.log(`iBird Server listening on port ${PORT}!`))
-  );
+    .connect(process.env.DB_URL, { useNewUrlParser: true })
+    .then(() =>
+        app.listen(PORT, '0.0.0.0', () => console.log(`iBird Server listening on port ${PORT}!`))
+    );

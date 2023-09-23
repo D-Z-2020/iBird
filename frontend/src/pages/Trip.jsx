@@ -109,7 +109,7 @@ export default function Trip() {
                         lat: loc.latitude,
                         lng: loc.longitude
                     }));
-                    
+
                     if (res.status === 207) {
                         alert('Your goal has been modified based on your current average speed.');
                     }

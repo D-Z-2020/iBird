@@ -386,57 +386,57 @@ router.post("/endTrip", verifyToken, async (req, res) => {
 const checkChallenges = (user) => {
     // Bird Collection Challenge
     if (user.myBirds.length >= BIRD_COLLECTION_CHALLANGES_BRONZE && !user.achievedChallanges.some(ch => ch.type === 'birdCollection' && ch.level === 'bronze')) {
-        user.achievedChallanges.push({ type: 'birdCollection', level: 'bronze'});
+        user.achievedChallanges.push({ type: 'birdCollection', level: 'bronze' });
         user.scores += BRONZE_CHALLANGE;
     }
     if (user.myBirds.length >= BIRD_COLLECTION_CHALLANGES_SILVER && !user.achievedChallanges.some(ch => ch.type === 'birdCollection' && ch.level === 'silver')) {
-        user.achievedChallanges.push({ type: 'birdCollection', level: 'silver'});
+        user.achievedChallanges.push({ type: 'birdCollection', level: 'silver' });
         user.scores += SILVER_CHALLANGE;
     }
     if (user.myBirds.length >= BIRD_COLLECTION_CHALLANGES_GOLD && !user.achievedChallanges.some(ch => ch.type === 'birdCollection' && ch.level === 'gold')) {
-        user.achievedChallanges.push({ type: 'birdCollection', level: 'gold'});
+        user.achievedChallanges.push({ type: 'birdCollection', level: 'gold' });
         user.scores += GOLD_CHALLANGE;
     }
 
     // Correct Quizzes Challenge
     if (user.totalCorrectQuizes >= CORRECT_QUIZZES_CHALLANGES_BRONZE && !user.achievedChallanges.some(ch => ch.type === 'correctQuizzes' && ch.level === 'bronze')) {
-        user.achievedChallanges.push({ type: 'correctQuizzes', level: 'bronze'});
+        user.achievedChallanges.push({ type: 'correctQuizzes', level: 'bronze' });
         user.scores += BRONZE_CHALLANGE;
     }
     if (user.totalCorrectQuizes >= CORRECT_QUIZZES_CHALLANGES_SILVER && !user.achievedChallanges.some(ch => ch.type === 'correctQuizzes' && ch.level === 'silver')) {
-        user.achievedChallanges.push({ type: 'correctQuizzes', level: 'silver'});
+        user.achievedChallanges.push({ type: 'correctQuizzes', level: 'silver' });
         user.scores += SILVER_CHALLANGE;
     }
     if (user.totalCorrectQuizes >= BCORRECT_QUIZZES_CHALLANGES_GOLD && !user.achievedChallanges.some(ch => ch.type === 'correctQuizzes' && ch.level === 'gold')) {
-        user.achievedChallanges.push({ type: 'correctQuizzes', level: 'gold'});
+        user.achievedChallanges.push({ type: 'correctQuizzes', level: 'gold' });
         user.scores += GOLD_CHALLANGE;
     }
 
     // Walking Distance Challenge
     if (user.totalWalkingDistance >= WALKING_DISTANCE_CHALLANGES_BRONZE && !user.achievedChallanges.some(ch => ch.type === 'walkingDistance' && ch.level === 'bronze')) {
-        user.achievedChallanges.push({ type: 'walkingDistance', level: 'bronze'});
+        user.achievedChallanges.push({ type: 'walkingDistance', level: 'bronze' });
         user.scores += BRONZE_CHALLANGE;
     }
     if (user.totalWalkingDistance >= WALKING_DISTANCE_CHALLANGES_SILVER && !user.achievedChallanges.some(ch => ch.type === 'walkingDistance' && ch.level === 'silver')) {
-        user.achievedChallanges.push({ type: 'walkingDistance', level: 'silver'});
+        user.achievedChallanges.push({ type: 'walkingDistance', level: 'silver' });
         user.scores += SILVER_CHALLANGE;
     }
     if (user.totalWalkingDistance >= WALKING_DISTANCE_CHALLANGES_GOLD && !user.achievedChallanges.some(ch => ch.type === 'walkingDistance' && ch.level === 'gold')) {
-        user.achievedChallanges.push({ type: 'walkingDistance', level: 'gold'});
+        user.achievedChallanges.push({ type: 'walkingDistance', level: 'gold' });
         user.scores += GOLD_CHALLANGE;
     }
 
     // Elevation Gain Challenge
     if (user.totalElevationGain >= ELEVATION_GAIN_CHALLANGES_BRONZE && !user.achievedChallanges.some(ch => ch.type === 'elevationGain' && ch.level === 'bronze')) {
-        user.achievedChallanges.push({ type: 'elevationGain', level: 'bronze'});
+        user.achievedChallanges.push({ type: 'elevationGain', level: 'bronze' });
         user.scores += BRONZE_CHALLANGE;
     }
     if (user.totalElevationGain >= ELEVATION_GAIN_CHALLANGES_SILVER && !user.achievedChallanges.some(ch => ch.type === 'elevationGain' && ch.level === 'silver')) {
-        user.achievedChallanges.push({ type: 'elevationGain', level: 'silver'});
+        user.achievedChallanges.push({ type: 'elevationGain', level: 'silver' });
         user.scores += SILVER_CHALLANGE;
     }
     if (user.totalElevationGain >= ELEVATION_GAIN_CHALLANGES_GOLD && !user.achievedChallanges.some(ch => ch.type === 'elevationGain' && ch.level === 'gold')) {
-        user.achievedChallanges.push({ type: 'elevationGain', level: 'gold'});
+        user.achievedChallanges.push({ type: 'elevationGain', level: 'gold' });
         user.scores += GOLD_CHALLANGE;
     }
 }

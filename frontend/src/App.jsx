@@ -22,184 +22,184 @@ import MyKiwi from './pages/MyKiwi';
 import ExpertOpinion from './pages/ExpertOpinion';
 
 function App() {
-  const [username, setUsername] = useState(null);
-  const [isExpert, setIsExpert] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(null);
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      getUsernameFromToken(token)
-        .then((res) => {
-          setUsername(res.data);
-          getUserInfo(token, res.data)
-            .then((res) => {
-              setIsExpert(res.data.isExpert);
-            })
-        })
-        .catch((err) => {
-          localStorage.setItem('token', "");
-        })
-    }
-  }, []);
+    const [username, setUsername] = useState(null);
+    const [isExpert, setIsExpert] = useState(false);
+    const [selectedImage, setSelectedImage] = useState(null);
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            getUsernameFromToken(token)
+                .then((res) => {
+                    setUsername(res.data);
+                    getUserInfo(token, res.data)
+                        .then((res) => {
+                            setIsExpert(res.data.isExpert);
+                        })
+                })
+                .catch((err) => {
+                    localStorage.setItem('token', "");
+                })
+        }
+    }, []);
 
-  return (
-    <UserContext.Provider value={{ username, setUsername, isExpert, setIsExpert, selectedImage, setSelectedImage }}>
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <RequiresAuth>
-              <Dashboard />
-            </RequiresAuth>
-          }
-        />
+    return (
+        <UserContext.Provider value={{ username, setUsername, isExpert, setIsExpert, selectedImage, setSelectedImage }}>
+            <Routes>
+                <Route
+                    path="/"
+                    element={
+                        <RequiresAuth>
+                            <Dashboard />
+                        </RequiresAuth>
+                    }
+                />
 
-        <Route
-          path="/community"
-          element={
-            <RequiresAuth>
-              <Community />
-            </RequiresAuth>
-          }
-        />
+                <Route
+                    path="/community"
+                    element={
+                        <RequiresAuth>
+                            <Community />
+                        </RequiresAuth>
+                    }
+                />
 
-        <Route
-          path="/community/findfriends"
-          element={
-            <RequiresAuth>
-              <FindFriend />
-            </RequiresAuth>
-          }
-        />
+                <Route
+                    path="/community/findfriends"
+                    element={
+                        <RequiresAuth>
+                            <FindFriend />
+                        </RequiresAuth>
+                    }
+                />
 
-        <Route
-          path="/community/myfriends"
-          element={
-            <RequiresAuth>
-              <MyFriends />
-            </RequiresAuth>
-          }
-        />
+                <Route
+                    path="/community/myfriends"
+                    element={
+                        <RequiresAuth>
+                            <MyFriends />
+                        </RequiresAuth>
+                    }
+                />
 
-        <Route
-          path="/users/:username"
-          element={
-            <RequiresAuth>
-              <Profile />
-            </RequiresAuth>
-          }
-        />
+                <Route
+                    path="/users/:username"
+                    element={
+                        <RequiresAuth>
+                            <Profile />
+                        </RequiresAuth>
+                    }
+                />
 
-        <Route
-          path="/start"
-          element={
-            <RequiresAuth>
-              <Start />
-            </RequiresAuth>
-          }
-        />
+                <Route
+                    path="/start"
+                    element={
+                        <RequiresAuth>
+                            <Start />
+                        </RequiresAuth>
+                    }
+                />
 
-        <Route
-          path="/start/option"
-          element={
-            <RequiresAuth>
-              <TripOption />
-            </RequiresAuth>
-          }
-        />
+                <Route
+                    path="/start/option"
+                    element={
+                        <RequiresAuth>
+                            <TripOption />
+                        </RequiresAuth>
+                    }
+                />
 
-        <Route
-          path="/start/trip"
-          element={
-            <RequiresAuth>
-              <Trip />
-            </RequiresAuth>
-          }
-        />
+                <Route
+                    path="/start/trip"
+                    element={
+                        <RequiresAuth>
+                            <Trip />
+                        </RequiresAuth>
+                    }
+                />
 
-        <Route
-          path="/start/history"
-          element={
-            <RequiresAuth>
-              <TripHistoryList />
-            </RequiresAuth>
-          }
-        />
+                <Route
+                    path="/start/history"
+                    element={
+                        <RequiresAuth>
+                            <TripHistoryList />
+                        </RequiresAuth>
+                    }
+                />
 
-        <Route
-          path="/start/history/:tripId"
-          element={
-            <RequiresAuth>
-              <TripHistory />
-            </RequiresAuth>
-          }
-        />
+                <Route
+                    path="/start/history/:tripId"
+                    element={
+                        <RequiresAuth>
+                            <TripHistory />
+                        </RequiresAuth>
+                    }
+                />
 
-        <Route
-          path="/bird/:name"
-          element={
-            <RequiresAuth>
-              <BirdDetails />
-            </RequiresAuth>
-          }
-        />
+                <Route
+                    path="/bird/:name"
+                    element={
+                        <RequiresAuth>
+                            <BirdDetails />
+                        </RequiresAuth>
+                    }
+                />
 
-        <Route
-          path="/birds/collection"
-          element={
-            <RequiresAuth>
-              <BirdCollectionPage />
-            </RequiresAuth>
-          }
-        />
+                <Route
+                    path="/birds/collection"
+                    element={
+                        <RequiresAuth>
+                            <BirdCollectionPage />
+                        </RequiresAuth>
+                    }
+                />
 
-        <Route
-          path="/challengesPage"
-          element={
-            <RequiresAuth>
-              <ChallengesPage />
-            </RequiresAuth>
-          }
-        />
+                <Route
+                    path="/challengesPage"
+                    element={
+                        <RequiresAuth>
+                            <ChallengesPage />
+                        </RequiresAuth>
+                    }
+                />
 
-        <Route
-          path="/myKiwi"
-          element={
-            <RequiresAuth>
-              <MyKiwi />
-            </RequiresAuth>
-          }
-        />
+                <Route
+                    path="/myKiwi"
+                    element={
+                        <RequiresAuth>
+                            <MyKiwi />
+                        </RequiresAuth>
+                    }
+                />
 
-        <Route
-          path="/expertOpinion"
-          element={
-            <RequiresAuth>
-              <ExpertOpinion />
-            </RequiresAuth>
-          }
-        />
+                <Route
+                    path="/expertOpinion"
+                    element={
+                        <RequiresAuth>
+                            <ExpertOpinion />
+                        </RequiresAuth>
+                    }
+                />
 
-        <Route
-          path="/login"
-          element={
-            <RequiresNonAuth>
-              <UserLogin />
-            </RequiresNonAuth>
-          }
-        />
+                <Route
+                    path="/login"
+                    element={
+                        <RequiresNonAuth>
+                            <UserLogin />
+                        </RequiresNonAuth>
+                    }
+                />
 
-        <Route
-          path="/register"
-          element={
-            <RequiresNonAuth>
-              <UserRegister />
-            </RequiresNonAuth>
-          }
-        />
-      </Routes>
-    </UserContext.Provider>
-  )
+                <Route
+                    path="/register"
+                    element={
+                        <RequiresNonAuth>
+                            <UserRegister />
+                        </RequiresNonAuth>
+                    }
+                />
+            </Routes>
+        </UserContext.Provider>
+    )
 }
 
 export default App

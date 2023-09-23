@@ -35,8 +35,8 @@ export default function TripHistory() {
             <NavigationButton path="/start/history" text="back" />
             <h2>Trip History</h2>
             <TripStatistics trip={trip} realSpeed={-1} />
-            {trip && <FitnessGoalProgress trip={trip}/>}
-            <BirdCountGoalProgress goals={trip?.birdCountGoals}/>
+            {trip && <FitnessGoalProgress trip={trip} />}
+            <BirdCountGoalProgress goals={trip?.birdCountGoals} />
             {trip && <TripMap path={
                 tripPath} center={tripPath[0]} images={trip?.images} isHistory={true} trip={trip} />}
         </div>

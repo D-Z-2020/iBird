@@ -41,7 +41,7 @@ export default function Profile() {
                 </> :
                 <p>Not Found</p>
             }
-            <KiwiInfo username={paramUsername} canLevelUp={false}/>
+            <KiwiInfo username={paramUsername} canLevelUp={false} />
             <BirdCollection username={paramUsername} showRemainBird={false} />
             <Challenges username={paramUsername} />
             {taragetUser && <button style={{ display: username === paramUsername ? 'none' : 'block' }}

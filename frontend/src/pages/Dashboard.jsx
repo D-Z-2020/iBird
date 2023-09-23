@@ -35,7 +35,7 @@ export default function Dashboard() {
                 <NavigationButton path="/expertOpinion" text="Expert Opinion" />
                 <br />
             </>}
-            
+
             <button onClick={handleLogout}>Logout</button>
         </div>
     )

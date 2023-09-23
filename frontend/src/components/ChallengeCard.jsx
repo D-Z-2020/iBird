@@ -50,7 +50,7 @@ export default function ChallengeCard({ type, level, achieved }) {
     return (
         <div style={{ display: "inline-block", border: "3px solid black", margin: "10px" }}>
             <h3>{challenges[type][level]}</h3>
-            <img src={badgeUrls[level]} alt={`${level} badge`} width={'100px'}/>
+            <img src={badgeUrls[level]} alt={`${level} badge`} width={'100px'} />
         </div>
     );
 }

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { uploadImage } from '../api/api';
 
-export default function BirdImageUploader({onUploadComplete, location, timestamp}) {
+export default function BirdImageUploader({ onUploadComplete, location, timestamp }) {
     const [selectedFile, setSelectedFile] = useState(null);
 
     const handleFileChange = (event) => {

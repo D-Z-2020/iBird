@@ -2,7 +2,7 @@ import ChallengeCard from "./ChallengeCard";
 import { getUserInfo } from "../api/api";
 import { useState, useEffect } from "react";
 
-export default function Challenges({username}) {
+export default function Challenges({ username }) {
     const [user, setUser] = useState(null);
 
     useEffect(() => {

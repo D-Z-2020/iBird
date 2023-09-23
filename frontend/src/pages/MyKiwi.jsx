@@ -8,7 +8,7 @@ export default function MyKiwi() {
     return (
         <div>
             <NavigationButton path="/" text="back" />
-            <KiwiInfo username={username} canLevelUp={true}/>
+            <KiwiInfo username={username} canLevelUp={true} />
         </div>
     )
 }

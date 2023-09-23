@@ -14,7 +14,7 @@ export default function TripOption() {
 
     return (
         <div>
-            <NavigationButton path={'/start'} text={'back'}/>
+            <NavigationButton path={'/start'} text={'back'} />
             <h2>Trip Options</h2>
 
             <div>

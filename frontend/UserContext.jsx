@@ -4,9 +4,9 @@ const UserContext = createContext({
     username: null,
     setUsername: () => { },
     isExpert: null,
-    setIsExpert: () => {},
+    setIsExpert: () => { },
     selectedImage: null,
-    setSelectedImage: () => {}
+    setSelectedImage: () => { }
 });
 
 export default UserContext;

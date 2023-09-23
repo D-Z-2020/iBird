@@ -13,7 +13,7 @@ export default function BirdTable({ trip, setMapCenter, setSelectedImage }) {
             </thead>
             <tbody>
                 {trip && trip.images.map((image, index) => (
-                    <BirdTableRow key={index} image={image} setMapCenter={setMapCenter} setSelectedImage={setSelectedImage}/>
+                    <BirdTableRow key={index} image={image} setMapCenter={setMapCenter} setSelectedImage={setSelectedImage} />
                 ))}
             </tbody>
         </table>
