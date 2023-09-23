@@ -30,6 +30,7 @@ const GET_ACTIVE_TRIP_URL = `${TRIPS_URL}/getActiveTrip`;
 const GET_INACTIVE_TRIPS_URL = `${TRIPS_URL}/getInactiveTrips`;
 const GET_TRIP_BY_ID_URL = `${TRIPS_URL}/getTrip`;
 const END_TRIP_URL = `${TRIPS_URL}/endTrip`;
+const SUBMIT_QUIZ_URL = `${TRIPS_URL}/submitQuizResults`;
 
 
 
@@ -162,6 +163,12 @@ export const getTripById = (token, id) => {
 
 export const endTrip = (token) => {
   return axios.post(END_TRIP_URL, {}, {
+    headers: { authorization: `Bearer ${token}`, "ngrok-skip-browser-warning" : true }
+  });
+}
+
+export const submitQuizResults = (token, quizResults) => {
+  return axios.post(SUBMIT_QUIZ_URL, { quizResults }, {
     headers: { authorization: `Bearer ${token}`, "ngrok-skip-browser-warning" : true }
   });
 }

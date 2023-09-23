@@ -6,6 +6,13 @@ const { v4: uuidv4 } = require('uuid');
 const multer = require('multer');
 const multerS3 = require('multer-s3');
 const AWS = require('aws-sdk');
+const { selectRandomQuestions } = require('./utility.js');
+
+const {
+    NEW_BIRD_REWARD_COEFFECIENT,
+    REPEAT_BIRD_REWARD_COEFFECIENT,
+    BIRD_GOAL_COEFFECIENT,
+} = require('../../gameConstants');
 
 AWS.config.update({
     accessKeyId: process.env.AMAZON_ACCESS_KEY_ID,
@@ -25,7 +32,7 @@ const upload = multer({
         },
         key: function (req, file, cb) {
             // Generate a unique file key using time for now and UUID
-            const uniqueFileKey = Date.now().toString() + '-' + uuidv4() + '-' + file.originalname;
+            const uniqueFileKey = Date.now().toString() + '-' + uuidv4();
             cb(null, uniqueFileKey);
         }
     }),
@@ -55,13 +62,27 @@ router.post('/upload', verifyToken, upload.single('photo'), async (req, res) => 
             return res.status(403).send('EduGaming is not enabled for this trip. Cannot upload bird images.');
         }
 
+        if (activeTrip.quiz) {
+            return res.status(400).send('You have Quiz to do!');
+        }
+
         // Get the location and timestamp from the request
         const location = req.body.location ? JSON.parse(req.body.location) : null;
         const timestamp = req.body.timestamp || new Date();
 
-        // Identify the bird using AI (for now, randomly select a bird)
-        const birdCount = await Bird.countDocuments();
-        const randomBird = await Bird.findOne().skip(Math.floor(Math.random() * birdCount));
+        // Identify the bird using AI (for now, randomly select a bird with rarity between 1 and 4)
+        const birdCountWithRarity1to4 = await Bird.countDocuments({ rarity: { $lte: 4 } });
+        const randomBird = await Bird.findOne({ rarity: { $lte: 4 } }).skip(Math.floor(Math.random() * birdCountWithRarity1to4));
+
+        // Randomly select questions for the quiz based on the bird's rarity
+        const selectedQuestions = selectRandomQuestions(randomBird);
+
+        // Set the quiz field of the active trip
+        activeTrip.quiz = {
+            birdName: randomBird.name,
+            birdRarity: randomBird.rarity,
+            questions: selectedQuestions
+        };
 
         // Increase the bird count for the count-based goal and check if it matches the target
         const lastBirdCountGoal = activeTrip.birdCountGoals[activeTrip.birdCountGoals.length - 1];
@@ -75,6 +96,7 @@ router.post('/upload', verifyToken, upload.single('photo'), async (req, res) => 
                     level: newLevel
                 };
                 activeTrip.birdCountGoals.push(newCountGoal);
+                activeTrip.scores += BIRD_GOAL_COEFFECIENT * lastBirdCountGoal.level;
             }
         }
 
@@ -93,15 +115,19 @@ router.post('/upload', verifyToken, upload.single('photo'), async (req, res) => 
 
         // Update the trip's images array by pushing the new image's ObjectId
         activeTrip.images.push(newImage._id);
-        await activeTrip.save();
+        activeTrip.lastTimeFoundBird = timestamp;
 
         // Check if the identified bird is already in the user's myBirds array
         const user = await User.findById(req.user._id);
         if (!user.myBirds.includes(randomBird._id)) {
             user.myBirds.push(randomBird._id);
+            activeTrip.scores += NEW_BIRD_REWARD_COEFFECIENT * randomBird.rarity;
             await user.save();
+        } else {
+            activeTrip.scores += REPEAT_BIRD_REWARD_COEFFECIENT * randomBird.rarity;
         }
 
+        await activeTrip.save();
         res.status(201).send('Image uploaded successfully');
     } catch (error) {
         console.error(error);
@@ -110,12 +136,22 @@ router.post('/upload', verifyToken, upload.single('photo'), async (req, res) => 
 });
 
 // Endpoint to get an image by key
-router.get('/getImage/:key', verifyToken, async (req, res) => {
+router.get('/getImage/*', verifyToken, async (req, res) => {
     try {
-        const image = await Image.findOne({ s3Key: req.params.key, userId: req.user._id });
+        const key = req.params[0];  // This captures everything after '/getImage/'
+        const image = await Image.findOne({ s3Key: key, userId: req.user._id });
 
         if (!image) {
             return res.status(404).send('Image not found or you do not have permission to view it.');
+        }
+
+        // If the key contains "/", construct the public URL directly
+        if (key.includes("/")) {
+            const amazonBucketName = process.env.AMAZON_BUCKET_NAME;
+            const amazonRegion = process.env.AMAZON_REGION;
+            const baseURL = `https://${amazonBucketName}.s3.${amazonRegion}.amazonaws.com/`;            
+            const publicURL = baseURL + key;
+            return res.status(200).send(publicURL);
         }
 
         // Generate a pre-signed URL for the image

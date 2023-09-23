@@ -9,6 +9,7 @@ import { useLocation } from "react-router-dom";
 import FitnessGoalProgress from "../components/FitnessGoalProgress";
 import BirdCountGoalProgress from "../components/BirdCountGoalProgress";
 import TripStatistics from "../components/TripStatistics";
+import QuizComponent from "../components/QuizComponent";
 
 const aucklandlat = -36.8484;
 const aucklandLng = 174.7633;
@@ -29,7 +30,6 @@ export default function Trip() {
     const [autoCentering, setAutoCentering] = useState(true);
     const token = localStorage.getItem("token");
     const navigate = useNavigate();
-    console.log(tripForGoal);
 
     const location = useLocation();
     // Set the default options
@@ -109,6 +109,11 @@ export default function Trip() {
                         lat: loc.latitude,
                         lng: loc.longitude
                     }));
+                    
+                    if (res.status === 207) {
+                        alert('Your goal has been modified based on your current average speed.');
+                    }
+
                     setTripForGoal(res.data);
                     setPath(updatedPath);
                     setCurrentPosition(latLng);
@@ -173,7 +178,7 @@ export default function Trip() {
                 {autoCentering ? "Stop Centering" : "Resume Centering"}
             </button>
 
-            <TripStatistics trip={tripForGoal} realSpeed={speed}/>
+            <TripStatistics trip={tripForGoal} realSpeed={speed} />
             {trip && trip.isEdugaming && <BirdCamera onPhotoCaptured={handlePhotoCaptured} />}
             <FitnessGoalProgress trip={tripForGoal} />
             {trip && trip.isEdugaming && <>
@@ -186,6 +191,7 @@ export default function Trip() {
                 images={trip?.images}
                 trip={trip}
             />
+            {tripForGoal && tripForGoal.quiz && <QuizComponent quizData={tripForGoal.quiz} afterSubmit={fetchTripDetails} />}
         </div>
     );
 }

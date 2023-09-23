@@ -9,7 +9,7 @@ Before you begin, ensure you have installed the latest version of Node.js and np
 1. change directory to the backend folder
 2. `npm install`
 3. `npm run popDB` (this populates all data about birds to the database)
-3. `npm run devStart`
+3. `npm run dev`
 4. You should see the application running under localhost:3001
 
 ### Frontend

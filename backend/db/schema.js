@@ -27,6 +27,13 @@ const BirdCountGoalSchema = new mongoose.Schema({
   birdsFound: { type: Number, default: 0 }
 });
 
+const questionSchema = new Schema({
+  question: { type: String, required: true },
+  questionType: { type: String, default: "text" },
+  answerSelectionType: { type: String, default: "single" },
+  answers: [{ type: String, required: true }],
+  correctAnswer: { type: String, required: true }
+});
 
 // DB Schema for a trip
 const tripSchema = new Schema({
@@ -46,10 +53,20 @@ const tripSchema = new Schema({
   startDate: { type: Date },
   endDate: { type: Date },
   distance: { type: Number, default: 0 },
-  elevationGain: { type: Number, default: 0 }
+  elevationGain: { type: Number, default: 0 },
+  quiz: {
+    type: {
+      birdName: { type: String, required: true },
+      birdRarity: { type: Number, required: true },
+      questions: [questionSchema],
+      isFlowHelper: { type: Boolean, default: false }
+    },
+    default: null
+  },
+  scores: { type: Number, default: 0 },
+  lastTimeFoundBird: { type: Date, default: Date.now, required: true },
+  fitnessAssessed: { type: Boolean, default: false }
 });
-
-
 
 const imageSchema = new Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
@@ -76,7 +93,8 @@ const birdSchema = new Schema({
   otherNames: [{ type: String }],
   conservationStatus: { type: String },
   rarity: { type: Number, required: true },
-  images: [{ type: String }]
+  images: [{ type: String }],
+  questions: [questionSchema]
 });
 
 const User = mongoose.model("User", userSchema);

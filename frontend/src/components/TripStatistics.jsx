@@ -9,6 +9,7 @@ export default function TripStatistics({ trip, realSpeed }) {
                 <>
                     <p>Total distance: {trip.distance}</p>
                     <p>Total elevation gain: {trip.elevationGain}</p>
+                    <p>Total scores: {trip.scores}</p>
                 </>
             }
         </div>

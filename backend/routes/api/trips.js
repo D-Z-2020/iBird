@@ -1,14 +1,34 @@
 const express = require('express');
-const { User, Trip, Bird } = require("../../db/schema");
+const { User, Trip, Bird, Image } = require("../../db/schema");
 const { verifyToken } = require("../../middleware/auth.js");
 const router = express.Router();
 const { Client } = require("@googlemaps/google-maps-services-js");
 const axios = require('axios');
+const {
+    QUIZ_FULL_MARKS_REWARD_COEFFICIENT,
+    QUIZ_CORRECT_QUESTION_REWARD_COEFFICIENT,
+    DISTANCE_COEFFECIENT,
+    ELEVATION_GAIN_COEFFECIENT,
+    EXERCISE_GOAL_COEFFECIENT,
+    BIRD_FLOW_DURATION,
+    RARITY_1_PROB,
+    RARITY_2_PROB,
+    RARITY_3_PROB,
+    RARITY_4_PROB,
+    RARITY_5_PROB,
+    RARITY_6_PROB,
+    NEW_BIRD_REWARD_COEFFECIENT,
+    REPEAT_BIRD_REWARD_COEFFECIENT,
+    BIRD_GOAL_COEFFECIENT,
+    FITNESS_ASSESSMENT_TIME
+} = require('../../gameConstants');
+
+const { selectRandomQuestions } = require('./utility')
 
 const {
     LEVEL_1_DISTANCE_GOAL,
     LEVEL_2_DISTANCE_GOAL,
-    LEVEL_3_DISTANCE_GOAL} = require('../../goals_setting/fitnessGoal');
+    LEVEL_3_DISTANCE_GOAL } = require('../../goals_setting/fitnessGoal');
 
 const client = new Client({});
 
@@ -77,6 +97,7 @@ router.post("/startNewTrip", verifyToken, async (req, res) => {
 router.post("/addLocation", verifyToken, async (req, res) => {
     const userId = req.user._id;
     const { latitude, longitude, timestamp } = req.body;
+    let goalModified = false;
 
     const trip = await Trip.findOne({ userId, isActive: true });
 
@@ -104,6 +125,7 @@ router.post("/addLocation", verifyToken, async (req, res) => {
             const distance = response.data.rows[0].elements[0].distance.value;
             const originDistance = trip.distance;
             trip.distance += distance;
+            trip.scores += DISTANCE_COEFFECIENT * distance;
 
             const lastTwoPoints = [
                 { lat: lastLocation.latitude, lng: lastLocation.longitude },
@@ -112,6 +134,7 @@ router.post("/addLocation", verifyToken, async (req, res) => {
 
             const additionalElevationGain = await getElevationGainBetweenTwoPoints(lastTwoPoints);
             const originElevation = trip.elevationGain;
+            trip.scores += ELEVATION_GAIN_COEFFECIENT * additionalElevationGain;
 
             if (additionalElevationGain !== null) {
                 trip.elevationGain += additionalElevationGain;
@@ -129,14 +152,79 @@ router.post("/addLocation", verifyToken, async (req, res) => {
                 if (trip.distance >= distanceGoal && duration <= distanceGoalDurationLimit) {
                     distanceGoalSuccess = true;
                     trip.distanceGoal.status = 'success';
+                    trip.scores += EXERCISE_GOAL_COEFFECIENT;
                 }
-                if (duration > distanceGoalDurationLimit) {
+                else if (duration > distanceGoalDurationLimit) {
                     trip.distanceGoal.endDistance = originDistance;
                     trip.distanceGoal.status = 'failed';
+                } else {
+                    // assess user fitness
+                    console.log("duration" + duration);
+                    console.log("FITNESS_ASSESSMENT_TIME " + FITNESS_ASSESSMENT_TIME * 60 * 1000);
+                    if (duration >= (FITNESS_ASSESSMENT_TIME * 60 * 1000) && !trip.fitnessAssessed) {
+                        trip.fitnessAssessed = true;
+                        // Calculate average speed (in meters per millisecond)
+                        const averageSpeed = trip.distance / duration;
+                        // Calculate remaining distance to achieve the goal
+                        const remainingDistance = distanceGoal - trip.distance;
+                        // Calculate remaining time to achieve the goal
+                        const remainingTime = distanceGoalDurationLimit - duration;
+                        // Calculate the distance the player can cover with the average speed in the remaining time
+                        const possibleDistanceWithAverageSpeed = averageSpeed * remainingTime;
+
+                        console.log("possibleDistanceWithAverageSpeed" + possibleDistanceWithAverageSpeed)
+                        console.log("remainingDistance"+remainingDistance)
+                        if ((possibleDistanceWithAverageSpeed < remainingDistance) && (possibleDistanceWithAverageSpeed > 0)) {
+                            trip.distanceGoal.distance = trip.distance + possibleDistanceWithAverageSpeed;
+                            goalModified = true;
+                        }
+                    }
                 }
 
             }
 
+            // check if player has not found bird for a duration minutes
+            const durationPlayerNotFoundBird = new Date(timestamp) - new Date(trip.lastTimeFoundBird);
+            if (durationPlayerNotFoundBird > (BIRD_FLOW_DURATION * 60 * 1000) && !trip.quiz) {
+                trip.lastTimeFoundBird = new Date(timestamp);
+
+                // Fetch the user details using userId
+                const user = await User.findById(userId);
+
+                // Determine bird rarity based on probabilities
+                const randomNum = Math.random() * 100;
+                let rarity;
+                if (randomNum <= RARITY_1_PROB) rarity = 1;
+                else if (randomNum <= RARITY_1_PROB + RARITY_2_PROB) rarity = 2;
+                else if (randomNum <= RARITY_1_PROB + RARITY_2_PROB + RARITY_3_PROB) rarity = 3;
+                else if (randomNum <= RARITY_1_PROB + RARITY_2_PROB + RARITY_3_PROB + RARITY_4_PROB) rarity = 4;
+                else if (randomNum <= RARITY_1_PROB + RARITY_2_PROB + RARITY_3_PROB + RARITY_4_PROB + RARITY_5_PROB) rarity = 5;
+                else rarity = 6;
+
+                // Fetch birds of the determined rarity that the user doesn't own
+                const birdsNotOwned = await Bird.find({ rarity: rarity, _id: { $nin: user.myBirds } });
+
+                let selectedBird;
+                if (birdsNotOwned.length > 0) {
+                    // Randomly select a bird from the birdsNotOwned list
+                    selectedBird = birdsNotOwned[Math.floor(Math.random() * birdsNotOwned.length)];
+                } else {
+                    // User owns all birds of this rarity, so randomly select any bird of this rarity
+                    const allBirdsOfRarity = await Bird.find({ rarity: rarity });
+                    selectedBird = allBirdsOfRarity[Math.floor(Math.random() * allBirdsOfRarity.length)];
+                }
+
+                // Randomly select questions for the quiz based on the bird's rarity
+                const selectedQuestions = selectRandomQuestions(selectedBird);
+
+                // Set the quiz field of the trip
+                trip.quiz = {
+                    birdName: selectedBird.name,
+                    birdRarity: selectedBird.rarity,
+                    questions: selectedQuestions,
+                    isFlowHelper: true
+                };
+            }
 
             // check if the new time is invalid
             const timeDifference = new Date(timestamp) - new Date(lastLocation.timestamp);
@@ -163,7 +251,11 @@ router.post("/addLocation", verifyToken, async (req, res) => {
             }
 
             await trip.save();
-            return res.status(200).json(trip);
+            if (goalModified) {
+                return res.status(207).json(trip);  // 207 Multi-Status
+            } else {
+                return res.status(200).json(trip);
+            }
 
         } catch (error) {
             console.error(error);
@@ -256,9 +348,107 @@ router.post("/endTrip", verifyToken, async (req, res) => {
 
     trip.isActive = false;
     trip.endDate = Date.now();
+    trip.quiz = null;
+
     await trip.save();
 
     return res.status(200).json(trip);
+});
+
+router.post('/submitQuizResults', verifyToken, async (req, res) => {
+    try {
+        const userId = req.user._id;
+        const quizResults = req.body.quizResults;
+
+        // Find the active trip and set the quiz to null
+        const activeTrip = await Trip.findOne({ userId: userId, isActive: true });
+        let birdRarity = 0;
+        const isFlowHelper = activeTrip.quiz.isFlowHelper;
+        const birdName = activeTrip.quiz.birdName;
+        const bird = await Bird.findOne({ name: birdName });
+
+        if (activeTrip) {
+            if (activeTrip.quiz.birdRarity) {
+                birdRarity = activeTrip.quiz.birdRarity
+            }
+            activeTrip.quiz = null;
+            await activeTrip.save();
+        }
+
+        if (!quizResults) {
+            return res.status(200).send('Quiz Result is null');
+        }
+
+        let scores = QUIZ_CORRECT_QUESTION_REWARD_COEFFICIENT * quizResults.correctQuestions;
+        if (quizResults.correctQuestions === quizResults.totalQuestions) {
+            scores += QUIZ_FULL_MARKS_REWARD_COEFFICIENT * birdRarity;
+        }
+
+        activeTrip.scores += scores;
+        await activeTrip.save();
+
+        // if this is a flow helper quiz and user answer all questions correctly, 
+        // award user the bird and scores, same code as /upload
+        if (quizResults.correctQuestions === quizResults.totalQuestions && isFlowHelper) {
+            const timestamp = Date.now();
+            // Increase the bird count for the count-based goal and check if it matches the target
+            const lastBirdCountGoal = activeTrip.birdCountGoals[activeTrip.birdCountGoals.length - 1];
+            if (lastBirdCountGoal) {
+                lastBirdCountGoal.birdsFound++;
+                if (lastBirdCountGoal.birdsFound >= lastBirdCountGoal.level) {
+                    lastBirdCountGoal.status = 'success';
+                    const newLevel = Math.min(lastBirdCountGoal.level + 1, 5);  // increment level, max 5
+                    const newCountGoal = {
+                        count: newLevel,
+                        level: newLevel
+                    };
+                    activeTrip.birdCountGoals.push(newCountGoal);
+                    activeTrip.scores += BIRD_GOAL_COEFFECIENT * lastBirdCountGoal.level;
+                }
+            }
+
+            await activeTrip.save();
+
+            const lastLocation = activeTrip.locations[activeTrip.locations.length - 1];
+
+            const randomImageUrl = bird.images[Math.floor(Math.random() * bird.images.length)];
+            const s3Key = randomImageUrl.split('.amazonaws.com/')[1];
+            // create image
+            const newImage = new Image({
+                s3Key: s3Key,
+                userId: req.user._id,
+                location: {
+                    lat: lastLocation.latitude,
+                    lng: lastLocation.longitude
+                },
+                timestamp: timestamp,
+                birdId: bird._id
+            });
+
+            await newImage.save();
+
+            // Update the trip's images array by pushing the new image's ObjectId
+            activeTrip.images.push(newImage._id);
+            activeTrip.lastTimeFoundBird = timestamp;
+
+            // Check if the identified bird is already in the user's myBirds array
+            const user = await User.findById(req.user._id);
+            if (!user.myBirds.includes(bird._id)) {
+                user.myBirds.push(bird._id);
+                activeTrip.scores += NEW_BIRD_REWARD_COEFFECIENT * birdRarity;
+                await user.save();
+            } else {
+                activeTrip.scores += REPEAT_BIRD_REWARD_COEFFECIENT * birdRarity;
+            }
+
+            await activeTrip.save();
+        }
+
+        res.status(200).send('Quiz results processed successfully');
+    } catch (error) {
+        console.log(error.message)
+        res.status(500).send('Server Error');
+    }
 });
 
 async function getElevationGainBetweenTwoPoints(path) {
