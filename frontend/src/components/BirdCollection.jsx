@@ -38,20 +38,20 @@ export default function BirdCollection({ username, showRemainBird }) {
         <div>
             <div>
                 <h2>Birds</h2>
-                <div>
+                {myBirds.length > 0 ? <div>
                     {myBirds.map((bird) => (
                         <BirdCard key={bird._id} bird={bird} />
                     ))}
-                </div>
+                </div> : <p>No Birds</p>}
             </div>
 
             {showRemainBird && <div>
                 <h2>Keep looking for these birds</h2>
-                <div>
+                {notOwnedBirds.length > 0 ? <div>
                     {notOwnedBirds.map((bird) => (
                         <BirdCard key={bird._id} bird={bird} />
                     ))}
-                </div>
+                </div> : <p>No Birds</p>}
             </div>}
         </div>
     );

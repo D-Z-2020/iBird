@@ -29,6 +29,8 @@ export default function Dashboard() {
             <br />
             <NavigationButton path = "/challengesPage" text = "Challenges" />
             <br />
+            <NavigationButton path = "/myKiwi" text = "My Kiwi" />
+            <br />
             <button onClick={handleLogout}>Logout</button>
         </div>
     )

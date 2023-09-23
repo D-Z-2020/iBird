@@ -13,6 +13,7 @@ const CREATE_ACCOUNT_URL = `${USERS_URL}/create`;
 const LOGIN_URL = `${USERS_URL}/login`;
 const TOKEN_TO_USERNAME_URL = `${USERS_URL}/getUsernameFromToken`;
 const SUBSTRING_USERNAME_SEARCH_URL = `${USERS_URL}/search`;
+const LEVEL_UP_URL = `${USERS_URL}/levelUp`;
 
 
 const FRIENDS_URL = `${API_BASE_URL}/friends`;
@@ -93,6 +94,11 @@ export const searchUsernameSubstring = (token, username) => {
   );
 }
 
+export const levelUp = (token) => {
+  return axios.post(LEVEL_UP_URL, {}, {
+    headers: { authorization: `Bearer ${token}`, "ngrok-skip-browser-warning" : true }
+  });
+}
 
 // ====================
 

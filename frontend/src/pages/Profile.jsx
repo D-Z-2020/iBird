@@ -8,6 +8,7 @@ import { useFriendData } from '../hooks/useFriendData';
 import { useFriendActions } from '../hooks/useFriendActions';
 import BirdCollection from '../components/BirdCollection';
 import Challenges from '../components/Challenges';
+import KiwiInfo from '../components/KiwiInfo';
 
 export default function Profile() {
     const [taragetUser, setTaragetUser] = useState(null);
@@ -40,6 +41,7 @@ export default function Profile() {
                 </> :
                 <p>Not Found</p>
             }
+            <KiwiInfo username={paramUsername} canLevelUp={false}/>
             <BirdCollection username={paramUsername} showRemainBird={false} />
             <Challenges username={paramUsername} />
             {taragetUser && <button style={{ display: username === paramUsername ? 'none' : 'block' }}

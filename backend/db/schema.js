@@ -17,7 +17,10 @@ const userSchema = new Schema({
   totalElevationGain: { type: Number, default: 0 },
   totalCorrectQuizes: { type: Number, default: 0 },
   scores: { type: Number, default: 0 },
-  achievedChallanges: [challengeSchema]
+  achievedChallanges: [challengeSchema],
+  kiwiLevel: { type: Number, default: 1 },
+  kiwiExp: { type: Number, default: 0 },
+  kiwiStage: { type: Number, default: 1 }
 });
 
 const distanceGoalSchema = new mongoose.Schema({

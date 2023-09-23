@@ -18,6 +18,7 @@ import BirdDetails from './pages/BirdDetails';
 import BirdCollectionPage from './pages/BirdCollectionPage';
 import TripOption from './pages/TripOption';
 import ChallengesPage from './pages/ChallengesPage';
+import MyKiwi from './pages/MyKiwi';
 
 function App() {
   const [username, setUsername] = useState(null);
@@ -151,6 +152,15 @@ function App() {
           element={
             <RequiresAuth>
               <ChallengesPage />
+            </RequiresAuth>
+          }
+        />
+
+        <Route
+          path="/myKiwi"
+          element={
+            <RequiresAuth>
+              <MyKiwi />
             </RequiresAuth>
           }
         />
