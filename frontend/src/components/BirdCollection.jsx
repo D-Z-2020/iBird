@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import NavigationButton from '../components/NavigationButton';
 import BirdCard from '../components/BirdCard';
-import { getAllbirds, getMybirds } from '../api/api';
+import { getAllbirds, getUserbirds } from '../api/api';
 
-export default function BirdCollection() {
+export default function BirdCollection({ username, showRemainBird }) {
     const [myBirds, setMyBirds] = useState([]);
     const [allBirds, setAllBirds] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
+        if (!username) return;
         const fetchBirds = async () => {
             try {
                 const allBirdsResponse = await getAllbirds(localStorage.getItem('token'));
-                const myBirdsResponse = await getMybirds(localStorage.getItem('token'));
+                const myBirdsResponse = await getUserbirds(localStorage.getItem('token'), username);
 
                 setAllBirds(allBirdsResponse.data);
                 setMyBirds(myBirdsResponse.data);
@@ -25,7 +25,7 @@ export default function BirdCollection() {
         };
 
         fetchBirds();
-    }, []);
+    }, [username]);
 
     const notOwnedBirds = allBirds.filter(
         (bird) => !myBirds.some((myBird) => myBird._id === bird._id)
@@ -36,25 +36,23 @@ export default function BirdCollection() {
 
     return (
         <div>
-            <NavigationButton path="/" text="back" />
-
             <div>
-                <h2>My Birds</h2>
-                <div className="bird-grid">
+                <h2>Birds</h2>
+                <div>
                     {myBirds.map((bird) => (
                         <BirdCard key={bird._id} bird={bird} />
                     ))}
                 </div>
             </div>
 
-            <div>
+            {showRemainBird && <div>
                 <h2>Keep looking for these birds</h2>
                 <div>
                     {notOwnedBirds.map((bird) => (
                         <BirdCard key={bird._id} bird={bird} />
                     ))}
                 </div>
-            </div>
+            </div>}
         </div>
     );
 }

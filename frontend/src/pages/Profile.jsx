@@ -6,9 +6,11 @@ import UserContext from '../../UserContext';
 import { useContext } from 'react';
 import { useFriendData } from '../hooks/useFriendData';
 import { useFriendActions } from '../hooks/useFriendActions';
+import BirdCollection from '../components/BirdCollection';
+import Challenges from '../components/Challenges';
 
 export default function Profile() {
-    const [id, setId] = useState();
+    const [taragetUser, setTaragetUser] = useState(null);
     const paramUsername = useParams().username;
     const previousPath = useLocation().state?.from?.pathname || '/';
     const { friends, fetchFriends } = useFriendData();
@@ -18,24 +20,29 @@ export default function Profile() {
     useEffect(() => {
         getUserInfo(localStorage.getItem("token"), paramUsername)
             .then((res) => {
-                setId(res.data._id);
+                setTaragetUser(res.data);
             })
             .catch((err) => {
-                setId(null);
+                setTaragetUser(null);
             })
     }, []);
 
     return (
         <div>
             <NavigationButton path={previousPath} text="back" />
-            {id ?
+            {taragetUser ?
                 <>
                     <p>User Name: {`${paramUsername}`}</p>
-                    <p>User id: {`${id}`}</p>
+                    <p>User id: {`${taragetUser._id}`}</p>
+                    <p>Total Walking Distance: {`${taragetUser.totalWalkingDistance}`}</p>
+                    <p>Total Elevation Gain: {`${taragetUser.totalElevationGain}`}</p>
+                    <p>Total Correct Quizes: {`${taragetUser.totalCorrectQuizes}`}</p>
                 </> :
                 <p>Not Found</p>
             }
-            {id && <button style={{ display: username === paramUsername ? 'none' : 'block' }}
+            <BirdCollection username={paramUsername} showRemainBird={false} />
+            <Challenges username={paramUsername} />
+            {taragetUser && <button style={{ display: username === paramUsername ? 'none' : 'block' }}
                 onClick={username === paramUsername ?
                     () => { } :
                     friends.includes(paramUsername) ?

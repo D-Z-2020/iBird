@@ -46,6 +46,7 @@ const BIRDS_URL = `${API_BASE_URL}/birds`;
 
 const GET_AII_BIRDS_URL = `${BIRDS_URL}/getAllbirds`;
 const GET_MY_BIRDS_URL = `${BIRDS_URL}/getMybirds`;
+const GET_USER_BIRDS_URL = `${BIRDS_URL}/getUserbirds`;
 const GET_BIRD_URL = `${BIRDS_URL}/getBird`;
 
 
@@ -215,6 +216,13 @@ export const getMybirds = (token) => {
   return axios.get(
     GET_MY_BIRDS_URL,
     { headers: { 'authorization': `Bearer ${token}`, "ngrok-skip-browser-warning" : true } }
+  );
+}
+
+export const getUserbirds = (token, username) => {
+  return axios.get(
+    `${GET_USER_BIRDS_URL}/${username}`,
+    { headers: { authorization: `Bearer ${token}`, "ngrok-skip-browser-warning" : true } }
   );
 }
 

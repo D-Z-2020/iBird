@@ -100,7 +100,11 @@ router.get("/search/:substring", verifyToken, async (req, res) => {
 
 // get user information by username
 router.get("/:username", verifyToken, async (req, res) => {
-  const user = await User.findOne({ username: req.params.username }, { 'username': 1, '_id': 1 });
+  const user = await User.findOne({ username: req.params.username }, {
+    'passHash': 0,
+    'friends': 0,
+    'scores': 0
+  });
 
   if (!user) {
     return res.sendStatus(404);

@@ -15,8 +15,9 @@ import Trip from './pages/Trip';
 import TripHistoryList from './pages/TripHistoryList';
 import TripHistory from './pages/TripHistory';
 import BirdDetails from './pages/BirdDetails';
-import BirdCollection from './pages/BirdCollection';
+import BirdCollectionPage from './pages/BirdCollectionPage';
 import TripOption from './pages/TripOption';
+import ChallengesPage from './pages/ChallengesPage';
 
 function App() {
   const [username, setUsername] = useState(null);
@@ -140,7 +141,16 @@ function App() {
           path="/birds/collection"
           element={
             <RequiresAuth>
-              <BirdCollection />
+              <BirdCollectionPage />
+            </RequiresAuth>
+          }
+        />
+
+        <Route
+          path="/challengesPage"
+          element={
+            <RequiresAuth>
+              <ChallengesPage />
             </RequiresAuth>
           }
         />

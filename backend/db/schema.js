@@ -2,12 +2,22 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
+const challengeSchema = new Schema({
+  type: { type: String, enum: ['birdCollection', 'correctQuizzes', 'walkingDistance', 'elevationGain'] },
+  level: { type: String, enum: ['bronze', 'silver', 'gold'] },
+});
+
 // DB Schema for a user
 const userSchema = new Schema({
   username: { type: String, unique: true, required: true },
   passHash: { type: String, required: true },
   friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-  myBirds: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Bird' }]
+  myBirds: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Bird' }],
+  totalWalkingDistance: { type: Number, default: 0 },
+  totalElevationGain: { type: Number, default: 0 },
+  totalCorrectQuizes: { type: Number, default: 0 },
+  scores: { type: Number, default: 0 },
+  achievedChallanges: [challengeSchema]
 });
 
 const distanceGoalSchema = new mongoose.Schema({

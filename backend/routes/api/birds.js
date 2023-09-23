@@ -28,6 +28,20 @@ router.get("/getMybirds", verifyToken, async (req, res) => {
     }
 });
 
+router.get("/getUserbirds/:username", verifyToken, async (req, res) => {
+    try {
+        // Find the user and populate their myBirds list
+        const user = await User.findOne({ username: req.params.username }).populate('myBirds');
+        if (!user) {
+            return res.sendStatus(404);
+        }
+        return res.json(user.myBirds);
+    } catch (err) {
+        console.error(err);
+        return res.sendStatus(500);
+    }
+});
+
 // Retrieve Bird by Name
 router.get("/getBird/:name", verifyToken, async (req, res) => {
     try {

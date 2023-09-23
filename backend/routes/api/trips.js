@@ -20,7 +20,26 @@ const {
     NEW_BIRD_REWARD_COEFFECIENT,
     REPEAT_BIRD_REWARD_COEFFECIENT,
     BIRD_GOAL_COEFFECIENT,
-    FITNESS_ASSESSMENT_TIME
+    FITNESS_ASSESSMENT_TIME,
+    BRONZE_CHALLANGE,
+    SILVER_CHALLANGE,
+    GOLD_CHALLANGE,
+
+    BIRD_COLLECTION_CHALLANGES_BRONZE,
+    BIRD_COLLECTION_CHALLANGES_SILVER,
+    BIRD_COLLECTION_CHALLANGES_GOLD,
+
+    CORRECT_QUIZZES_CHALLANGES_BRONZE,
+    CORRECT_QUIZZES_CHALLANGES_SILVER,
+    BCORRECT_QUIZZES_CHALLANGES_GOLD,
+
+    WALKING_DISTANCE_CHALLANGES_BRONZE,
+    WALKING_DISTANCE_CHALLANGES_SILVER,
+    WALKING_DISTANCE_CHALLANGES_GOLD,
+
+    ELEVATION_GAIN_CHALLANGES_BRONZE,
+    ELEVATION_GAIN_CHALLANGES_SILVER,
+    ELEVATION_GAIN_CHALLANGES_GOLD,
 } = require('../../gameConstants');
 
 const { selectRandomQuestions } = require('./utility')
@@ -173,7 +192,7 @@ router.post("/addLocation", verifyToken, async (req, res) => {
                         const possibleDistanceWithAverageSpeed = averageSpeed * remainingTime;
 
                         console.log("possibleDistanceWithAverageSpeed" + possibleDistanceWithAverageSpeed)
-                        console.log("remainingDistance"+remainingDistance)
+                        console.log("remainingDistance" + remainingDistance)
                         if ((possibleDistanceWithAverageSpeed < remainingDistance) && (possibleDistanceWithAverageSpeed > 0)) {
                             trip.distanceGoal.distance = trip.distance + possibleDistanceWithAverageSpeed;
                             goalModified = true;
@@ -329,6 +348,7 @@ router.get("/getTrip/:tripId", verifyToken, async (req, res) => {
 
 router.post("/endTrip", verifyToken, async (req, res) => {
     const userId = req.user._id;
+    const user = await User.findById(req.user._id);
 
     const trip = await Trip.findOne({ userId, isActive: true });
     if (!trip) return res.status(400).send("No active trip found.");
@@ -350,14 +370,82 @@ router.post("/endTrip", verifyToken, async (req, res) => {
     trip.endDate = Date.now();
     trip.quiz = null;
 
+    user.totalWalkingDistance += trip.distance;
+    user.totalElevationGain += trip.elevationGain;
+
+    user.scores += trip.scores;
+
+    checkChallenges(user);
+
     await trip.save();
+    await user.save();
 
     return res.status(200).json(trip);
 });
 
+const checkChallenges = (user) => {
+    // Bird Collection Challenge
+    if (user.myBirds.length >= BIRD_COLLECTION_CHALLANGES_BRONZE && !user.achievedChallanges.some(ch => ch.type === 'birdCollection' && ch.level === 'bronze')) {
+        user.achievedChallanges.push({ type: 'birdCollection', level: 'bronze'});
+        user.scores += BRONZE_CHALLANGE;
+    }
+    if (user.myBirds.length >= BIRD_COLLECTION_CHALLANGES_SILVER && !user.achievedChallanges.some(ch => ch.type === 'birdCollection' && ch.level === 'silver')) {
+        user.achievedChallanges.push({ type: 'birdCollection', level: 'silver'});
+        user.scores += SILVER_CHALLANGE;
+    }
+    if (user.myBirds.length >= BIRD_COLLECTION_CHALLANGES_GOLD && !user.achievedChallanges.some(ch => ch.type === 'birdCollection' && ch.level === 'gold')) {
+        user.achievedChallanges.push({ type: 'birdCollection', level: 'gold'});
+        user.scores += GOLD_CHALLANGE;
+    }
+
+    // Correct Quizzes Challenge
+    if (user.totalCorrectQuizes >= CORRECT_QUIZZES_CHALLANGES_BRONZE && !user.achievedChallanges.some(ch => ch.type === 'correctQuizzes' && ch.level === 'bronze')) {
+        user.achievedChallanges.push({ type: 'correctQuizzes', level: 'bronze'});
+        user.scores += BRONZE_CHALLANGE;
+    }
+    if (user.totalCorrectQuizes >= CORRECT_QUIZZES_CHALLANGES_SILVER && !user.achievedChallanges.some(ch => ch.type === 'correctQuizzes' && ch.level === 'silver')) {
+        user.achievedChallanges.push({ type: 'correctQuizzes', level: 'silver'});
+        user.scores += SILVER_CHALLANGE;
+    }
+    if (user.totalCorrectQuizes >= BCORRECT_QUIZZES_CHALLANGES_GOLD && !user.achievedChallanges.some(ch => ch.type === 'correctQuizzes' && ch.level === 'gold')) {
+        user.achievedChallanges.push({ type: 'correctQuizzes', level: 'gold'});
+        user.scores += GOLD_CHALLANGE;
+    }
+
+    // Walking Distance Challenge
+    if (user.totalWalkingDistance >= WALKING_DISTANCE_CHALLANGES_BRONZE && !user.achievedChallanges.some(ch => ch.type === 'walkingDistance' && ch.level === 'bronze')) {
+        user.achievedChallanges.push({ type: 'walkingDistance', level: 'bronze'});
+        user.scores += BRONZE_CHALLANGE;
+    }
+    if (user.totalWalkingDistance >= WALKING_DISTANCE_CHALLANGES_SILVER && !user.achievedChallanges.some(ch => ch.type === 'walkingDistance' && ch.level === 'silver')) {
+        user.achievedChallanges.push({ type: 'walkingDistance', level: 'silver'});
+        user.scores += SILVER_CHALLANGE;
+    }
+    if (user.totalWalkingDistance >= WALKING_DISTANCE_CHALLANGES_GOLD && !user.achievedChallanges.some(ch => ch.type === 'walkingDistance' && ch.level === 'gold')) {
+        user.achievedChallanges.push({ type: 'walkingDistance', level: 'gold'});
+        user.scores += GOLD_CHALLANGE;
+    }
+
+    // Elevation Gain Challenge
+    if (user.totalElevationGain >= ELEVATION_GAIN_CHALLANGES_BRONZE && !user.achievedChallanges.some(ch => ch.type === 'elevationGain' && ch.level === 'bronze')) {
+        user.achievedChallanges.push({ type: 'elevationGain', level: 'bronze'});
+        user.scores += BRONZE_CHALLANGE;
+    }
+    if (user.totalElevationGain >= ELEVATION_GAIN_CHALLANGES_SILVER && !user.achievedChallanges.some(ch => ch.type === 'elevationGain' && ch.level === 'silver')) {
+        user.achievedChallanges.push({ type: 'elevationGain', level: 'silver'});
+        user.scores += SILVER_CHALLANGE;
+    }
+    if (user.totalElevationGain >= ELEVATION_GAIN_CHALLANGES_GOLD && !user.achievedChallanges.some(ch => ch.type === 'elevationGain' && ch.level === 'gold')) {
+        user.achievedChallanges.push({ type: 'elevationGain', level: 'gold'});
+        user.scores += GOLD_CHALLANGE;
+    }
+}
+
+
 router.post('/submitQuizResults', verifyToken, async (req, res) => {
     try {
         const userId = req.user._id;
+        const user = await User.findById(req.user._id);
         const quizResults = req.body.quizResults;
 
         // Find the active trip and set the quiz to null
@@ -382,6 +470,8 @@ router.post('/submitQuizResults', verifyToken, async (req, res) => {
         let scores = QUIZ_CORRECT_QUESTION_REWARD_COEFFICIENT * quizResults.correctQuestions;
         if (quizResults.correctQuestions === quizResults.totalQuestions) {
             scores += QUIZ_FULL_MARKS_REWARD_COEFFICIENT * birdRarity;
+            user.totalCorrectQuizes += 1;
+            await user.save();
         }
 
         activeTrip.scores += scores;
