@@ -39,6 +39,9 @@ const IMAGES_URL = `${API_BASE_URL}/images`;
 
 const UPLOAD_iMAGE_URL = `${IMAGES_URL}/upload`;
 const GET_IMAGE_URL = `${IMAGES_URL}/getImage`;
+const REQUEST_EXPERT_URL = `${IMAGES_URL}/requestExpertOpinion`;
+const IMAGES_FOR_EXPERT_URL = `${IMAGES_URL}/imagesForExpertReview`;
+const EXPERT_UPDATE_BIRD_URL = `${IMAGES_URL}/updateBirdForImage`;
 
 
 
@@ -208,6 +211,24 @@ export const getImageByKey = (token, key) => {
   );
 }
 
+export const requestExpertOpinion = (token, imageId) => {
+  return axios.post(REQUEST_EXPERT_URL, { imageId }, {
+    headers: { authorization: `Bearer ${token}`, "ngrok-skip-browser-warning" : true }
+  });
+}
+
+export const getImagesForExpertReview = (token) => {
+  return axios.get(
+    `${IMAGES_FOR_EXPERT_URL}`,
+    { headers: { 'authorization': `Bearer ${token}`, "ngrok-skip-browser-warning" : true } }
+  );
+}
+
+export const expertUpdateBird = (token, imageId, selectedBirdId) => {
+  return axios.post(EXPERT_UPDATE_BIRD_URL, { imageId, selectedBirdId }, {
+    headers: { authorization: `Bearer ${token}`, "ngrok-skip-browser-warning" : true }
+  });
+}
 
 // ============================================
 

@@ -8,6 +8,7 @@ export default function BirdTable({ trip, setMapCenter, setSelectedImage }) {
                     <th>Identified As</th>
                     <th>Timestamp</th>
                     <th>Location</th>
+                    <th>Expert</th>
                 </tr>
             </thead>
             <tbody>

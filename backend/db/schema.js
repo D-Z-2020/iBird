@@ -20,7 +20,8 @@ const userSchema = new Schema({
   achievedChallanges: [challengeSchema],
   kiwiLevel: { type: Number, default: 1 },
   kiwiExp: { type: Number, default: 0 },
-  kiwiStage: { type: Number, default: 1 }
+  kiwiStage: { type: Number, default: 1 },
+  isExpert: { type: Boolean, default: false }
 });
 
 const distanceGoalSchema = new mongoose.Schema({
@@ -97,6 +98,11 @@ const imageSchema = new Schema({
       required: false
     }
   },
+  expertStatus: {
+    type: String,
+    enum: ['NA', 'inProgress', 'done'],
+    default: 'NA'
+  }
 });
 
 const birdSchema = new Schema({

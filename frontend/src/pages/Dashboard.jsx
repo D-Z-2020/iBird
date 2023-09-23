@@ -5,13 +5,13 @@ import NavigationButton from '../components/NavigationButton';
 import { useLocation } from 'react-router-dom';
 
 export default function Dashboard() {
-    const { username, setUsername } = useContext(UserContext);
+    const { username, setUsername, isExpert } = useContext(UserContext);
     const location = useLocation();
-    
+
     const handleLogout = () => {
         // Remove the token from local storage
         localStorage.removeItem('token');
-        
+
         // Update the user state to null
         setUsername(null);
     };
@@ -19,18 +19,23 @@ export default function Dashboard() {
     return (
         <div>
             <p>Welcome, {username}</p>
-            <NavigationButton path = "/start" text = "Getting Started!" />
+            <NavigationButton path="/start" text="Getting Started!" />
             <br />
-            <NavigationButton path = "/community" text = "Community" />
+            <NavigationButton path="/community" text="Community" />
             <br />
             <NavigationButton path={`/users/${username}`} text="My Profile" state={{ from: location }} />
             <br />
-            <NavigationButton path = "/birds/collection" text = "Bird Collection" />
+            <NavigationButton path="/birds/collection" text="Bird Collection" />
             <br />
-            <NavigationButton path = "/challengesPage" text = "Challenges" />
+            <NavigationButton path="/challengesPage" text="Challenges" />
             <br />
-            <NavigationButton path = "/myKiwi" text = "My Kiwi" />
+            <NavigationButton path="/myKiwi" text="My Kiwi" />
             <br />
+            {isExpert && <>
+                <NavigationButton path="/expertOpinion" text="Expert Opinion" />
+                <br />
+            </>}
+            
             <button onClick={handleLogout}>Logout</button>
         </div>
     )

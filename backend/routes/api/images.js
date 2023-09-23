@@ -139,17 +139,22 @@ router.post('/upload', verifyToken, upload.single('photo'), async (req, res) => 
 router.get('/getImage/*', verifyToken, async (req, res) => {
     try {
         const key = req.params[0];  // This captures everything after '/getImage/'
-        const image = await Image.findOne({ s3Key: key, userId: req.user._id });
+        const image = await Image.findOne({ s3Key: key });
 
         if (!image) {
             return res.status(404).send('Image not found or you do not have permission to view it.');
+        }
+
+        const user = await User.findById(req.user._id);
+        if (image.userId.toString() !== req.user._id.toString() && !user.isExpert) {
+            return res.status(404).send('You do not have permission to view it.');
         }
 
         // If the key contains "/", construct the public URL directly
         if (key.includes("/")) {
             const amazonBucketName = process.env.AMAZON_BUCKET_NAME;
             const amazonRegion = process.env.AMAZON_REGION;
-            const baseURL = `https://${amazonBucketName}.s3.${amazonRegion}.amazonaws.com/`;            
+            const baseURL = `https://${amazonBucketName}.s3.${amazonRegion}.amazonaws.com/`;
             const publicURL = baseURL + key;
             return res.status(200).send(publicURL);
         }
@@ -166,5 +171,87 @@ router.get('/getImage/*', verifyToken, async (req, res) => {
         res.status(500).send('Error retrieving image');
     }
 });
+
+router.post('/requestExpertOpinion', verifyToken, async (req, res) => {
+    try {
+        const { imageId } = req.body;
+
+        // Find the image by its ID
+        const image = await Image.findById(imageId);
+
+        if (!image) {
+            return res.status(404).send('Image not found.');
+        }
+
+        // Check if the user owns the image
+        if (image.userId.toString() !== req.user._id.toString()) {
+            return res.status(403).send('You do not have permission to update this image.');
+        }
+
+        // Update the image's expertStatus
+        image.expertStatus = 'inProgress';
+        await image.save();
+
+        res.status(200).send('Expert opinion requested successfully');
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error requesting expert opinion');
+    }
+});
+
+router.get('/imagesForExpertReview', verifyToken, async (req, res) => {
+    try {
+        // Check if the user is an expert
+        const user = await User.findById(req.user._id);
+        if (!user.isExpert) {
+            return res.status(403).send('Access denied. Only experts can view these images.');
+        }
+
+        // Retrieve images with expertStatus="inProgress" or "done"
+        const images = await Image.find({
+            expertStatus: { $in: ["inProgress", "done"] }
+        })
+            .populate('userId', 'username')  // Populate the username of the user
+            .populate('birdId', 'name');     // Populate the name of the bird
+
+        res.status(200).json(images);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error retrieving images for expert review');
+    }
+});
+
+router.post('/updateBirdForImage', verifyToken, async (req, res) => {
+    try {
+        const { imageId, selectedBirdId } = req.body;
+
+        // Check if the user is an expert
+        const user = await User.findById(req.user._id);
+        if (!user.isExpert) {
+            return res.status(403).send('Access denied. Only experts can update these images.');
+        }
+
+        // Find the image by its ID
+        const image = await Image.findById(imageId);
+
+        if (!image) {
+            return res.status(404).send('Image not found.');
+        }
+
+        // Update the birdId of the image
+        image.birdId = selectedBirdId || null;  // If selectedBirdId is undefined, set to null
+
+        // Update the expertStatus to "done"
+        image.expertStatus = 'done';
+
+        await image.save();
+
+        res.status(200).send('Bird updated successfully for the image');
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error updating bird for the image');
+    }
+});
+
 
 module.exports = router;
