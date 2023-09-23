@@ -3,10 +3,13 @@ import UserContext from '../../UserContext'
 import { useContext } from 'react'
 import NavigationButton from '../components/NavigationButton';
 import { useLocation } from 'react-router-dom';
+import { getUserInfo } from '../api/api';
+import { useEffect, useState } from 'react';
 
 export default function Dashboard() {
-    const { username, setUsername, isExpert } = useContext(UserContext);
+    const { username, setUsername } = useContext(UserContext);
     const location = useLocation();
+    const [isExpert, setIsExpert] = useState(null);
 
     const handleLogout = () => {
         // Remove the token from local storage
@@ -15,6 +18,14 @@ export default function Dashboard() {
         // Update the user state to null
         setUsername(null);
     };
+
+    useEffect(() => {
+        if (!username) return;
+        getUserInfo(localStorage.getItem('token'), username)
+            .then((res) => {
+                setIsExpert(res.data.isExpert);
+            })
+    }, [username])
 
     return (
         <div>

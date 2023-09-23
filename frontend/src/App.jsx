@@ -3,7 +3,7 @@ import UserRegister from './pages/UserRegister'
 import UserLogin from './pages/UserLogin'
 import { RequiresAuth, RequiresNonAuth } from "./components/AuthenticationWrapper";
 import { Route, Routes } from "react-router-dom";
-import { getUsernameFromToken, getUserInfo } from './api/api';
+import { getUsernameFromToken } from './api/api';
 import UserContext from '../UserContext';
 import Dashboard from './pages/Dashboard';
 import Community from './pages/Community';
@@ -23,7 +23,6 @@ import ExpertOpinion from './pages/ExpertOpinion';
 
 function App() {
     const [username, setUsername] = useState(null);
-    const [isExpert, setIsExpert] = useState(false);
     const [selectedImage, setSelectedImage] = useState(null);
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -31,10 +30,6 @@ function App() {
             getUsernameFromToken(token)
                 .then((res) => {
                     setUsername(res.data);
-                    getUserInfo(token, res.data)
-                        .then((res) => {
-                            setIsExpert(res.data.isExpert);
-                        })
                 })
                 .catch((err) => {
                     localStorage.setItem('token', "");
@@ -43,7 +38,7 @@ function App() {
     }, []);
 
     return (
-        <UserContext.Provider value={{ username, setUsername, isExpert, setIsExpert, selectedImage, setSelectedImage }}>
+        <UserContext.Provider value={{ username, setUsername, selectedImage, setSelectedImage }}>
             <Routes>
                 <Route
                     path="/"
