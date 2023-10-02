@@ -33,7 +33,7 @@ export default function BirdDetails() {
 
     return (
         <div>
-            <NavigationButton path={previousPath} text="back" />
+            <NavigationButton path={previousPath} text="Bird Detail" />
             <div className="bird-details-container"> 
               <h2 className="bird-title">{bird.name} {'🌟'.repeat(bird.rarity)}</h2>
               <div className="bird-info">
