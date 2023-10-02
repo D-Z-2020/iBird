@@ -2,16 +2,10 @@ import ChallengeCard from "./ChallengeCard";
 import { getUserInfo } from "../api/api";
 import { useState, useEffect } from "react";
 import { ProgressCircle, Space } from 'antd-mobile'
-import './Challenges.css';
 
 
 export default function Challenges({ username }) {
     const [user, setUser] = useState(null);
-
-    const achievedBadgeCount = user.achievedChallanges.length;
-    const totalBadgeCount = 12;
-    const progressPercentage = (achievedBadgeCount / totalBadgeCount) * 100;
-
 
     useEffect(() => {
         if (username) {
@@ -30,18 +24,16 @@ export default function Challenges({ username }) {
 
     return (
         <div className="Challenges_box">
-            <h2 className="challenges-title">Rewards Collected</h2>
-            <div className="challenges-grid">
-              {challengeTypes.map(type => (
-                  challengeLevels.map(level => {
-                      const achieved = user.achievedChallanges.some(ch => ch.type === type && ch.level === level);
-                      return <ChallengeCard key={`${type}-${level}`} type={type} level={level} achieved={achieved} />;
-                  })
-              ))}
-            </div>
+            <h2>Rewards Collected</h2>
+            {challengeTypes.map(type => (
+                challengeLevels.map(level => {
+                    const achieved = user.achievedChallanges.some(ch => ch.type === type && ch.level === level);
+                    return <ChallengeCard key={`${type}-${level}`} type={type} level={level} achieved={achieved} />;
+                })
+            ))}
             <div className="progress_circle">
                 <Space style={{ '--gap': '150px' }}>
-                    <ProgressCircle style={{ '--size': '90px',"font-weight":"bold","font-size":"large" }} percent={progressPercentage}>{`${Math.round(progressPercentage)}%`}</ProgressCircle>
+                    <ProgressCircle style={{ '--size': '90px',"font-weight":"bold","font-size":"large" }} percent={50}>50%</ProgressCircle>
                 </Space>
             </div>
         </div>
