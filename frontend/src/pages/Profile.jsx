@@ -44,7 +44,7 @@ export default function Profile() {
                     </p>
                     <p>
                         <span className='cloumn_name' style={{"width":"60%"}}>Total Elevation Gain: </span>
-                        <span className='cloumn_content' style={{"width":"40%"}}>{`${taragetUser.totalElevationGain}`}</span>
+                        <span className='cloumn_content' style={{"width":"40%"}}>{`${taragetUser.totalElevationGain.toFixed(1)}`}</span>
                     </p>
                     <p>
                         <span className='cloumn_name' style={{"width":"60%"}}>Total Correct Quizes: </span>
