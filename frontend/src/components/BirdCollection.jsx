@@ -36,7 +36,7 @@ export default function BirdCollection({ username, showRemainBird }) {
 
     return (
         <div>
-            <div>
+            <div className='Bird_Box'>
                 <h2>Birds</h2>
                 {myBirds.length > 0 ? <div>
                     {myBirds.map((bird) => (
@@ -45,13 +45,13 @@ export default function BirdCollection({ username, showRemainBird }) {
                 </div> : <p>No Birds</p>}
             </div>
 
-            {showRemainBird && <div>
+            {showRemainBird && <div  className='Bird_Box'>
                 <h2>Keep looking for these birds</h2>
                 {notOwnedBirds.length > 0 ? <div>
                     {notOwnedBirds.map((bird) => (
                         <BirdCard key={bird._id} bird={bird} />
                     ))}
-                </div> : <p>No Birds</p>}
+                </div> : <p >No Birds</p>}
             </div>}
         </div>
     );

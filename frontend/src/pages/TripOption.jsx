@@ -14,30 +14,41 @@ export default function TripOption() {
 
     return (
         <div>
-            <NavigationButton path={'/start'} text={'back'} />
-            <h2>Trip Options</h2>
+            <NavigationButton path={'/start'} text={'Trip Options'} />
 
-            <div>
-                <label>
-                    Include edugaming concept:
-                    <input
-                        type="checkbox"
-                        checked={isEdugaming}
-                        onChange={() => setIsEdugaming(!isEdugaming)}
-                    />
-                </label>
-            </div>
+            <main  className='Trip_option_box'>
+                <div className='cloumn'>
+                    <label for="checkbox">
+                        Include edugaming concept:      </label>
+                        <p>
+                            <input
+                                id="checkbox"
+                                type="checkbox"
+                                checked={isEdugaming}
+                                onChange={() => setIsEdugaming(!isEdugaming)}
+                            />
+                        </p>
+                        
+              
+                </div>
 
-            <div>
-                Fitness Level:
-                <select value={fitnessLevel} onChange={e => setFitnessLevel(e.target.value)}>
-                    <option value="low">Low</option>
-                    <option value="mid">Mid</option>
-                    <option value="high">High</option>
-                </select>
-            </div>
+                <div className='cloumn'>
+                    <label for="level">Fitness Level:</label>
+                    <p>
+                        <select id="level" value={fitnessLevel} onChange={e => setFitnessLevel(e.target.value)}>
+                            <option value="low">Low</option>
+                            <option value="mid">Mid</option>
+                            <option value="high">High</option>
+                        </select>
+                    </p>
+              
+                </div>
 
-            <button onClick={(handleStart)}>Start</button>
+                <div className='Round_button'>
+                    <button  onClick={(handleStart)}>Start</button>
+                </div>
+            </main>
+          
         </div>
     );
 }

@@ -2,6 +2,8 @@ import React from 'react';
 import Camera from 'react-html5-camera-photo';
 import 'react-html5-camera-photo/build/css/index.css';
 import { useState } from 'react';
+import {Button} from 'antd-mobile'
+
 
 export default function BirdCamera({ onPhotoCaptured }) {
     const [showCamera, setShowCamera] = useState(false);
@@ -39,19 +41,19 @@ export default function BirdCamera({ onPhotoCaptured }) {
                     {photoSrc ? (
                         <div>
                             <img src={photoSrc} alt="Captured" />
-                            <button onClick={() => setPhotoSrc('')}>Retake</button>
-                            <button onClick={handleSubmitPhoto}>Submit</button>
-                            <button onClick={closeCamera}>Back</button>
+                            <Button color='primary'   onClick={() => setPhotoSrc('')}>Retake</Button>
+                            <Button color='primary'   onClick={handleSubmitPhoto}>Submit</Button>
+                            <Button color='primary'   onClick={closeCamera}>Back</Button>
                         </div>
                     ) : (
                         <div>
                             <Camera onTakePhoto={(dataUri) => handleTakePhoto(dataUri)} idealFacingMode="environment" />
-                            <button onClick={closeCamera}>Back</button>
+                            <Button color='primary'   onClick={closeCamera}>Back</Button>
                         </div>
                     )}
                 </div>
             ) : (
-                <button onClick={() => setShowCamera(true)}>Open Camera</button>
+                <Button color='primary'   onClick={() => setShowCamera(true)}>Open Camera</Button>
             )}
         </div>
     );

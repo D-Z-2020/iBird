@@ -5,6 +5,8 @@ import NavigationButton from '../components/NavigationButton';
 import { useContext } from 'react';
 import UserContext from '../../UserContext';
 import { useFriendData } from '../hooks/useFriendData';
+import { Button,SearchBar } from 'antd-mobile'
+
 
 export default function FindFriend() {
     const [users, setUsers] = useState([]);
@@ -22,7 +24,7 @@ export default function FindFriend() {
 
 
     const handleSearchChange = (e) => {
-        const searchTerm = e.target.value;
+        const searchTerm =e;
         setSearch(searchTerm);
 
         if (searchTerm === '') {
@@ -40,14 +42,13 @@ export default function FindFriend() {
 
     return (
         <div>
-            <NavigationButton path="/community" text="back" />
-            <br />
-            <input
-                type="text"
-                placeholder="Search users by username"
-                value={search}
-                onChange={handleSearchChange}
-            />
+            <NavigationButton path="/community" text="Find Friends" />
+            <div className='tx_center_button'>
+                <SearchBar className='searchBar' 
+                    onChange={handleSearchChange}  
+                    placeholder="Search users by username"/>
+            </div>
+
             <UserList users={users} allowFriendActions={true} onFriendActionSuccess={fetchFriends} cantAddedFriendUsernames={friends} excludedUsers={[username]} />
         </div>
     );

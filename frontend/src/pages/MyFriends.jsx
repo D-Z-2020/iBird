@@ -20,7 +20,7 @@ export default function MyFriends() {
 
     return (
         <div>
-            <NavigationButton path="/community" text="back" />
+            <NavigationButton path="/community" text="Friends" addBl="true"/>
             <br />
             <UserList users={users} allowFriendActions={true} onFriendActionSuccess={fetchFriends} cantAddedFriendUsernames={friends} excludedUsers={[username]} />
         </div>

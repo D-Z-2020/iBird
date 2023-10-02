@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { levelUp, getUserInfo } from "../api/api";
+import { Button, ProgressBar, Space } from 'antd-mobile'
+
 
 export default function KiwiInfo({ username, canLevelUp }) {
     const [user, setUser] = useState(null);
@@ -30,16 +32,49 @@ export default function KiwiInfo({ username, canLevelUp }) {
     const expNeededForNextLevel = user.kiwiLevel * 1000;
 
     return (
-        <div>
-            <h2>My Kiwi</h2>
-            <img src={`https://ibird-images.s3.ap-southeast-2.amazonaws.com/evolution/${user.kiwiStage}.png`} alt="Kiwi Bird" width={'300px'} />
-            <div>Level: {user.kiwiLevel}</div>
-            <div>Stage: {user.kiwiStage}</div>
-            {user.kiwiLevel < 100 && <div>EXP: {user.kiwiExp} / {expNeededForNextLevel}</div>}
-            {canLevelUp && <>
-                <div>My Scores: {user.scores}</div>
-                {user.kiwiLevel < 100 && <button onClick={handleLevelUp}>Level Up</button>}
-            </>}
+        <div className="Kiwi_box">
+            <div className="medal_box">
+                <img src={`https://ibird-images.s3.ap-southeast-2.amazonaws.com/evolution/${user.kiwiStage}.png`} alt="Kiwi Bird" width={'300px'} />
+            </div>
+
+            <div className="row">
+                <div className="cloumn">
+                    <p className="cloumn_name">Level: </p>
+                    <p className="cloumn_progress">
+                        <Space direction='vertical' block>
+                            <ProgressBar percent={user.kiwiLevel}  text={'Lv.'+user.kiwiLevel} />
+                        </Space>
+                    </p>
+                </div>
+
+                {/* <div className="cloumn">
+                    Stage: 
+                    {user.kiwiStage}
+                </div> */}
+
+                {user.kiwiLevel < 100 && 
+                    <div className="cloumn">
+                        <p className="cloumn_name">EXP:</p>
+                        <p className="cloumn_progress">
+                            <Space direction='vertical' block>
+                                <ProgressBar percent={(user.kiwiExp/expNeededForNextLevel)*100} text={user.kiwiExp+"/"+expNeededForNextLevel} />
+                            </Space>
+                        </p>
+                    </div>}
+
+                {canLevelUp && <>
+                    <div className="cloumn">
+                        <p className="cloumn_name">My Scores: </p>
+                        <p className="cloumn_progress">
+                            <Space direction='vertical' block>
+                                <ProgressBar percent={user.scores>0?'100':'0'} text={user.scores} />
+                            </Space>
+                        </p>
+                    </div>
+                    {user.kiwiLevel < 100 && <div className="cloumn_button"><Button block fill='outline' color='primary' onClick={handleLevelUp}>Level Up</Button></div>}
+                </>}
+            </div>
+           
         </div>
     );
 }

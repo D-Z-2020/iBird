@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react';
 import NavigationButton from '../components/NavigationButton';
 import { getActiveTrip } from '../api/api';
+import { useNavigate } from "react-router-dom";
+import { List } from 'antd-mobile'
 
 export default function Start() {
     const [hasActiveTrip, setHasActiveTrip] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         getActiveTrip(localStorage.getItem('token'))
@@ -19,13 +22,15 @@ export default function Start() {
 
     return (
         <div>
-            <NavigationButton path="/" text="back" />
-            <br />
-            {hasActiveTrip ?
-                <NavigationButton path="/start/trip" text={"Resume Trip"} /> :
-                <NavigationButton path="/start/option" text={"Start a trip!"} />}
-            <br />
-            <NavigationButton path={`/start/history`} text="Trip History" />
+            <NavigationButton path="/" text="Getting Started!" />
+
+            <List>
+                {hasActiveTrip ?
+                    <List.Item onClick={()=> navigate("/start/trip")}>Resume Trip</List.Item>:
+                    <List.Item onClick={()=> navigate("/start/option")}>Start a trip!</List.Item>}   
+                <List.Item onClick={()=> navigate("/start/history")}>Trip History</List.Item>
+            </List>
+
         </div>
     )
 }

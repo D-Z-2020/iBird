@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { uploadImage } from '../api/api';
+import {Button} from 'antd-mobile'
 
 export default function BirdImageUploader({ onUploadComplete, location, timestamp }) {
     const [selectedFile, setSelectedFile] = useState(null);
@@ -24,8 +25,8 @@ export default function BirdImageUploader({ onUploadComplete, location, timestam
 
     return (
         <div>
-            <input type="file" accept="image/*" onChange={handleFileChange} />
-            <button onClick={handleUpload}>Upload</button>
+            <input type="file" id="default-btn" accept="image/*" onChange={handleFileChange} />
+            <Button color='primary'  onClick={handleUpload}>Upload</Button>
         </div>
     );
 }

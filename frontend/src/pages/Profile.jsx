@@ -30,16 +30,28 @@ export default function Profile() {
 
     return (
         <div>
-            <NavigationButton path={previousPath} text="back" />
+            <NavigationButton path={previousPath} text={paramUsername} />
             {taragetUser ?
-                <>
-                    <p>User Name: {`${paramUsername}`}</p>
-                    <p>User id: {`${taragetUser._id}`}</p>
-                    <p>Total Walking Distance: {`${taragetUser.totalWalkingDistance}`}</p>
-                    <p>Total Elevation Gain: {`${taragetUser.totalElevationGain}`}</p>
-                    <p>Total Correct Quizes: {`${taragetUser.totalCorrectQuizes}`}</p>
-                </> :
-                <p>Not Found</p>
+                <div className='Profile_text_box Text_column_box' style={{"paddingBottom":"0px"}}>
+                    {/* <p>User id: {`${taragetUser._id}`}</p> */}
+                    <p>
+                        <span className='cloumn_name' style={{"width":"60%"}}>User Name: </span>
+                        <span className='cloumn_content' style={{"width":"40%"}}>{`${paramUsername}`}</span>
+                    </p>
+                    <p>
+                        <span className='cloumn_name' style={{"width":"60%"}}>Total Walking Distance: </span>
+                        <span className='cloumn_content' style={{"width":"40%"}}>{`${taragetUser.totalWalkingDistance}`}</span>
+                    </p>
+                    <p>
+                        <span className='cloumn_name' style={{"width":"60%"}}>Total Elevation Gain: </span>
+                        <span className='cloumn_content' style={{"width":"40%"}}>{`${taragetUser.totalElevationGain}`}</span>
+                    </p>
+                    <p>
+                        <span className='cloumn_name' style={{"width":"60%"}}>Total Correct Quizes: </span>
+                        <span className='cloumn_content' style={{"width":"40%"}}>{`${taragetUser.totalCorrectQuizes}`}</span>
+                    </p>
+                </div> :
+                <p className='Profile_text_box'>Not Found</p>
             }
             <KiwiInfo username={paramUsername} canLevelUp={false} />
             <BirdCollection username={paramUsername} showRemainBird={false} />

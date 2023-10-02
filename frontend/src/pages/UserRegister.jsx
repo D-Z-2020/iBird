@@ -20,12 +20,15 @@ export default function UserRegister() {
     }
 
     return (
-        <div>
-            <h1>Register</h1>
-            <UsernamePasswordForm buttonText="Register" onSubmit={handleSubmit} />
+        <div className='Margin_box'>
+            <div className='Login_text_box'>
+                <h1>Create Account</h1>
+                <p>Fill your information below</p>
+            </div>
+            <UsernamePasswordForm buttonText="Sign up" onSubmit={handleSubmit} />
 
-            <p>
-                Already have an account, <Link to="/login">go login!</Link>
+            <p className='Tips_box'>
+                Already have an account?<Link to="/login">Sign in!</Link>
             </p>
         </div>
     )

@@ -10,7 +10,7 @@ import FitnessGoalProgress from "../components/FitnessGoalProgress";
 import BirdCountGoalProgress from "../components/BirdCountGoalProgress";
 import TripStatistics from "../components/TripStatistics";
 import QuizComponent from "../components/QuizComponent";
-
+import {FloatingPanel,SearchBar,Avatar,Space,Card,List,Button} from 'antd-mobile'
 const aucklandlat = -36.8484;
 const aucklandLng = 174.7633;
 
@@ -39,6 +39,7 @@ export default function Trip() {
     };
     // If options are provided in the location state, it'll overwrite the default options
     const options = { ...defaultOptions, ...location.state };
+    const anchors = [100, window.innerHeight * 0.4, window.innerHeight * 0.8]
 
     const handlePhotoCaptured = (dataUri) => {
         // Convert Data URI to Blob
@@ -166,23 +167,8 @@ export default function Trip() {
 
     return (
         <div>
-            <NavigationButton path="/start" text="back" />
-            <button onClick={handleEndTrip}>End Trip</button>
-            {trip && trip.isEdugaming && <BirdImageUploader
-                onUploadComplete={fetchTripDetails}
-                location={currentPosition}
-                timestamp={currentTimestamp}
-            />}
-
-            <button onClick={() => setAutoCentering(prev => !prev)}>
-                {autoCentering ? "Stop Centering" : "Resume Centering"}
-            </button>
-
-            <TripStatistics trip={tripForGoal} realSpeed={speed} />
-            {trip && trip.isEdugaming && <BirdCamera onPhotoCaptured={handlePhotoCaptured} />}
-            <FitnessGoalProgress trip={tripForGoal} />
-            {trip && trip.isEdugaming && <>
-                <BirdCountGoalProgress goals={tripForGoal?.birdCountGoals} /></>}
+            <NavigationButton path="/start" text="Trip" />
+            
 
             <TripMap
                 path={path}
@@ -192,6 +178,34 @@ export default function Trip() {
                 trip={trip}
             />
             {tripForGoal && tripForGoal.quiz && <QuizComponent quizData={tripForGoal.quiz} afterSubmit={fetchTripDetails} />}
+
+            <FloatingPanel anchors={anchors}>
+                <div className="floatingpanel_box">
+                    <div className="margin_bottom">
+                        {trip && trip.isEdugaming && <BirdImageUploader
+                            onUploadComplete={fetchTripDetails}
+                            location={currentPosition}
+                            timestamp={currentTimestamp}
+                        />}
+                    </div>
+                    
+                        <Button color='primary'  onClick={handleEndTrip}>End Trip</Button>
+                        
+
+                        <Button className="margin_left" color='primary'  onClick={() => setAutoCentering(prev => !prev)}>
+                            {autoCentering ? "Stop Centering" : "Resume Centering"}
+                        </Button>
+
+                        <TripStatistics trip={tripForGoal} realSpeed={speed} />
+                        {trip && trip.isEdugaming && <BirdCamera onPhotoCaptured={handlePhotoCaptured} />}
+                        <FitnessGoalProgress trip={tripForGoal} />
+                        {trip && trip.isEdugaming && <>
+                            <BirdCountGoalProgress goals={tripForGoal?.birdCountGoals} /></>}
+                </div>
+            </FloatingPanel>
+
+           
+
         </div>
     );
 }

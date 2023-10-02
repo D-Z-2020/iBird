@@ -4,7 +4,7 @@ function BirdCard({ bird }) {
     const navigateWithState = useNavigator();
 
     return (
-        <div style={{ display: "inline-block", border: "3px solid gold", margin: "10px" }}>
+        <div className='Bird_card'>
             <h3
                 onClick={() => navigateWithState(`/bird/${bird.name}`, { replace: true })}
                 style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}>

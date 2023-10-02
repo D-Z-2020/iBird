@@ -10,7 +10,7 @@ export default function BirdCollectionPage() {
 
     return (
         <div>
-            <NavigationButton path={previousPath} text="back" />
+            <NavigationButton path={previousPath} text="Bird Collection" />
             <BirdCollection username={username} showRemainBird={true} />
         </div>
     );

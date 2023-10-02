@@ -6,6 +6,7 @@ import NavigationButton from '../components/NavigationButton';
 import FitnessGoalProgress from '../components/FitnessGoalProgress';
 import BirdCountGoalProgress from "../components/BirdCountGoalProgress";
 import TripStatistics from '../components/TripStatistics';
+import {Swiper } from 'antd-mobile'
 
 export default function TripHistory() {
     const { tripId } = useParams();
@@ -30,15 +31,34 @@ export default function TripHistory() {
         }
     }, [tripId, token]);
 
+    const createTime=(date)=>{
+        var currentTime=new Date(date);
+        let year = currentTime.getFullYear();
+        let month = currentTime.getMonth() + 1;
+        let day = currentTime.getDate();
+        let yfEn=["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][ currentTime.getMonth() ];
+        let week = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][currentTime.getDay()];
+        return week+","+day+" "+yfEn;
+    }
+ 
     return (
         <div>
-            <NavigationButton path="/start/history" text="back" />
-            <h2>Trip History</h2>
-            <TripStatistics trip={trip} realSpeed={-1} />
-            {trip && <FitnessGoalProgress trip={trip} />}
-            <BirdCountGoalProgress goals={trip?.birdCountGoals} />
-            {trip && <TripMap path={
-                tripPath} center={tripPath[0]} images={trip?.images} isHistory={true} trip={trip} />}
+
+            <NavigationButton path="/start/history" text={trip?createTime(trip.startDate):""} />
+            <div className='Margin_box'>
+                <Swiper>
+                    <Swiper.Item key="1">
+                        <TripStatistics trip={trip} realSpeed={-1} />
+                        <BirdCountGoalProgress goals={trip?.birdCountGoals} />
+                    </Swiper.Item>
+                    <Swiper.Item key="2">
+                        {trip && <FitnessGoalProgress trip={trip} />}
+                    </Swiper.Item>
+                </Swiper>
+
+                {trip && <TripMap className="ma_tp" path={
+                    tripPath} center={tripPath[0]} images={trip?.images} isHistory={true} trip={trip} />}
+            </div>
         </div>
     )
 }

@@ -30,10 +30,10 @@ export default function FitnessGoalProgress({ trip }) {
     }, [remainingTimeDistance]);
 
     return (
-        <div>
-            <h3>Fitness Goals:</h3>
+        <div style={{"margin-bottom":"10px","margin-top":"10px"}}>
+            <h3 style={{"margin-bottom":"5px"}}>Fitness Goals:</h3>
             {trip &&
-                <>
+                <div className='Text_column_box'>
                     <FitnessGoalInfDisplay
                         goal={trip.distanceGoal}
                         currentValue={trip.distance}
@@ -41,8 +41,8 @@ export default function FitnessGoalProgress({ trip }) {
                         title="Distance Goal"
                         endGrade={trip.distanceGoal.endDistance}
                     />
-                    {trip.distanceGoal.status === "inProgress" && <p>Remaining Time: {Math.floor(remainingTimeDistance / 60)}:{(remainingTimeDistance % 60).toString().padStart(2, '0')}</p>}
-                </>}
+                    {trip.distanceGoal.status === "inProgress" && <p >Remaining Time: {Math.floor(remainingTimeDistance / 60)}:{(remainingTimeDistance % 60).toString().padStart(2, '0')}</p>}
+                </div>}
         </div>
     );
 }

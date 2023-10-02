@@ -20,12 +20,16 @@ export default function UserLogin() {
     }
 
     return (
-        <div>
-            <h1>Login</h1>
-            <UsernamePasswordForm buttonText="Login" onSubmit={handleSubmit} />
+        <div className='Margin_box'>
+            <div className='Login_text_box'>
+                <h1>Sign In</h1>
+                <p>Hi! Welcome back.</p>
+            </div>
+            
+            <UsernamePasswordForm buttonText="Sign in" onSubmit={handleSubmit} />
 
-            <p>
-                Don't have account, <Link to="/register"> create one!</Link>
+            <p className='Tips_box'>
+                Don't have account, <Link to="/register"> Sign up!</Link>
             </p>
         </div>
     )
