@@ -1,0 +1,19 @@
+.challenges-container {
+  padding: 20px;
+}
+
+.challenges-title {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.progress-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+.progress-circle {
+  font-weight: bold;
+  font-size: large;
+}

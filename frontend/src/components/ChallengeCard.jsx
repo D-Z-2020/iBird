@@ -16,6 +16,9 @@ import {
     ELEVATION_GAIN_CHALLANGES_SILVER,
     ELEVATION_GAIN_CHALLANGES_GOLD,
 } from '../gameConstants'
+import './ChallengeCard.css';
+
+
 
 export default function ChallengeCard({ type, level, achieved }) {
     const badgeUrls = {
@@ -48,7 +51,7 @@ export default function ChallengeCard({ type, level, achieved }) {
     };
 
     return (
-        <div className='challengeCard' style={{ }}>
+        <div className='challengeCard'>
             <img src={badgeUrls[level]} alt={`${level} badge`} width={'50px'} height={'50px'} />
             <span>{challenges[type][level]}</span>
         </div>
