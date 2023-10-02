@@ -6,6 +6,11 @@ import { ProgressCircle, Space } from 'antd-mobile'
 
 export default function Challenges({ username }) {
     const [user, setUser] = useState(null);
+    
+    const achievedBadgeCount = user ? user.achievedChallanges.length : 0;
+    const totalBadgeCount = 12;
+    const progressPercentage = (achievedBadgeCount / totalBadgeCount) * 100;
+
 
     useEffect(() => {
         if (username) {
@@ -31,11 +36,13 @@ export default function Challenges({ username }) {
                     return <ChallengeCard key={`${type}-${level}`} type={type} level={level} achieved={achieved} />;
                 })
             ))}
-            <div className="progress_circle">
-                <Space style={{ '--gap': '150px' }}>
-                    <ProgressCircle style={{ '--size': '90px',"font-weight":"bold","font-size":"large" }} percent={50}>50%</ProgressCircle>
-                </Space>
-            </div>
+            {achievedBadgeCount !== null && totalBadgeCount !== null && (
+              <div className="progress_circle">
+                  <Space style={{ '--gap': '150px' }}>
+                      <ProgressCircle style={{ '--size': '90px',"font-weight":"bold","font-size":"large" }} percent={progressPercentage}>{`${Math.round(progressPercentage)}%`}</ProgressCircle>
+                  </Space>
+              </div>
+            )}
         </div>
     );
 };
