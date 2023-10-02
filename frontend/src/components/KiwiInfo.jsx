@@ -57,7 +57,8 @@ export default function KiwiInfo({ username, canLevelUp }) {
                         <p className="cloumn_name">EXP:</p>
                         <p className="cloumn_progress">
                             <Space direction='vertical' block>
-                                <ProgressBar percent={(user.kiwiExp/expNeededForNextLevel)*100} text={user.kiwiExp+"/"+expNeededForNextLevel} />
+                                {/*<ProgressBar percent={(user.kiwiExp/expNeededForNextLevel)*100} text={user.kiwiExp+"/"+expNeededForNextLevel} />*/}
+                                <ProgressBar percent={(Math.floor(user.kiwiExp)/expNeededForNextLevel)*100} text={Math.floor(user.kiwiExp)+"/"+Math.floor(expNeededForNextLevel)} />
                             </Space>
                         </p>
                     </div>}
@@ -67,7 +68,8 @@ export default function KiwiInfo({ username, canLevelUp }) {
                         <p className="cloumn_name">My Scores: </p>
                         <p className="cloumn_progress">
                             <Space direction='vertical' block>
-                                <ProgressBar percent={user.scores>0?'100':'0'} text={user.scores} />
+                                {/*<ProgressBar percent={user.scores>0?'100':'0'} text={user.scores} />*/}
+                                <ProgressBar percent={Math.floor(user.scores)>0?'100':'0'} text={Math.floor(user.scores)} />
                             </Space>
                         </p>
                     </div>
