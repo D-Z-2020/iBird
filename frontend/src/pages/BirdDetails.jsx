@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import { getBird } from '../api/api';
 import NavigationButton from '../components/NavigationButton';
+import './BirdDetails.css';
 
 export default function BirdDetails() {
     const [bird, setBird] = useState(null);
@@ -33,16 +34,22 @@ export default function BirdDetails() {
     return (
         <div>
             <NavigationButton path={previousPath} text="back" />
-            <h2>{bird.name} {'🌟'.repeat(bird.rarity)}</h2>
-            <p><strong>Maori Name:</strong> {bird.maoriName}</p>
-            <p><strong>Scientific Name:</strong> {bird.scientificName}</p>
-            <p><strong>Other Names:</strong> {bird.otherNames.join(", ")}</p>
-            <p><strong>Conservation Status:</strong> {bird.conservationStatus}</p>
-            <p><strong>Rarity:</strong> {bird.rarity}</p>
-            <h3>Images:</h3>
-            {bird.images.map((imgSrc, index) => (
-                <img key={index} src={imgSrc} alt={`${bird.name} image ${index}`} style={{ width: "100%" }} />
-            ))}
+            <div className="bird-details-container"> 
+              <h2 className="bird-title">{bird.name} {'🌟'.repeat(bird.rarity)}</h2>
+              <div className="bird-info">
+                <p><strong>Maori Name:</strong> {bird.maoriName}</p>
+                <p><strong>Scientific Name:</strong> {bird.scientificName}</p>
+                <p><strong>Other Names:</strong> {bird.otherNames.join(", ")}</p>
+                <p><strong>Conservation Status:</strong> {bird.conservationStatus}</p>
+                <p><strong>Rarity:</strong> {bird.rarity}</p>
+              </div>  
+              <div className="bird-images">
+                <h3>Images:</h3>
+                {bird.images.map((imgSrc, index) => (
+                    <img key={index} className="bird-image" src={imgSrc} alt={`${bird.name} image ${index}`} style={{ width: "100%" }} />
+                ))}
+              </div>
+            </div>    
         </div>
     );
 };
