@@ -28,6 +28,9 @@ export default function Trip() {
     const [tripForGoal, setTripForGoal] = useState(null);
     const [currentTimestamp, setCurrentTimestamp] = useState(null);
     const [autoCentering, setAutoCentering] = useState(true);
+
+    // const [isLoading, setIsLoading] = useState(false);
+
     const token = localStorage.getItem("token");
     const navigate = useNavigate();
 
@@ -54,11 +57,12 @@ export default function Trip() {
                     .then(res => {
                         console.log('Successfully uploaded');
                         fetchTripDetails();
+                        // setIsLoading(false);
                     })
                     .catch(error => {
                         console.error('Error uploading image:', error);
+                        // setIsLoading(false);
                     });
-
             });
     };
 
