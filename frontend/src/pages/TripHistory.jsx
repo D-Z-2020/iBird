@@ -6,7 +6,8 @@ import NavigationButton from '../components/NavigationButton';
 import FitnessGoalProgress from '../components/FitnessGoalProgress';
 import BirdCountGoalProgress from "../components/BirdCountGoalProgress";
 import TripStatistics from '../components/TripStatistics';
-import {Swiper } from 'antd-mobile'
+import {Swiper, FloatingPanel } from 'antd-mobile'
+
 
 export default function TripHistory() {
     const { tripId } = useParams();
@@ -14,6 +15,9 @@ export default function TripHistory() {
     const [tripPath, setTripPath] = useState(null);
 
     const token = localStorage.getItem('token');
+
+    const anchors = [30, window.innerHeight * 0.4, window.innerHeight * 0.8];
+
 
     useEffect(() => {
         if (tripId) {
@@ -46,7 +50,7 @@ export default function TripHistory() {
 
             <NavigationButton path="/start/history" text={trip?createTime(trip.startDate):""} />
             <div className='Margin_box'>
-                <Swiper>
+                {/*<Swiper>
                     <Swiper.Item key="1">
                         <TripStatistics trip={trip} realSpeed={-1} />
                         <BirdCountGoalProgress goals={trip?.birdCountGoals} />
@@ -54,10 +58,17 @@ export default function TripHistory() {
                     <Swiper.Item key="2">
                         {trip && <FitnessGoalProgress trip={trip} />}
                     </Swiper.Item>
-                </Swiper>
+    </Swiper> */}
 
                 {trip && <TripMap className="ma_tp" path={
                     tripPath} center={tripPath[0]} images={trip?.images} isHistory={true} trip={trip} />}
+                <FloatingPanel anchors={anchors}>
+                  <div className="floatingpanel_box">
+                    <TripStatistics trip={trip} realSpeed={-1} />
+                    <BirdCountGoalProgress goals={trip?.birdCountGoals} />
+                    {trip && <FitnessGoalProgress trip={trip} />}
+                  </div>
+                </FloatingPanel>    
             </div>
         </div>
     )
