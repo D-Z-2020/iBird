@@ -4,6 +4,10 @@
   cursor: pointer;
 }
 
+.clickable-cell p {
+  margin-right: 10px;
+}
+
 .request-button {
   background-color: #007bff;
   color: white;

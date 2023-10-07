@@ -49,7 +49,7 @@ export default function TripHistory() {
         <div>
 
             <NavigationButton path="/start/history" text={trip?createTime(trip.startDate):""} />
-            <div className='Margin_box'>
+
                 {/*<Swiper>
                     <Swiper.Item key="1">
                         <TripStatistics trip={trip} realSpeed={-1} />
@@ -60,16 +60,16 @@ export default function TripHistory() {
                     </Swiper.Item>
     </Swiper> */}
 
-                {trip && <TripMap className="ma_tp" path={
-                    tripPath} center={tripPath[0]} images={trip?.images} isHistory={true} trip={trip} />}
-                <FloatingPanel anchors={anchors}>
-                  <div className="floatingpanel_box">
-                    <TripStatistics trip={trip} realSpeed={-1} />
-                    <BirdCountGoalProgress goals={trip?.birdCountGoals} />
-                    {trip && <FitnessGoalProgress trip={trip} />}
-                  </div>
-                </FloatingPanel>    
-            </div>
+              {trip && <TripMap className="ma_tp" path={
+                  tripPath} center={tripPath[0]} images={trip?.images} isHistory={true} trip={trip} />}
+              <FloatingPanel anchors={anchors}>
+                <div className="floatingpanel_box">
+                  <TripStatistics trip={trip} realSpeed={-1} />
+                  <BirdCountGoalProgress goals={trip?.birdCountGoals} />
+                  {trip && <FitnessGoalProgress trip={trip} />}
+                </div>
+              </FloatingPanel>    
+
         </div>
     )
 }
