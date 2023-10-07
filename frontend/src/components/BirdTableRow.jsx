@@ -49,7 +49,7 @@ export default function BirdTableRow({ image, setMapCenter, setSelectedImage }) 
                 <td>No Bird</td>
             }
 
-            <td>{image.timestamp}</td>
+            {/* <td>{image.timestamp}</td> */}
             <td
                 onClick={() => handleBirdLocationClick()}
                 style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}>

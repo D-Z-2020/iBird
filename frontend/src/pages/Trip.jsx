@@ -42,7 +42,7 @@ export default function Trip() {
     };
     // If options are provided in the location state, it'll overwrite the default options
     const options = { ...defaultOptions, ...location.state };
-    const anchors = [100, window.innerHeight * 0.4, window.innerHeight * 0.8]
+    const anchors = [20, window.innerHeight * 0.4, window.innerHeight * 0.8]
 
     const handlePhotoCaptured = (dataUri) => {
         // Convert Data URI to Blob
@@ -173,7 +173,7 @@ export default function Trip() {
         <div>
             <NavigationButton path="/start" text="Trip" />
             
-
+            {trip && trip.isEdugaming && <BirdCamera onPhotoCaptured={handlePhotoCaptured} />}
             <TripMap
                 path={path}
                 center={currentPosition}
@@ -201,7 +201,7 @@ export default function Trip() {
                         </Button>
 
                         <TripStatistics trip={tripForGoal} realSpeed={speed} />
-                        {trip && trip.isEdugaming && <BirdCamera onPhotoCaptured={handlePhotoCaptured} />}
+
                         <FitnessGoalProgress trip={tripForGoal} />
                         {trip && trip.isEdugaming && <>
                             <BirdCountGoalProgress goals={tripForGoal?.birdCountGoals} /></>}
