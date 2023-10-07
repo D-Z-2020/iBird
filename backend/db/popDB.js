@@ -18,8 +18,8 @@ const birds = [
         scientificName: "Passer domesticus",
         otherNames: ["English sparrow"],
         conservationStatus: "Introduced and Naturalised",
-        weight: "28 g",
-        length: "15 cm",
+        weight: "28-30 g",
+        length: "15-20 cm",
         food: " grain, crops",
         habitat: " everywhere except for high mountains and bush",
         description: "One of the world's most successful introduced species, the house sparrow is found from sub-Arctic to sub-Tropical regions everywhere, except Western Australia and some small islands. It lives mostly in close association with man. This ubiquity has led to many studies of it as a pest and of its physiology, energetics, behaviour, genetics and evolution. There is even a scientific journal devoted to work on the house sparrow and other Passer species.",
@@ -40,8 +40,8 @@ const birds = [
                 correctAnswer: "1"
             },
             {
-                question: "What is the length of the House sparrow?",
-                answers: ["10 cm", "20 cm", "15 cm"],
+                question: "What is the length range of the House sparrow?",
+                answers: ["10 -15cm", "20 -30cm", "15-20 cm"],
                 correctAnswer: "3"
             },
             {
@@ -50,8 +50,8 @@ const birds = [
                 correctAnswer: "3"
             },
             {
-                question: "What is the weight of the House sparrow?",
-                answers: ["30 g", "350 g", "28 g"],
+                question: "What is the weight range of the House sparrow?",
+                answers: ["30-35 g", "350-400 g", "28-30 g"],
                 correctAnswer: "3"
             },
             {
@@ -96,12 +96,12 @@ const birds = [
             },
             {
                 question: "What is the length range of the Rock pigeon?",
-                answers: ["10-20 cm", "29-37 cm", "41 cm"],
+                answers: ["10-20 cm", "29-37 cm", "41 cm-50 cm"],
                 correctAnswer: "2"
             },
             {
-                question: "What is the weight of the Rock pigeon",
-                answers: ["30 g", "35-100 g", "265-432 g"],
+                question: "What is the weight range of the Rock pigeon",
+                answers: ["30-35 g", "35-100 g", "265-432 g"],
                 correctAnswer: "3"
             },
             {
@@ -127,8 +127,8 @@ const birds = [
         scientificName: "Turdus merula Linnaeus",
         otherNames: ["Common blackbird"],
         conservationStatus: "Introduced and Naturalised",
-        weight: "90 g",
-        length: "25 cm",
+        weight: "90-100 g",
+        length: "24-27 cm",
         food: "earthworms, insects, spiders, snails and slugs",
         habitat: "Forests, gardens, urban areas",
         description: "The Eurasian blackbird was introduced to New Zealand, and is now our most widely distributed bird species. Adult males are entirely black apart from their yellow bill and eye-ring. Females and juveniles are mostly dark brown, slightly mottled on the belly. Blackbirds are common in a wide range of habitats including suburban gardens, farmland, woodlands and indigenous forests. Their song is given from winter to summer, with the singing male usually perched on a high branch, tree top or power line. They sing most in the early morning and evening. Blackbirds feed mostly on the ground on earthworms, snails, and insects. They also take berries while perched in foliage.",
@@ -150,12 +150,12 @@ const birds = [
             },
             {
                 question: "What is the length range of the Eurasian blackbird?",
-                answers: ["10-20 cm", "24-27 cm", "41 cm"],
+                answers: ["10-20 cm", "24-27 cm", "41 -44cm"],
                 correctAnswer: "2"
             },
             {
-                question: "What is the weight of the Eurasian blackbird",
-                answers: ["30 g", "90g", "265 - 432 g"],
+                question: "What is the weight range of the Eurasian blackbird",
+                answers: ["30-40 g", "90-100 g", "265 - 432 g"],
                 correctAnswer: "2"
             },
             {
@@ -205,12 +205,12 @@ const birds = [
             },
             {
                 question: "What is the length range of the Chaffinch?",
-                answers: ["10-20 cm", "14-16 cm", "41 cm"],
+                answers: ["10-20 cm", "14-16 cm", "41-45 cm"],
                 correctAnswer: "2"
             },
             {
                 question: "What is the weight of the Chaffinch",
-                answers: ["30 g", "90g", "19 - 25 g"],
+                answers: ["30 g", "90-100 g", "19 - 25 g"],
                 correctAnswer: "3"
             },
             {
@@ -260,12 +260,12 @@ const birds = [
             },
             {
                 question: "What is the length range of the New Zealand pigeon?",
-                answers: ["10-20 cm", "50-55 cm", "41 cm"],
+                answers: ["10-20 cm", "50-55 cm", "41-45 cm"],
                 correctAnswer: "2"
             },
             {
-                question: "What is the weight of the New Zealand pigeon?",
-                answers: ["30 g", "90g", "550-850 g"],
+                question: "What is the weight range of the New Zealand pigeon?",
+                answers: ["30-60 g", "90-120g", "550-850 g"],
                 correctAnswer: "3"
             },
             {
@@ -315,12 +315,12 @@ const birds = [
             },
             {
                 question: "What is the length range of the European goldfinch?",
-                answers: ["10-20 cm", "12-13 cm", "41 cm"],
+                answers: ["10-20 cm", "12-13 cm", "20-25 cm"],
                 correctAnswer: "2"
             },
             {
-                question: "What is the weight of the European goldfinch?",
-                answers: ["30 g", "90g", "14-19  g"],
+                question: "What is the weight range of the European goldfinch?",
+                answers: ["30-40 g", "90-100g", "14-19  g"],
                 correctAnswer: "3"
             },
             {
@@ -370,7 +370,7 @@ const birds = [
             },
             {
                 question: "What is the length range of the European greenfinch?",
-                answers: ["10-20 cm", "15-16 cm", "41 cm"],
+                answers: ["10-20 cm", "15-16 cm", "41-40 cm"],
                 correctAnswer: "2"
             },
             {
@@ -457,8 +457,8 @@ const birds = [
         scientificName: "Gymnorhina tibicen",
         otherNames: ["magpie", "white-backed magpie", "black-backed magpie", "makipae"],
         conservationStatus: "Introduced and Naturalised",
-        weight: "350 g",
-        length: "41 cm",
+        weight: "350-360 g",
+        length: "41-45 cm",
         food: "earthworms",
         habitat: "North Island and Kaikoura to Southland",
         description: "The black-and-white Australian magpie is a common and conspicuous inhabitant of open country throughout much of New Zealand. It was introduced from Australia and Tasmania by Acclimatisation Societies between 1864 and 1874, mainly to control insect pests. There are three subspecies; the black-backed, and two white-backed forms, with white-backed birds predominating in most parts of New Zealand. Some authorities group the Australian magpie with butcherbirds in the genus Cracticus.",
@@ -479,8 +479,8 @@ const birds = [
                 correctAnswer: "2"
             },
             {
-                question: "What is the length of the Australian magpie?",
-                answers: ["10 cm", "20 cm", "41 cm"],
+                question: "What is the length range of the Australian magpie?",
+                answers: ["10-20 cm", "20-30 cm", "41-45 cm"],
                 correctAnswer: "3"
             },
             {
@@ -489,8 +489,8 @@ const birds = [
                 correctAnswer: "3"
             },
             {
-                question: "What is the weight of the Australian magpie?",
-                answers: ["30 g", "350 g", "25 g"],
+                question: "What is the weight range of the Australian magpie?",
+                answers: ["30-35 g", "350 -360 g", "25-30 g"],
                 correctAnswer: "2"
             },
             {
@@ -512,7 +512,7 @@ const birds = [
         scientificName: "Prosthemadera novaeseelandiae",
         otherNames: ["parson bird", "tūī", "kōkō", "koko"],
         conservationStatus: "Not Threatened",
-        weight: "125 g (male); 90 g (female)",
+        weight: "90-120 g",
         length: "30-32 cm",
         food: "Nectar, fruits, insects",
         habitat: "Forests, gardens",
@@ -700,7 +700,7 @@ const birds = [
             },
             {
                 question: "What is the length range of the Dunnock?",
-                answers: ["10-20 cm", "13-14 cm", "41 cm"],
+                answers: ["10-20 cm", "13-14 cm", "41-45 cm"],
                 correctAnswer: "2"
             },
             {
@@ -755,7 +755,7 @@ const birds = [
             },
             {
                 question: "What is the length range of the Red-billed Gull?",
-                answers: ["10-20 cm", "35-37 cm", "41 cm"],
+                answers: ["10-20 cm", "35-37 cm", "41-45 cm"],
                 correctAnswer: "2"
             },
             {
@@ -810,7 +810,7 @@ const birds = [
             },
             {
                 question: "What is the length range of the Southern black-backed gull?",
-                answers: ["10-20 cm", "58-66 cm", "41 cm"],
+                answers: ["10-20 cm", "58-66 cm", "41-45 cm"],
                 correctAnswer: "2"
             },
             {
@@ -865,7 +865,7 @@ const birds = [
             },
             {
                 question: "What is the length range of the Eurasian skylark?",
-                answers: ["10-20 cm", "16-18 cm", "41 cm"],
+                answers: ["10-20 cm", "16-18 cm", "41-45 cm"],
                 correctAnswer: "2"
             },
             {
@@ -920,7 +920,7 @@ const birds = [
             },
             {
                 question: "What is the length range of the White-faced heron?",
-                answers: ["10-20 cm", "66-68 cm", "41 cm"],
+                answers: ["10-20 cm", "66-68 cm", "41 -45cm"],
                 correctAnswer: "2"
             },
             {
@@ -975,7 +975,7 @@ const birds = [
             },
             {
                 question: "What is the length range of the Spur-winged plover?",
-                answers: ["10-20 cm", "32-38 cm", "41 cm"],
+                answers: ["10-20 cm", "32-38 cm", "41 -45cm"],
                 correctAnswer: "2"
             },
             {
@@ -1030,7 +1030,7 @@ const birds = [
             },
             {
                 question: "What is the length range of the Welcome swallow?",
-                answers: ["10-20 cm", "14-16 cm", "41 cm"],
+                answers: ["10-20 cm", "14-16 cm", "41-45 cm"],
                 correctAnswer: "2"
             },
             {
@@ -1085,7 +1085,7 @@ const birds = [
             },
             {
                 question: "What is the length range of the New Zealand fantail?",
-                answers: ["10-20 cm", "16-20 cm", "41 cm"],
+                answers: ["10-20 cm", "16-20 cm", "41-45 cm"],
                 correctAnswer: "2"
             },
             {
@@ -1140,7 +1140,7 @@ const birds = [
             },
             {
                 question: "What is the length range of the Eastern rosella?",
-                answers: ["10-20 cm", "30-33 cm", "41 cm"],
+                answers: ["10-20 cm", "30-33 cm", "41-45 cm"],
                 correctAnswer: "2"
             },
             {
@@ -1227,8 +1227,8 @@ const birds = [
         scientificName: "Anthornis melanura",
         otherNames: ["Korimako"],
         conservationStatus: "Not Threatened",
-        weight: "34 g (male); 26 g (female)",
-        length: "19 cm",
+        weight: "26-34 g",
+        length: "19-22 cm",
         food: "Nectar, insects, fruits",
         habitat: "Forests, gardens",
         description: "Bellbirds are the most widespread and familiar honeyeater in the South Island, and are also common over much of the North Island. Their song is a welcome sound in mainland forests that otherwise may have little native bird song. Although they have a brush-like tongue which is used to reach deeply into flowers to reach nectar, bellbirds also feed on fruits and insects. In feeding on nectar they play an important ecological role in pollinating the flowers of many native trees and shrubs.",
@@ -1249,8 +1249,8 @@ const birds = [
                 correctAnswer: "1"
             },
             {
-                question: "What is the length of the Bellbird?",
-                answers: ["10 cm", "20 cm", "30 cm"],
+                question: "What is the length range of the Bellbird?",
+                answers: ["10-15 cm", "19-22 cm", "30-35 cm"],
                 correctAnswer: "2"
             },
             {
@@ -1282,8 +1282,8 @@ const birds = [
         scientificName: "Petroica longipes",
         otherNames: ["Toutouwai"],
         conservationStatus: "Declining",
-        weight: "35 g",
-        length: "18 cm",
+        weight: "35-38 g",
+        length: "18-20 cm",
         food: "Insects",
         habitat: "Forests, shrublands",
         description: "The North Island robin occurs in forest and scrub habitats. It can be recognised by its erect stance and relatively long legs, and spends much time foraging on the ground. It is a territorial species, males in particular inhabiting the same patch of mainland forest of 1-5 ha throughout their lives. Male are great songsters, particularly bachelors, singing loudly and often for many minutes at a time. Where robins are regularly exposed to people, such as along public walking tracks, they become quite confiding, often approaching to within a metre of a person sitting quietly. Naïve juveniles will sometimes stand on a person's boot.",
@@ -1305,12 +1305,12 @@ const birds = [
             },
             {
                 question: "What is the length of the North Island robin?",
-                answers: ["10 cm", "18 cm", "25 cm"],
+                answers: ["10-15 cm", "18-20 cm", "25-30 cm"],
                 correctAnswer: "2"
             },
             {
                 question: "What is the weight range of the North Island robin?",
-                answers: ["20-25 g", "35 g", "30-35 g"],
+                answers: ["20-25 g", "35-38 g", "30-35 g"],
                 correctAnswer: "2"
             },
             {
@@ -1337,8 +1337,8 @@ const birds = [
         scientificName: "Chrysococcyx lucidus",
         otherNames: ["Pīpīwharauroa"],
         conservationStatus: "Not Threatened",
-        weight: "23 g",
-        length: "16 cm",
+        weight: "20-25 g",
+        length: "16-18 cm",
         food: "Insects, caterpillars",
         habitat: "Forests, gardens",
         description: "The shining cuckoo (shining bronze-cuckoo in Australia) is a summer migrant to New Zealand. It is common throughout New Zealand but it is small and cryptically-coloured and so is more often heard than seen. It has a distinctive whistling call. Two intriguing aspects of its life history are its brood-parasitic habits and the long annual trans-oceanic migration. The New Zealand subspecies breeds only in New Zealand (including Chatham Islands) but other subspecies breed in southern Australia, Vanuatu, New Caledonia and on Rennell and Bellona Islands (Solomon Islands).",
@@ -1359,8 +1359,8 @@ const birds = [
                 correctAnswer: "1"
             },
             {
-                question: "What is the length of the Shining cuckoo?",
-                answers: ["10 cm", "16 cm", "20 cm"],
+                question: "What is the length range of the Shining cuckoo?",
+                answers: ["10-12 cm", "16-18 cm", "20-25 cm"],
                 correctAnswer: "2"
             },
             {
@@ -1392,8 +1392,8 @@ const birds = [
         scientificName: "Chlidonias albostriatus",
         otherNames: ["Tarapirohe"],
         conservationStatus: "Nationally Endangered",
-        weight: "95g",
-        length: "28 cm",
+        weight: "80-100g",
+        length: "28-30 cm",
         food: "Insects, small fish",
         habitat: "Lakes, rivers",
         description: "The black-fronted tern is a small grey tern commonly seen on braided rivers, estuaries and harbours of the eastern South Island. They breed on the braided rivers of the eastern South Island, dispersing to coastal areas after breeding; it is during this time that some birds are seen in the North Island. The black-fronted tern is an attractive and highly distinctive bird in breeding plumage, with the slate grey plumage contrasting with the black cap and bright orange bill. Juveniles and immature birds may be confused with other vagrant tern species but all are easily separable.",
@@ -1415,7 +1415,7 @@ const birds = [
             },
             {
                 question: "What is the length of the Black-fronted tern?",
-                answers: ["20 cm", "28 cm", "40 cm"],
+                answers: ["20-25 cm", "28-30 cm", "40-45 cm"],
                 correctAnswer: "2"
             },
             {
@@ -1447,7 +1447,7 @@ const birds = [
         scientificName: "Apteryx australis Shaw",
         otherNames: ["Tokoeka"],
         conservationStatus: "Naturally Uncommon",
-        weight: "2.4 kg (male), 3.1 kg (female)",
+        weight: "2.4- 3.1 kg",
         length: "45-55 cm",
         food: "Insects, worms, fruits",
         habitat: "Forests, scrublands",
@@ -1475,7 +1475,7 @@ const birds = [
             },
             {
                 question: "What is the weight range of the Southern brown kiwi?",
-                answers: ["1-2 kg", "2-3 kg", "3-4 kg"],
+                answers: ["1-2 kg", "2.4-3.1 kg", "3-4 kg"],
                 correctAnswer: "2"
             },
             {
