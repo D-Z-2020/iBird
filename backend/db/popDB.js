@@ -41,7 +41,7 @@ const birds = [
             },
             {
                 question: "What is the length range of the House sparrow?",
-                answers: ["10 -15cm", "20 -30cm", "15-20 cm"],
+                answers: ["10-15 cm", "20-30 cm", "15-20 cm"],
                 correctAnswer: "3"
             },
             {
@@ -150,12 +150,12 @@ const birds = [
             },
             {
                 question: "What is the length range of the Eurasian blackbird?",
-                answers: ["10-20 cm", "24-27 cm", "41 -44cm"],
+                answers: ["10-20 cm", "24-27 cm", "41-44 cm"],
                 correctAnswer: "2"
             },
             {
                 question: "What is the weight range of the Eurasian blackbird",
-                answers: ["30-40 g", "90-100 g", "265 - 432 g"],
+                answers: ["30-40 g", "90-100 g", "265-432 g"],
                 correctAnswer: "2"
             },
             {
@@ -320,7 +320,7 @@ const birds = [
             },
             {
                 question: "What is the weight range of the European goldfinch?",
-                answers: ["30-40 g", "90-100g", "14-19  g"],
+                answers: ["30-40 g", "90-100 g", "14-19 g"],
                 correctAnswer: "3"
             },
             {
@@ -370,7 +370,7 @@ const birds = [
             },
             {
                 question: "What is the length range of the European greenfinch?",
-                answers: ["10-20 cm", "15-16 cm", "41-40 cm"],
+                answers: ["10-20 cm", "15-16 cm", "40-41 cm"],
                 correctAnswer: "2"
             },
             {
@@ -1607,12 +1607,21 @@ const birds = [
     }
 ];
 
-// Insert bird data into MongoDB
-Bird.insertMany(birds)
+// Clear the Bird collection
+Bird.deleteMany({})
     .then(() => {
-        console.log('Bird data populated successfully');
-        mongoose.connection.close();  // Close the connection after insertion
+        console.log('Bird collection cleared');
+
+        // Insert bird data into MongoDB
+        Bird.insertMany(birds)
+            .then(() => {
+                console.log('Bird data populated successfully');
+                mongoose.connection.close();  // Close the connection after insertion
+            })
+            .catch(error => {
+                console.error('Error populating bird data:', error);
+            });
     })
     .catch(error => {
-        console.error('Error populating bird data:', error);
+        console.error('Error clearing Bird collection:', error);
     });
