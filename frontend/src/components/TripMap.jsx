@@ -16,6 +16,7 @@ export default function TripMap({ path, center, autoCentering, images, isHistory
     const { selectedImage, setSelectedImage } = useContext(UserContext);
     const [imageUrls, setImageUrls] = useState({});
     const [mapCenter, setMapCenter] = useState(center);
+    const [isGoogleMapsLoaded, setGoogleMapsLoaded] = useState(false);
 
     useEffect(() => {
         setSelectedImage(null);
@@ -49,10 +50,12 @@ export default function TripMap({ path, center, autoCentering, images, isHistory
             }, 100);
         }
     }, [autoCentering, center]);
-
+    const getMarkerLabel = (s3Key) => {
+        return s3Key.includes('/') ? '🖊️' : '🐦';
+    };
     return (
-        <LoadScript googleMapsApiKey={googleMapsApiKey}>
-            <GoogleMap
+        <LoadScript googleMapsApiKey={googleMapsApiKey} onLoad={() => setGoogleMapsLoaded(true)}>
+            {isGoogleMapsLoaded && (<GoogleMap
                 id="trip-map"
                 mapContainerStyle={mapContainerStyle}
                 zoom={15}
@@ -86,6 +89,14 @@ export default function TripMap({ path, center, autoCentering, images, isHistory
                     <Marker
                         key={image._id}
                         position={{ lat: image.location.lat, lng: image.location.lng }}
+                        icon={{
+                            url: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7', // Transparent pixel
+                            size: new window.google.maps.Size(32, 32),
+                            scaledSize: new window.google.maps.Size(32, 32),
+                            origin: new window.google.maps.Point(0, 0),
+                            anchor: new window.google.maps.Point(16, 16),
+                        }}
+                        label={{ text: getMarkerLabel(image.s3Key), color: 'black', fontSize: '20px' }}
                         onClick={() => {
                             setSelectedImage(image);
                         }}
@@ -105,7 +116,7 @@ export default function TripMap({ path, center, autoCentering, images, isHistory
                     </Marker>
                 ))}
 
-            </GoogleMap>
+            </GoogleMap>)}
             {trip && trip.isEdugaming && <BirdTable trip={trip} setMapCenter={setMapCenter} setSelectedImage={setSelectedImage} />}
         </LoadScript>
     );

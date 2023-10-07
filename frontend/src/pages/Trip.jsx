@@ -4,7 +4,6 @@ import { startNewTrip, getActiveTrip, addLocation, endTrip, uploadImage } from "
 import { useNavigate } from "react-router-dom";
 import TripMap from "../components/TripMap";
 import BirdImageUploader from "../components/BirdImageUploader";
-import BirdCamera from "../components/BirdCamera";
 import { useLocation } from "react-router-dom";
 import FitnessGoalProgress from "../components/FitnessGoalProgress";
 import BirdCountGoalProgress from "../components/BirdCountGoalProgress";
@@ -202,7 +201,7 @@ export default function Trip() {
                         </Button>
 
                         <TripStatistics trip={tripForGoal} realSpeed={speed} />
-                        {trip && trip.isEdugaming && <BirdCamera onPhotoCaptured={handlePhotoCaptured} />}
+
                         <FitnessGoalProgress trip={tripForGoal} />
                         {trip && trip.isEdugaming && <>
                             <BirdCountGoalProgress goals={tripForGoal?.birdCountGoals} /></>}
