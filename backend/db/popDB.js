@@ -75,7 +75,7 @@ const birds = [
         conservationStatus: "Introduced and Naturalised",
         weight: "265-432 g",
         length: "29-37 cm",
-        food: "commercial grains ",
+        food: "commercial grains",
         habitat: "Urban areas",
         description: "The rock pigeon is a familiar species to most New Zealanders, given its distribution from Northland to Southland, and being present in both urban and rural areas. While rural birds are usually quite timid, flying off at close approach, urban birds are often quite the opposite, walking about at one's feet and even alighting on people to take food. It is a gregarious species, often roosting, commuting and foraging in flocks.",
         rarity: 1,
