@@ -3,17 +3,22 @@ import CustomResultPage from './CustomResultPage';
 import { useState } from 'react';
 import { submitQuizResults } from '../api/api';
 import QuizWelcome from './QuizWelcome';
+import Spinner from './Spinner';
 
 export default function QuizComponent({ quizData, afterSubmit }) {
     const [quizStarted, setQuizStarted] = useState(false);
     const [correctQuestions, setCorrectQuestions] = useState(0);
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleSubmitAndClose = async (quizSummary) => {
+        setIsLoading(true);
         try {
             await submitQuizResults(localStorage.getItem('token'), quizSummary);
             await afterSubmit();
         } catch (error) {
             console.error("Error submitting quiz results:", error);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -26,6 +31,7 @@ export default function QuizComponent({ quizData, afterSubmit }) {
     return (
         <div style={overlayStyles}>
             <div style={quizStyles}>
+                {isLoading && <Spinner />}
                 {!quizStarted ? (
                     <QuizWelcome
                         quizData={quizData}

@@ -9,7 +9,8 @@ import FitnessGoalProgress from "../components/FitnessGoalProgress";
 import BirdCountGoalProgress from "../components/BirdCountGoalProgress";
 import TripStatistics from "../components/TripStatistics";
 import QuizComponent from "../components/QuizComponent";
-import {FloatingPanel,SearchBar,Avatar,Space,Card,List,Button} from 'antd-mobile'
+import { FloatingPanel, Button } from 'antd-mobile';
+import Spinner from "../components/Spinner";
 import './Trip.css';
 
 const aucklandlat = -36.8484;
@@ -30,8 +31,7 @@ export default function Trip() {
     const [currentTimestamp, setCurrentTimestamp] = useState(null);
     const [autoCentering, setAutoCentering] = useState(true);
     const [showCropPopup, setShowCropPopup] = useState(false);
-
-    // const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const token = localStorage.getItem("token");
     const navigate = useNavigate();
@@ -162,19 +162,24 @@ export default function Trip() {
     }, []);
 
     const handleEndTrip = () => {
+        setIsLoading(true);
         endTrip(token)
             .then(() => {
                 navigate("/start", { replace: true });
             })
             .catch(error => {
                 console.error("Error ending the trip:", error);
+            })
+            .finally(() => {
+                setIsLoading(false);
             });
     }
 
     return (
         <div>
+            {isLoading && <Spinner />}
             <NavigationButton path="/start" text="Trip" />
-            
+
             <TripMap
                 path={path}
                 center={currentPosition}
@@ -195,24 +200,21 @@ export default function Trip() {
                             setShowCropPopup={setShowCropPopup}
                         />}
                     </div>
-                    
-                        <Button color='primary'  onClick={handleEndTrip}>End Trip</Button>
-                        
 
-                        <Button className="margin_left" color='primary'  onClick={() => setAutoCentering(prev => !prev)}>
-                            {autoCentering ? "Stop Centering" : "Resume Centering"}
-                        </Button>
+                    <Button color='primary' onClick={handleEndTrip}>End Trip</Button>
 
-                        <TripStatistics trip={tripForGoal} realSpeed={speed} />
 
-                        <FitnessGoalProgress trip={tripForGoal} />
-                        {trip && trip.isEdugaming && <>
-                            <BirdCountGoalProgress goals={tripForGoal?.birdCountGoals} /></>}
+                    <Button className="margin_left" color='primary' onClick={() => setAutoCentering(prev => !prev)}>
+                        {autoCentering ? "Stop Centering" : "Resume Centering"}
+                    </Button>
+
+                    <TripStatistics trip={tripForGoal} realSpeed={speed} />
+
+                    <FitnessGoalProgress trip={tripForGoal} />
+                    {trip && trip.isEdugaming && <>
+                        <BirdCountGoalProgress goals={tripForGoal?.birdCountGoals} /></>}
                 </div>
             </FloatingPanel>
-
-           
-
         </div>
     );
 }

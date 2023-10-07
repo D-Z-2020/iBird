@@ -3,6 +3,7 @@ import { uploadImage } from '../api/api';
 import { Button } from 'antd-mobile'
 import ReactCrop from 'react-image-crop'
 import 'react-image-crop/dist/ReactCrop.css'
+import Spinner from './Spinner';
 // import './BirdImageUploader.css';
 
 export default function BirdImageUploader({ onUploadComplete, location, timestamp, showCropPopup, setShowCropPopup }) {
@@ -100,19 +101,20 @@ export default function BirdImageUploader({ onUploadComplete, location, timestam
                 .then(res => {
                     console.log('Successfully uploaded');
                     onUploadComplete();
-                    setIsLoading(false);
                 })
                 .catch(error => {
                     console.error('Error uploading image:', error);
+                })
+                .finally(() => {
                     setIsLoading(false);
+                    closeCropPopup();
                 });
         }
-        closeCropPopup();
     };
 
     return (
         <div className="uploader-container">
-            {isLoading && <div className="loading">Loading...</div>}
+            {isLoading && <Spinner />}
             <input type="file" id="default-btn" accept="image/*" onChange={handleFileChange} disabled={isLoading} ref={inputFileRef} />
             {showCropPopup && (
                 <div style={{
