@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { getImageByKey } from '../api/api';
 import { useNavigator } from '../hooks/useNavigator';
 import { requestExpertOpinion } from '../api/api';
+import './BirdTableRow.css';
+
 
 export default function BirdTableRow({ image, setMapCenter, setSelectedImage }) {
     const [imageUrl, setImageUrl] = useState(null);
@@ -41,23 +43,23 @@ export default function BirdTableRow({ image, setMapCenter, setSelectedImage }) 
         <tr>
             <td>{imageUrl && <img src={imageUrl} alt="Bird" width="100" />}</td>
             {image.birdId ?
-                <td
+                <td className="clickable-cell"
                     onClick={() => navigateWithState(`/bird/${image.birdId.name}`, { replace: true })}
-                    style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}>
+                    >
                     {image.birdId.name}
                 </td> :
                 <td>No Bird</td>
             }
 
             {/* <td>{image.timestamp}</td> */}
-            <td
+            <td className="clickable-cell"
                 onClick={() => handleBirdLocationClick()}
-                style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}>
-                <p>🗺️</p>
+                >
+                <p className="map-icon">🗺️</p>
             </td>
             <td>
                 {expertStatus === 'NA' && (
-                    <button onClick={handleExpertRequest}>Need Expert</button>
+                    <button className="request-button" onClick={handleExpertRequest}>Need Expert</button>
                 )}
                 {expertStatus === 'inProgress' && (
                     <span>Request received</span>
