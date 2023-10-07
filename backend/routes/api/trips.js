@@ -497,10 +497,9 @@ router.post('/submitQuizResults', verifyToken, async (req, res) => {
             const lastLocation = activeTrip.locations[activeTrip.locations.length - 1];
 
             const randomImageUrl = bird.images[Math.floor(Math.random() * bird.images.length)];
-            const s3Key = randomImageUrl.split('.amazonaws.com/')[1];
             // create image
             const newImage = new Image({
-                s3Key: s3Key,
+                s3Key: randomImageUrl,
                 userId: req.user._id,
                 location: {
                     lat: lastLocation.latitude,

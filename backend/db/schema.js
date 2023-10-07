@@ -111,6 +111,11 @@ const birdSchema = new Schema({
 	scientificName: { type: String },
 	otherNames: [{ type: String }],
 	conservationStatus: { type: String },
+	weight: { type: String },
+	length: { type: String },
+	food: { type: String },
+	habitat: { type: String },
+	description: { type: String },
 	rarity: { type: Number, required: true },
 	images: [{ type: String }],
 	questions: [questionSchema]

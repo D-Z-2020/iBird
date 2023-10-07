@@ -171,13 +171,9 @@ router.get('/getImage/*', verifyToken, async (req, res) => {
             return res.status(404).send('You do not have permission to view it.');
         }
 
-        // If the key contains "/", construct the public URL directly
+        // If the key contains "/", which mean it is a public url for image, return that directly back
         if (key.includes("/")) {
-            const amazonBucketName = process.env.AMAZON_BUCKET_NAME;
-            const amazonRegion = process.env.AMAZON_REGION;
-            const baseURL = `https://${amazonBucketName}.s3.${amazonRegion}.amazonaws.com/`;
-            const publicURL = baseURL + key;
-            return res.status(200).send(publicURL);
+            return res.status(200).send(key);
         }
 
         // Generate a pre-signed URL for the image
