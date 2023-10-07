@@ -29,6 +29,7 @@ export default function Trip() {
     const [tripForGoal, setTripForGoal] = useState(null);
     const [currentTimestamp, setCurrentTimestamp] = useState(null);
     const [autoCentering, setAutoCentering] = useState(true);
+    const [showCropPopup, setShowCropPopup] = useState(false);
 
     // const [isLoading, setIsLoading] = useState(false);
 
@@ -43,7 +44,7 @@ export default function Trip() {
     };
     // If options are provided in the location state, it'll overwrite the default options
     const options = { ...defaultOptions, ...location.state };
-    const anchors = [30, window.innerHeight * 0.4, window.innerHeight * 0.8]
+    const anchors = [60, window.innerHeight * 0.4, window.innerHeight * 0.8]
 
     const handlePhotoCaptured = (dataUri) => {
         // Convert Data URI to Blob
@@ -183,13 +184,15 @@ export default function Trip() {
             />
             {tripForGoal && tripForGoal.quiz && <QuizComponent quizData={tripForGoal.quiz} afterSubmit={fetchTripDetails} />}
 
-            <FloatingPanel anchors={anchors}>
+            <FloatingPanel anchors={anchors} className={`${showCropPopup ? "locked-panel" : ""}`}>
                 <div className="floatingpanel_box">
                     <div className="margin_bottom">
                         {trip && trip.isEdugaming && <BirdImageUploader
                             onUploadComplete={fetchTripDetails}
                             location={currentPosition}
                             timestamp={currentTimestamp}
+                            showCropPopup={showCropPopup}
+                            setShowCropPopup={setShowCropPopup}
                         />}
                     </div>
                     

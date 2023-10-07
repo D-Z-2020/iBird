@@ -1,8 +1,9 @@
 import BirdTableRow from "./BirdTableRow";
-export default function BirdTable({ trip, setMapCenter, setSelectedImage }) {
+export default function BirdTable({ trip, setMapCenter, setSelectedImage, mapHeight, windowHeight}) {
+    const tableHeight = windowHeight - 45 - 60 - mapHeight;
     return (
-        <div style={{ width: "100%", maxHeight: "calc(60vh - 45px - 28px)", overflowY: "auto" }}>
-            <table style={{ width: "90%" }}>
+        <div style={{ width: "100%", maxHeight: `${tableHeight}px`, overflowY: "auto" }}>
+            <table style={{ width: "100%" }}>
                 {/* <thead>
                     <tr>
                         <th>Image</th>

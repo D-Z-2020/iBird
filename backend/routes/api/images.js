@@ -32,7 +32,7 @@ const upload = multer({
         },
         key: function (req, file, cb) {
             // Generate a unique file key using time for now and UUID
-            const uniqueFileKey = Date.now().toString() + '-' + uuidv4();
+            const uniqueFileKey = Date.now().toString() + '-' + uuidv4() + ".jpg";
             cb(null, uniqueFileKey);
         }
     }),

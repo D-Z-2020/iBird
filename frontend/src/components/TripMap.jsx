@@ -1,5 +1,5 @@
 import { GoogleMap, LoadScript, Marker, Polyline, InfoWindow } from "@react-google-maps/api";
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { getImageByKey } from '../api/api';
 import UserContext from "../../UserContext";
 import { useContext } from "react";
@@ -17,6 +17,30 @@ export default function TripMap({ path, center, autoCentering, images, isHistory
     const [imageUrls, setImageUrls] = useState({});
     const [mapCenter, setMapCenter] = useState(center);
     const [isGoogleMapsLoaded, setGoogleMapsLoaded] = useState(false);
+    const tripMapRef = useRef(null);
+    const [tripMapHeight, setTripMapHeight] = useState(0);
+    const [windowHeight, setWindowHeight] = useState(window.innerHeight);
+
+
+    useEffect(() => {
+        if (tripMapRef.current) {
+            setTripMapHeight(tripMapRef.current.mapRef.offsetHeight);
+        }
+    }, [tripMapRef, isGoogleMapsLoaded]);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setWindowHeight(window.innerHeight);
+        };
+    
+        window.addEventListener('resize', handleResize);
+        
+        // Clean up the event listener when the component unmounts
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+    
 
     useEffect(() => {
         setSelectedImage(null);
@@ -60,6 +84,7 @@ export default function TripMap({ path, center, autoCentering, images, isHistory
                 mapContainerStyle={mapContainerStyle}
                 zoom={15}
                 center={mapCenter}
+                ref={tripMapRef}
             >
                 {center && !isHistory &&
                     <Marker
@@ -117,7 +142,7 @@ export default function TripMap({ path, center, autoCentering, images, isHistory
                 ))}
 
             </GoogleMap>)}
-            {trip && trip.isEdugaming && <BirdTable trip={trip} setMapCenter={setMapCenter} setSelectedImage={setSelectedImage} />}
+            {trip && trip.isEdugaming && <BirdTable trip={trip} setMapCenter={setMapCenter} setSelectedImage={setSelectedImage} mapHeight={tripMapHeight} windowHeight={windowHeight}/>}
         </LoadScript>
     );
 }

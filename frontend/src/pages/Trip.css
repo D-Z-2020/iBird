@@ -16,3 +16,7 @@
   color: #fff;
   margin-left: 10px;
 }
+
+.locked-panel {
+  transform: translateY(calc(100% + -85vh)) !important;
+}
