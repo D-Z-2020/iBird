@@ -6,7 +6,7 @@ import { useContext } from "react";
 import BirdTable from "./BirdTable";
 
 const mapContainerStyle = {
-    height: "500px",
+    height: "40vh",
     width: "100%"
 };
 

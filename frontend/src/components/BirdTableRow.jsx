@@ -53,17 +53,17 @@ export default function BirdTableRow({ image, setMapCenter, setSelectedImage }) 
             <td
                 onClick={() => handleBirdLocationClick()}
                 style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}>
-                {JSON.stringify(image.location)}
+                <p>🗺️</p>
             </td>
             <td>
                 {expertStatus === 'NA' && (
-                    <button onClick={handleExpertRequest}>Request Expert Opinion</button>
+                    <button onClick={handleExpertRequest}>Need Expert</button>
                 )}
                 {expertStatus === 'inProgress' && (
-                    <span>We have received your request</span>
+                    <span>Request received</span>
                 )}
                 {expertStatus === 'done' && (
-                    <span>Please check updated Bird</span>
+                    <span>Check update</span>
                 )}
             </td>
         </tr>
