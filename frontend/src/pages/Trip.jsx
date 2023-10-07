@@ -11,6 +11,8 @@ import BirdCountGoalProgress from "../components/BirdCountGoalProgress";
 import TripStatistics from "../components/TripStatistics";
 import QuizComponent from "../components/QuizComponent";
 import {FloatingPanel,SearchBar,Avatar,Space,Card,List,Button} from 'antd-mobile'
+import './Trip.css';
+
 const aucklandlat = -36.8484;
 const aucklandLng = 174.7633;
 
