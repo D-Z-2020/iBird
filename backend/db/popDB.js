@@ -21,7 +21,7 @@ const birds = [
         weight: "28-30 g",
         length: "15-20 cm",
         food: " grain, crops",
-        habitat: " everywhere except for high mountains and bush",
+        habitat: "Everywhere except for high mountains and bush",
         description: "One of the world's most successful introduced species, the house sparrow is found from sub-Arctic to sub-Tropical regions everywhere, except Western Australia and some small islands. It lives mostly in close association with man. This ubiquity has led to many studies of it as a pest and of its physiology, energetics, behaviour, genetics and evolution. There is even a scientific journal devoted to work on the house sparrow and other Passer species.",
         rarity: 1,
         images: [
@@ -265,7 +265,7 @@ const birds = [
             },
             {
                 question: "What is the weight range of the New Zealand pigeon?",
-                answers: ["30-60 g", "90-120g", "550-850 g"],
+                answers: ["30-60 g", "90-120 g", "550-850 g"],
                 correctAnswer: "3"
             },
             {
