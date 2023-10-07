@@ -158,7 +158,6 @@ router.post("/addLocation", verifyToken, async (req, res) => {
             if (additionalElevationGain !== null) {
                 trip.elevationGain += additionalElevationGain;
             }
-            console.log(trip.elevationGain)
 
             // get goal, check if complete or not
             const distanceGoal = trip.distanceGoal.distance;
@@ -178,8 +177,6 @@ router.post("/addLocation", verifyToken, async (req, res) => {
                     trip.distanceGoal.status = 'failed';
                 } else {
                     // assess user fitness
-                    console.log("duration" + duration);
-                    console.log("FITNESS_ASSESSMENT_TIME " + FITNESS_ASSESSMENT_TIME * 60 * 1000);
                     if (duration >= (FITNESS_ASSESSMENT_TIME * 60 * 1000) && !trip.fitnessAssessed) {
                         trip.fitnessAssessed = true;
                         // Calculate average speed (in meters per millisecond)
@@ -191,8 +188,6 @@ router.post("/addLocation", verifyToken, async (req, res) => {
                         // Calculate the distance the player can cover with the average speed in the remaining time
                         const possibleDistanceWithAverageSpeed = averageSpeed * remainingTime;
 
-                        console.log("possibleDistanceWithAverageSpeed" + possibleDistanceWithAverageSpeed)
-                        console.log("remainingDistance" + remainingDistance)
                         if ((possibleDistanceWithAverageSpeed < remainingDistance) && (possibleDistanceWithAverageSpeed > 0)) {
                             trip.distanceGoal.distance = trip.distance + possibleDistanceWithAverageSpeed;
                             goalModified = true;
@@ -556,9 +551,6 @@ async function getElevationGainBetweenTwoPoints(path) {
 
         if (response.data.status === 'OK') {
             const elevationData = response.data.results;
-            console.log(path);
-            console.log("last " + elevationData[1].elevation);
-            console.log("first " + elevationData[0].elevation);
             let elevationChange = elevationData[1].elevation - elevationData[0].elevation;
             return elevationChange > 0 ? elevationChange : 0;
         } else {

@@ -7,6 +7,7 @@ const multer = require('multer');
 const multerS3 = require('multer-s3');
 const AWS = require('aws-sdk');
 const { selectRandomQuestions } = require('./utility.js');
+const axios = require('axios');
 
 const {
     NEW_BIRD_REWARD_COEFFECIENT,
@@ -28,6 +29,7 @@ const upload = multer({
         bucket: process.env.AMAZON_BUCKET_NAME,
         acl: 'private', // Set ACL to private
         metadata: function (req, file, cb) {
+            req.file = file;
             cb(null, { fieldName: file.fieldname });
         },
         key: function (req, file, cb) {
@@ -69,6 +71,25 @@ router.post('/upload', verifyToken, upload.single('photo'), async (req, res) => 
         // Get the location and timestamp from the request
         const location = req.body.location ? JSON.parse(req.body.location) : null;
         const timestamp = req.body.timestamp || new Date();
+
+        // Generate a pre-signed URL for the image
+        const url = s3.getSignedUrl('getObject', {
+            Bucket: process.env.AMAZON_BUCKET_NAME,
+            Key: req.file.key,
+            Expires: 60 * 30 //30 minutes access to the image
+        });
+
+        const AI_ENDPOINT = process.env.AI_PREDICTION_URL;
+        const AI_HEADERS = {
+            'Prediction-Key': process.env.AI_PREDICTION_KEY,
+            'Content-Type': 'application/json'
+        };
+
+        const aiResponse = await axios.post(AI_ENDPOINT, {
+            Url: url
+        }, { headers: AI_HEADERS });
+
+        console.log(aiResponse.data.predictions[0].tagName);
 
         // Identify the bird using AI (for now, randomly select a bird with rarity between 1 and 4)
         const birdCountWithRarity1to4 = await Bird.countDocuments({ rarity: { $lte: 4 } });

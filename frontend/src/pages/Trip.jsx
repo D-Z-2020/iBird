@@ -32,6 +32,7 @@ export default function Trip() {
     const [autoCentering, setAutoCentering] = useState(true);
     const [showCropPopup, setShowCropPopup] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [isUploading, setIsUploading] = useState(false);
 
     const token = localStorage.getItem("token");
     const navigate = useNavigate();
@@ -90,7 +91,8 @@ export default function Trip() {
 
     useEffect(() => {
         let watchId;
-
+        let lastSentTimestamp = null;
+        const sendInterval = 5000; // 5 second
         const trackLocation = () => {
             if (navigator.geolocation) {
                 watchId = navigator.geolocation.watchPosition(showPosition, (error) => {
@@ -102,6 +104,16 @@ export default function Trip() {
         };
 
         const showPosition = (position) => {
+            const ct = new Date();
+            setSpeed(position.coords.speed);
+
+            // Check if enough time has passed since the last sent timestamp
+            // Do not upload location when uploading
+            if ((lastSentTimestamp && ct - lastSentTimestamp < sendInterval) || isUploading) {
+                return; // Do not send update yet
+            }
+    
+            lastSentTimestamp = ct;
             const latLng = {
                 lat: position.coords.latitude,
                 lng: position.coords.longitude
@@ -124,7 +136,6 @@ export default function Trip() {
                     setTripForGoal(res.data);
                     setPath(updatedPath);
                     setCurrentPosition(latLng);
-                    setSpeed(position.coords.speed);
                     setCurrentTimestamp(currentTime);
                 })
                 .catch(error => {
@@ -198,6 +209,8 @@ export default function Trip() {
                             timestamp={currentTimestamp}
                             showCropPopup={showCropPopup}
                             setShowCropPopup={setShowCropPopup}
+                            IsUploading={isUploading}
+                            setIsUploading={setIsUploading}
                         />}
                     </div>
 

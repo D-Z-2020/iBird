@@ -6,10 +6,9 @@ import 'react-image-crop/dist/ReactCrop.css'
 import Spinner from './Spinner';
 // import './BirdImageUploader.css';
 
-export default function BirdImageUploader({ onUploadComplete, location, timestamp, showCropPopup, setShowCropPopup }) {
+export default function BirdImageUploader({ onUploadComplete, location, timestamp, showCropPopup, setShowCropPopup, IsUploading, setIsUploading }) {
     const [selectedFile, setSelectedFile] = useState(null);
     const imgRef = useRef(null);
-    const [isLoading, setIsLoading] = useState(false);
     const [crop, setCrop] = useState({
         unit: '%', // 'px' or '%'
         x: 25,
@@ -91,7 +90,7 @@ export default function BirdImageUploader({ onUploadComplete, location, timestam
     };
 
     const handleUpload = async () => {
-        setIsLoading(true);
+        setIsUploading(true);
         const token = localStorage.getItem('token');
 
         if (upImg && token) {
@@ -101,21 +100,22 @@ export default function BirdImageUploader({ onUploadComplete, location, timestam
                 .then(res => {
                     console.log('Successfully uploaded');
                     onUploadComplete();
+                    closeCropPopup();
                 })
                 .catch(error => {
+                    alert("please try again!")
                     console.error('Error uploading image:', error);
                 })
                 .finally(() => {
-                    setIsLoading(false);
-                    closeCropPopup();
+                    setIsUploading(false);
                 });
         }
     };
 
     return (
         <div className="uploader-container">
-            {isLoading && <Spinner />}
-            <input type="file" id="default-btn" accept="image/*" onChange={handleFileChange} disabled={isLoading} ref={inputFileRef} />
+            {IsUploading && <Spinner />}
+            <input type="file" id="default-btn" accept="image/*" onChange={handleFileChange} disabled={IsUploading} ref={inputFileRef} />
             {showCropPopup && (
                 <div style={{
                     position: 'fixed',
@@ -144,8 +144,8 @@ export default function BirdImageUploader({ onUploadComplete, location, timestam
                             <img src={upImg} ref={imgRef} />
                         </ReactCrop>
                         <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', margin: '10px 0' }}>
-                            <Button color='primary' onClick={handleUpload} disabled={isLoading}>Upload</Button>
-                            <Button color='primary' onClick={closeCropPopup} disabled={isLoading}>Discard</Button>
+                            <Button color='primary' onClick={handleUpload} disabled={IsUploading}>Upload</Button>
+                            <Button color='primary' onClick={closeCropPopup} disabled={IsUploading}>Discard</Button>
                         </div>
                     </div>
                 </div>
