@@ -15,8 +15,8 @@ export default function CustomResultPage({ totalQuestions, correctQuestions, onS
             {totalQuestions === correctQuestions && <p>Full Marks Reward: {QUIZ_FULL_MARKS_REWARD_COEFFICIENT} * {birdRarity} = {QUIZ_FULL_MARKS_REWARD_COEFFICIENT * birdRarity}</p>}
 
             {totalQuestions === correctQuestions ?
-                <p className="result-text">Total: {QUIZ_CORRECT_QUESTION_REWARD_COEFFICIENT * correctQuestions + QUIZ_FULL_MARKS_REWARD_COEFFICIENT * birdRarity}</p> :
-                <p className="result-text">Total: {QUIZ_CORRECT_QUESTION_REWARD_COEFFICIENT * correctQuestions}</p>
+                <p className="result-text result-total">Total: {QUIZ_CORRECT_QUESTION_REWARD_COEFFICIENT * correctQuestions + QUIZ_FULL_MARKS_REWARD_COEFFICIENT * birdRarity}</p> :
+                <p className="result-text result-total">Total: {QUIZ_CORRECT_QUESTION_REWARD_COEFFICIENT * correctQuestions}</p>
             }
             <Button className="result-button" color='primary' onClick={onSubmitAndClose}>Close</Button>
         </div>
