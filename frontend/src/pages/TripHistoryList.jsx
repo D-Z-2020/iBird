@@ -3,6 +3,7 @@ import NavigationButton from "../components/NavigationButton";
 import { getInactiveTrips } from '../api/api';
 import { useNavigate } from "react-router-dom/dist";
 import { List, Switch } from 'antd-mobile'
+// import './TripHistoryList.css';
 
 
 export default function TripHistoryList() {
@@ -85,7 +86,7 @@ export default function TripHistoryList() {
                 // </table>
                 <List>
                     {trips.map((trip, index) => ( 
-                           <List.Item key={index}  onClick={() => navigate(`/start/history/${trip._id}`, { replace: true })}>
+                           <List.Item key={index}  className="list-item" onClick={() => navigate(`/start/history/${trip._id}`, { replace: true })}>
                                 <p>{createTime(trip.startDate)}</p>
                             </List.Item>
                         ))}
