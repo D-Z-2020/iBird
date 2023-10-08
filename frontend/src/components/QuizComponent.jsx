@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { submitQuizResults } from '../api/api';
 import QuizWelcome from './QuizWelcome';
 import Spinner from './Spinner';
+import './QuizComponent.css';
 
 export default function QuizComponent({ quizData, afterSubmit }) {
     const [quizStarted, setQuizStarted] = useState(false);
@@ -77,9 +78,9 @@ const overlayStyles = {
 
 const quizStyles = {
     width: '80%',
-    height: '80%',
+    height: '70%',
     backgroundColor: 'white',
     overflowY: 'auto',
-    padding: '20px',
+    padding: '10px',
     borderRadius: '20px'
 };
