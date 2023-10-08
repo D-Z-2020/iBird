@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "nodemon server.js",
     "start": "node server.js",
-    "popDB": "node ./db/popDB.js"
+    "popDB": "node ./db/popDB.js",
+    "removeSciQ": "node ./db/removeScientificNameQuestion.js"
   },
   "author": "",
   "license": "ISC",

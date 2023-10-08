@@ -1,18 +1,18 @@
 const LEVEL_1_DISTANCE_GOAL = {
-    distance: 7200,  // in meters
-    duration: 120,    // in minutes
+    distance: 1000,  // in meters
+    duration: 15,    // in minutes
     level: 1
 };
 
 const LEVEL_2_DISTANCE_GOAL = {
-    distance: 8000,
-    duration: 120,
+    distance: 1000,
+    duration: 15,
     level: 2
 };
 
 const LEVEL_3_DISTANCE_GOAL = {
-    distance: 8800,
-    duration: 120,
+    distance: 1000,
+    duration: 15,
     level: 3
 };
 

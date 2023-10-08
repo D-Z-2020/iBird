@@ -31,19 +31,6 @@ export default function TripOption() {
                         
               
                 </div>
-
-                <div className='cloumn'>
-                    <label htmlFor="level">Fitness Level:</label>
-                    <p>
-                        <select id="level" value={fitnessLevel} onChange={e => setFitnessLevel(e.target.value)}>
-                            <option value="low">Low</option>
-                            <option value="mid">Mid</option>
-                            <option value="high">High</option>
-                        </select>
-                    </p>
-              
-                </div>
-
                 <div className='Round_button'>
                     <button  onClick={(handleStart)}>Start</button>
                 </div>
