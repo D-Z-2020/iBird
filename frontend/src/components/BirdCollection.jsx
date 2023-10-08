@@ -41,7 +41,7 @@ export default function BirdCollection({ username, showRemainBird }) {
     return (
         <div>
             {showRemainBird ? <div className='Bird_Box'>
-                {myBirds.length > 0 ? <div>
+                {allBirds.length > 0 ? <div>
                     {allBirds.map((bird) => (
                         <BirdCard key={bird._id} bird={bird} owned={doesUserOwnBird(bird)} />
                     ))}

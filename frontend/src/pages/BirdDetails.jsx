@@ -35,7 +35,7 @@ export default function BirdDetails() {
         <div>
             <NavigationButton path={previousPath} text="Bird Detail" />
             <div className="bird-details-container">
-                <h2 className="bird-title">{bird.name} {'🌟'.repeat(bird.rarity)}</h2>
+                <h2 className="bird-title">{bird.name}</h2>
                 <div className="bird-info">
                     <p><strong>Maori Name:</strong> {bird.maoriName}</p>
                     <p><strong>Scientific Name:</strong> {bird.scientificName}</p>
@@ -48,7 +48,7 @@ export default function BirdDetails() {
                     <p><strong>habitat:</strong> {bird.habitat}</p>
                     <p><strong>description:</strong> {bird.description}</p>
 
-                    <p><strong>Rarity:</strong> {bird.rarity}</p>
+                    <p><strong>Rarity:</strong>{'🌟'.repeat(bird.rarity)}</p>
                 </div>
                 <div className="bird-images">
                     <h3>Images:</h3>

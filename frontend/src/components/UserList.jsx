@@ -7,7 +7,6 @@ import { AddOutline,MinusOutline  } from 'antd-mobile-icons'
 export default function UserList({ users, allowFriendActions = false, onFriendActionSuccess = () => { }, cantAddedFriendUsernames = [], excludedUsers = [] }) {
     const navigateWithState = useNavigator();
     const { handleAddFriend, handleRemoveFriend } = useFriendActions();
-    console.log(users);
     return (
         <div>
             {/* <table>

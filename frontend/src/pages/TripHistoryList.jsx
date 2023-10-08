@@ -25,7 +25,6 @@ export default function TripHistoryList() {
                 processedTrips.sort((a, b) => new Date(b.startDate) - new Date(a.startDate));
 
                 setTrips(processedTrips);
-                console.log(processedTrips);
                 setIsLoading(false);
             })
             .catch(err => {

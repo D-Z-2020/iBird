@@ -199,7 +199,7 @@ router.post("/addLocation", verifyToken, async (req, res) => {
 
             // check if player has not found bird for a duration minutes
             const durationPlayerNotFoundBird = new Date(timestamp) - new Date(trip.lastTimeFoundBird);
-            if (durationPlayerNotFoundBird > (BIRD_FLOW_DURATION * 60 * 1000) && !trip.quiz) {
+            if (trip.isEdugaming && durationPlayerNotFoundBird > (BIRD_FLOW_DURATION * 60 * 1000) && !trip.quiz) {
                 trip.lastTimeFoundBird = new Date(timestamp);
 
                 // Fetch the user details using userId

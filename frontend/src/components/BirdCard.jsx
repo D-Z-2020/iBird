@@ -25,7 +25,7 @@ function BirdCard({ bird, owned = true }) {
             ) : (
                 <p className="no-image">No Image Available</p>
             )}
-            <p className="bird-rarity"><strong>Rarity:</strong> {'🌟'.repeat(bird.rarity)}</p>
+            <p className="bird-rarity">{'🌟'.repeat(bird.rarity)}</p>
         </div>
     );
 }

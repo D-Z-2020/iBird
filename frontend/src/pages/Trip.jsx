@@ -45,7 +45,11 @@ export default function Trip() {
     };
     // If options are provided in the location state, it'll overwrite the default options
     const options = { ...defaultOptions, ...location.state };
-    const anchors = [60, window.innerHeight * 0.4, window.innerHeight * 0.8]
+
+    const mapHeight = document.getElementById('trip-map')?.offsetHeight;
+    const windowHeight = window.innerHeight;
+    const anchors = [60, windowHeight - 45 - mapHeight, windowHeight - 45 - mapHeight/3*2];
+
 
     const handlePhotoCaptured = (dataUri) => {
         // Convert Data URI to Blob
