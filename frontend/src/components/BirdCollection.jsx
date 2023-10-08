@@ -8,6 +8,10 @@ export default function BirdCollection({ username, showRemainBird }) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    const doesUserOwnBird = (bird) => {
+        return myBirds.some(myBird => myBird._id === bird._id);
+    };
+
     useEffect(() => {
         if (!username) return;
         const fetchBirds = async () => {
@@ -36,23 +40,29 @@ export default function BirdCollection({ username, showRemainBird }) {
 
     return (
         <div>
-            <div className='Bird_Box'>
-                <h2>Birds</h2>
+            {showRemainBird ? <div className='Bird_Box'>
                 {myBirds.length > 0 ? <div>
-                    {myBirds.map((bird) => (
-                        <BirdCard key={bird._id} bird={bird} />
+                    {allBirds.map((bird) => (
+                        <BirdCard key={bird._id} bird={bird} owned={doesUserOwnBird(bird)} />
                     ))}
                 </div> : <p>No Birds</p>}
-            </div>
+            </div> :
+                <div className='Bird_Box'>
+                    <h2>Birds</h2>
+                    {myBirds.length > 0 ? (
+                        <div>
+                            {allBirds.map((bird) => {
+                                // Check if the current bird is in the list of birds the user owns
+                                const isOwned = doesUserOwnBird(bird);
 
-            {showRemainBird && <div  className='Bird_Box'>
-                <h2>Keep looking for these birds</h2>
-                {notOwnedBirds.length > 0 ? <div>
-                    {notOwnedBirds.map((bird) => (
-                        <BirdCard key={bird._id} bird={bird} />
-                    ))}
-                </div> : <p >No Birds</p>}
-            </div>}
+                                // If the bird is owned by the user, display it; otherwise, skip rendering
+                                return isOwned ? <BirdCard key={bird._id} bird={bird} owned={true} /> : null;
+                            })}
+                        </div>
+                    ) : (
+                        <p>No Birds</p>
+                    )}
+                </div>}
         </div>
     );
 }

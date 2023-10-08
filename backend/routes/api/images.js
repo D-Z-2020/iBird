@@ -91,17 +91,28 @@ router.post('/upload', verifyToken, upload.single('photo'), async (req, res) => 
 
         console.log(aiResponse.data.predictions[0].tagName);
 
-        // Identify the bird using AI (for now, randomly select a bird with rarity between 1 and 4)
-        const birdCountWithRarity1to4 = await Bird.countDocuments({ rarity: { $lte: 4 } });
-        const randomBird = await Bird.findOne({ rarity: { $lte: 4 } }).skip(Math.floor(Math.random() * birdCountWithRarity1to4));
+        let birdToUse;
+
+        // Try to find the bird with the name from the AI prediction
+        const birdFromAI = await Bird.findOne({ name: aiResponse.data.predictions[0].tagName });
+
+        if (birdFromAI) {
+            birdToUse = birdFromAI;
+            console.log('success');
+        } else {
+            // If no bird with that name is found, fallback to a random bird with rarity <= 1
+            const birdCountWithRarity1 = await Bird.countDocuments({ rarity: { $lte: 1 } });
+            birdToUse = await Bird.findOne({ rarity: { $lte: 1 } }).skip(Math.floor(Math.random() * birdCountWithRarity1));
+            console.log('fail');
+        }
 
         // Randomly select questions for the quiz based on the bird's rarity
-        const selectedQuestions = selectRandomQuestions(randomBird);
+        const selectedQuestions = selectRandomQuestions(birdToUse);
 
         // Set the quiz field of the active trip
         activeTrip.quiz = {
-            birdName: randomBird.name,
-            birdRarity: randomBird.rarity,
+            birdName: birdToUse.name,
+            birdRarity: birdToUse.rarity,
             questions: selectedQuestions
         };
 
@@ -129,7 +140,7 @@ router.post('/upload', verifyToken, upload.single('photo'), async (req, res) => 
             userId: req.user._id,
             location: location,
             timestamp: timestamp,
-            birdId: randomBird._id
+            birdId: birdToUse._id
         });
 
         await newImage.save();
@@ -140,12 +151,12 @@ router.post('/upload', verifyToken, upload.single('photo'), async (req, res) => 
 
         // Check if the identified bird is already in the user's myBirds array
         const user = await User.findById(req.user._id);
-        if (!user.myBirds.includes(randomBird._id)) {
-            user.myBirds.push(randomBird._id);
-            activeTrip.scores += NEW_BIRD_REWARD_COEFFECIENT * randomBird.rarity;
+        if (!user.myBirds.includes(birdToUse._id)) {
+            user.myBirds.push(birdToUse._id);
+            activeTrip.scores += NEW_BIRD_REWARD_COEFFECIENT * birdToUse.rarity;
             await user.save();
         } else {
-            activeTrip.scores += REPEAT_BIRD_REWARD_COEFFECIENT * randomBird.rarity;
+            activeTrip.scores += REPEAT_BIRD_REWARD_COEFFECIENT * birdToUse.rarity;
         }
 
         await activeTrip.save();

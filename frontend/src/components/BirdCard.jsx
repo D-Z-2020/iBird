@@ -1,7 +1,7 @@
 import { useNavigator } from '../hooks/useNavigator';
 import './BirdCard.css';
 
-function BirdCard({ bird }) {
+function BirdCard({ bird, owned = true }) {
     const navigateWithState = useNavigator();
 
     const isLongName = bird.name.length > 20;
@@ -15,7 +15,13 @@ function BirdCard({ bird }) {
             </h3>
 
             {bird.images && bird.images.length > 0 ? (
-                <img className="bird-image" src={bird.images[0]} alt={`${bird.name}`} width="100" height="100" />
+                <img
+                    className={`bird-image ${!owned ? 'grayscale' : ''}`}
+                    src={bird.images[0]}
+                    alt={`${bird.name}`}
+                    width="100"
+                    height="100"
+                />
             ) : (
                 <p className="no-image">No Image Available</p>
             )}

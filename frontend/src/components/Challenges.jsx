@@ -6,7 +6,7 @@ import { ProgressCircle, Space } from 'antd-mobile'
 
 export default function Challenges({ username }) {
     const [user, setUser] = useState(null);
-    
+
     const achievedBadgeCount = user ? user.achievedChallanges.length : 0;
     const totalBadgeCount = 12;
     const progressPercentage = (achievedBadgeCount / totalBadgeCount) * 100;
@@ -29,7 +29,6 @@ export default function Challenges({ username }) {
 
     return (
         <div className="Challenges_box">
-            <h2>Rewards Collected</h2>
             {challengeTypes.map(type => (
                 challengeLevels.map(level => {
                     const achieved = user.achievedChallanges.some(ch => ch.type === type && ch.level === level);
@@ -37,11 +36,11 @@ export default function Challenges({ username }) {
                 })
             ))}
             {achievedBadgeCount !== null && totalBadgeCount !== null && (
-              <div className="progress_circle">
-                  <Space style={{ '--gap': '150px' }}>
-                      <ProgressCircle style={{ '--size': '90px',"font-weight":"bold","font-size":"large" }} percent={progressPercentage}>{`${Math.round(progressPercentage)}%`}</ProgressCircle>
-                  </Space>
-              </div>
+                <div className="progress_circle">
+                    <Space style={{ '--gap': '150px' }}>
+                        <ProgressCircle style={{ '--size': '90px', "font-weight": "bold", "font-size": "large" }} percent={progressPercentage}>{`${Math.round(progressPercentage)}%`}</ProgressCircle>
+                    </Space>
+                </div>
             )}
         </div>
     );
