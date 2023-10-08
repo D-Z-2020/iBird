@@ -12,6 +12,10 @@
   /* text-shadow: 2px 2px 4px #7bbfea; */
 }
 
+.result-title::after {
+  content: "\1F4CA"; /* Example: Bar chart emoji */
+}
+
 .result-text {
   font-size: 18px;
   margin-bottom: 10px;
@@ -35,14 +39,7 @@
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
-.result-total::before {
-  content: "\1F4CA";  /* Example: Bar chart emoji */
-  position: absolute;
-  left: -20px;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
 .result-total {
   margin-top: 10px;
+  font-size: 25px;
 }

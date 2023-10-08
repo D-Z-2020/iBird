@@ -12,7 +12,7 @@ const mapContainerStyle = {
 
 const googleMapsApiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
-export default function TripMap({ path, center, autoCentering, images, isHistory, trip }) {
+export default function TripMap({ path, center, autoCentering, images, isHistory, trip, onMapHeightChange }) {
     const { selectedImage, setSelectedImage } = useContext(UserContext);
     const [imageUrls, setImageUrls] = useState({});
     const [mapCenter, setMapCenter] = useState(center);
@@ -25,6 +25,7 @@ export default function TripMap({ path, center, autoCentering, images, isHistory
     useEffect(() => {
         if (tripMapRef.current) {
             setTripMapHeight(tripMapRef.current.mapRef.offsetHeight);
+            onMapHeightChange && onMapHeightChange(tripMapRef.current.mapRef.offsetHeight);
         }
     }, [tripMapRef, isGoogleMapsLoaded]);
 

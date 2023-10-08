@@ -13,9 +13,9 @@ export default function QuizWelcome({ quizData, onAccept, onReject }) {
                     style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}>
                     {quizData.birdName}</span> (rarity={quizData.birdRarity})!</p>
                 :
-                <p className="quiz-description">Conguradulation! You just found <span onClick={() => navigateWithState(`/bird/${quizData.birdName}`, { replace: true })}
+                <p className="quiz-description">Congratulations! You just found <span onClick={() => navigateWithState(`/bird/${quizData.birdName}`, { replace: true })}
                     style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}>
-                    {quizData.birdName}</span> (rarity={quizData.birdRarity})! You have got the reward for that, but answering this quiz will give you extra scores!</p>
+                    {quizData.birdName}</span> (rarity={quizData.birdRarity})! You have received scores for that, but answering this quiz will give you extra scores! <b>Feel free to click on the bird's name to view information before attempting this quiz!</b></p>
             }
             <Button className="quiz-button" color='primary' onClick={onAccept}>Start the Quiz</Button>
             <Button className="quiz-button" color='primary' onClick={onReject}>Not Interested</Button>

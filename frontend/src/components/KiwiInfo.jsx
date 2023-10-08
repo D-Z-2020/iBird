@@ -40,27 +40,22 @@ export default function KiwiInfo({ username, canLevelUp }) {
             <div className="row">
                 <div className="cloumn">
                     <p className="cloumn_name">Level: </p>
-                    <p className="cloumn_progress">
+                    <div className="cloumn_progress">
                         <Space direction='vertical' block>
                             <ProgressBar percent={user.kiwiLevel}  text={'Lv.'+user.kiwiLevel} />
                         </Space>
-                    </p>
+                    </div>
                 </div>
-
-                {/* <div className="cloumn">
-                    Stage: 
-                    {user.kiwiStage}
-                </div> */}
 
                 {user.kiwiLevel < 100 && 
                     <div className="cloumn">
-                        <p className="cloumn_name">EXP:</p>
-                        <p className="cloumn_progress">
+                        <div className="cloumn_name">EXP:</div>
+                        <div className="cloumn_progress">
                             <Space direction='vertical' block>
                                 {/*<ProgressBar percent={(user.kiwiExp/expNeededForNextLevel)*100} text={user.kiwiExp+"/"+expNeededForNextLevel} />*/}
                                 <ProgressBar percent={(Math.floor(user.kiwiExp)/expNeededForNextLevel)*100} text={Math.floor(user.kiwiExp)+"/"+Math.floor(expNeededForNextLevel)} />
                             </Space>
-                        </p>
+                        </div>
                     </div>}
 
                 {canLevelUp && <>

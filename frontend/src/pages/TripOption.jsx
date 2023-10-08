@@ -18,7 +18,7 @@ export default function TripOption() {
 
             <main  className='Trip_option_box'>
                 <div className='cloumn'>
-                    <label for="checkbox">
+                    <label htmlFor="checkbox">
                         Include edugaming concept:      </label>
                         <p>
                             <input
@@ -33,7 +33,7 @@ export default function TripOption() {
                 </div>
 
                 <div className='cloumn'>
-                    <label for="level">Fitness Level:</label>
+                    <label htmlFor="level">Fitness Level:</label>
                     <p>
                         <select id="level" value={fitnessLevel} onChange={e => setFitnessLevel(e.target.value)}>
                             <option value="low">Low</option>

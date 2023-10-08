@@ -227,6 +227,7 @@ export default function Trip() {
 
                     <TripStatistics trip={tripForGoal} realSpeed={speed} />
 
+                    <h3 style={{paddingTop:"1px", fontSize:"20px"}}>Goals</h3>
                     <FitnessGoalProgress trip={tripForGoal} />
                     {trip && trip.isEdugaming && <>
                         <BirdCountGoalProgress goals={tripForGoal?.birdCountGoals} /></>}

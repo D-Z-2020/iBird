@@ -1,7 +1,7 @@
 import { useFriendActions } from '../hooks/useFriendActions';
 import { useNavigator } from '../hooks/useNavigator';
-import { List, Switch,Image } from 'antd-mobile'
-import { AddOutline,MinusOutline  } from 'antd-mobile-icons'
+import { List, Switch, Image } from 'antd-mobile'
+import { AddOutline, MinusOutline } from 'antd-mobile-icons'
 
 
 export default function UserList({ users, allowFriendActions = false, onFriendActionSuccess = () => { }, cantAddedFriendUsernames = [], excludedUsers = [] }) {
@@ -41,27 +41,27 @@ export default function UserList({ users, allowFriendActions = false, onFriendAc
                 </tbody>a
             </table> */}
             <List >
-                {users && users.map((user) => (
+                {users && users.map((user, index) => (
                     !excludedUsers.includes(user.username)
                     &&
-                    <List.Item extra={
+                    <List.Item key={index} extra={
                         <span onClick={cantAddedFriendUsernames.includes(user.username) ?
                             () => handleRemoveFriend(user.username, onFriendActionSuccess) :
-                            () => handleAddFriend(user.username, onFriendActionSuccess)} style={{cursor:"pointer"}}>
+                            () => handleAddFriend(user.username, onFriendActionSuccess)} style={{ cursor: "pointer" }}>
                             {cantAddedFriendUsernames.includes(user.username) ? <MinusOutline /> : <AddOutline />}
 
                         </span>
                     } prefix={
                         <Image
-                          src=""
-                          style={{ borderRadius: 20 }}
-                          fit='cover'
-                          width={40}
-                          height={40}
-                          onClick={() => navigateWithState(`/users/${user.username}`, { replace: true })}
+                            src=""
+                            style={{ borderRadius: 20 }}
+                            fit='cover'
+                            width={40}
+                            height={40}
+                            onClick={() => navigateWithState(`/users/${user.username}`, { replace: true })}
                         />
-                      }   >
-                        <span onClick={() => navigateWithState(`/users/${user.username}`, { replace: true })} style={{cursor:"pointer"}}>
+                    }   >
+                        <span onClick={() => navigateWithState(`/users/${user.username}`, { replace: true })} style={{ cursor: "pointer" }}>
                             {user.username}
                         </span>
                     </List.Item>
