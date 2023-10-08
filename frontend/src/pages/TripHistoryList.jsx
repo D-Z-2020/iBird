@@ -21,7 +21,7 @@ export default function TripHistoryList() {
                 }));
 
                 // Sort by startDate
-                processedTrips.sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
+                processedTrips.sort((a, b) => new Date(b.startDate) - new Date(a.startDate));
 
                 setTrips(processedTrips);
                 console.log(processedTrips);
@@ -44,7 +44,7 @@ export default function TripHistoryList() {
         let day = currentTime.getDate();
         let yfEn=["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][ currentTime.getMonth() ];
         let week = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][currentTime.getDay()];
-        return week+","+day+" "+yfEn;
+        return week+", "+day+" "+yfEn;
     }
 
 
