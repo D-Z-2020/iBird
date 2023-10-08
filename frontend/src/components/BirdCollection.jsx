@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import BirdCard from '../components/BirdCard';
 import { getAllbirds, getUserbirds } from '../api/api';
+import Spinner from './Spinner';
 
 export default function BirdCollection({ username, showRemainBird }) {
     const [myBirds, setMyBirds] = useState([]);
@@ -35,7 +36,7 @@ export default function BirdCollection({ username, showRemainBird }) {
         (bird) => !myBirds.some((myBird) => myBird._id === bird._id)
     );
 
-    if (loading) return <div>Loading...</div>;
+    if (loading) return <Spinner />;
     if (error) return <div>{error}</div>;
 
     return (

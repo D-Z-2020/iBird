@@ -2,6 +2,7 @@ import { useFriendActions } from '../hooks/useFriendActions';
 import { useNavigator } from '../hooks/useNavigator';
 import { List, Switch, Image } from 'antd-mobile'
 import { AddOutline, MinusOutline } from 'antd-mobile-icons'
+import { useEffect } from 'react';
 
 
 export default function UserList({ users, allowFriendActions = false, onFriendActionSuccess = () => { }, cantAddedFriendUsernames = [], excludedUsers = [] }) {
@@ -9,39 +10,8 @@ export default function UserList({ users, allowFriendActions = false, onFriendAc
     const { handleAddFriend, handleRemoveFriend } = useFriendActions();
     return (
         <div>
-            {/* <table>
-                <thead>
-                    <tr>
-                        <th>User Name</th>
-                        {allowFriendActions && <th>Add Friend</th>}
-                    </tr>
-                </thead>
-                <tbody>
-                    {users && users.map((user) => (
-                        !excludedUsers.includes(user.username)
-                        &&
-                        <tr key={user._id}>
-                            <td
-                                onClick={() => navigateWithState(`/users/${user.username}`, { replace: true })}
-                                style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}>
-                                {user.username}
-                            </td>
-
-                            {allowFriendActions &&
-                                <td
-                                    onClick={cantAddedFriendUsernames.includes(user.username) ?
-                                        () => handleRemoveFriend(user.username, onFriendActionSuccess) :
-                                        () => handleAddFriend(user.username, onFriendActionSuccess)}
-                                    style={{ cursor: 'pointer' }}>
-                                    {cantAddedFriendUsernames.includes(user.username) ? "❤️" : "🤍"}
-                                </td>
-                            }
-                        </tr>
-                    ))}
-                </tbody>a
-            </table> */}
             <List >
-                {users && users.map((user, index) => (
+                {users && (users.length !== 0 ? users.map((user, index) => (
                     !excludedUsers.includes(user.username)
                     &&
                     <List.Item key={index} extra={
@@ -53,7 +23,7 @@ export default function UserList({ users, allowFriendActions = false, onFriendAc
                         </span>
                     } prefix={
                         <Image
-                            src=""
+                            src={`https://ibird-images.s3.ap-southeast-2.amazonaws.com/evolution/${user.kiwiStage}.png`}
                             style={{ borderRadius: 20 }}
                             fit='cover'
                             width={40}
@@ -66,7 +36,7 @@ export default function UserList({ users, allowFriendActions = false, onFriendAc
                         </span>
                     </List.Item>
 
-                ))}
+                )) : <p>No friends</p>)}
             </List>
         </div>
     )

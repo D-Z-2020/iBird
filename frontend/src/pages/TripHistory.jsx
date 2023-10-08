@@ -6,7 +6,8 @@ import NavigationButton from '../components/NavigationButton';
 import FitnessGoalProgress from '../components/FitnessGoalProgress';
 import BirdCountGoalProgress from "../components/BirdCountGoalProgress";
 import TripStatistics from '../components/TripStatistics';
-import { FloatingPanel } from 'antd-mobile'
+import { FloatingPanel } from 'antd-mobile';
+import Spinner from '../components/Spinner';
 
 
 export default function TripHistory() {
@@ -46,7 +47,7 @@ export default function TripHistory() {
 
     return (
         <div>
-
+            {(!trip || !tripPath) && <Spinner />}
             <NavigationButton path="/start/history" text={trip ? createTime(trip.startDate) : ""} />
             {trip &&
                 <TripMap

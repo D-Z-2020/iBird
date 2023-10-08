@@ -3,6 +3,7 @@ import { useParams, useLocation } from 'react-router-dom';
 import { getBird } from '../api/api';
 import NavigationButton from '../components/NavigationButton';
 import './BirdDetails.css';
+import Spinner from '../components/Spinner';
 
 export default function BirdDetails() {
     const [bird, setBird] = useState(null);
@@ -27,14 +28,13 @@ export default function BirdDetails() {
         fetchBirdDetails();
     }, [name, token]);
 
-    if (loading) return <div>Loading...</div>;
     if (error) return <div>{error}</div>;
-    if (!bird) return <div>No bird found with the given name.</div>;
 
     return (
         <div>
+            {loading && <Spinner />}
             <NavigationButton path={previousPath} text="Bird Detail" />
-            <div className="bird-details-container">
+            {bird && <div className="bird-details-container">
                 <h2 className="bird-title">{bird.name}</h2>
                 <div className="bird-info">
                     <p><strong>Maori Name:</strong> {bird.maoriName}</p>
@@ -46,9 +46,10 @@ export default function BirdDetails() {
                     <p><strong>length:</strong> {bird.length}</p>
                     <p><strong>food:</strong> {bird.food}</p>
                     <p><strong>habitat:</strong> {bird.habitat}</p>
-                    <p><strong>description:</strong> {bird.description}</p>
-
                     <p><strong>Rarity:</strong>{'🌟'.repeat(bird.rarity)}</p>
+                    <br />
+                    <p><strong>description:</strong> {bird.description}</p>
+                    <br />
                 </div>
                 <div className="bird-images">
                     <h3>Images:</h3>
@@ -56,7 +57,7 @@ export default function BirdDetails() {
                         <img key={index} className="bird-image" src={imgSrc} alt={`${bird.name} image ${index}`} style={{ width: "100%" }} />
                     ))}
                 </div>
-            </div>
+            </div>}
         </div>
     );
 };

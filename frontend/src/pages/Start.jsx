@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import NavigationButton from '../components/NavigationButton';
 import { getActiveTrip } from '../api/api';
 import { useNavigate } from "react-router-dom";
-import { List } from 'antd-mobile'
+import { List } from 'antd-mobile';
+import Spinner from '../components/Spinner';
 
 export default function Start() {
     const [hasActiveTrip, setHasActiveTrip] = useState(false);
@@ -22,6 +23,7 @@ export default function Start() {
 
     return (
         <div>
+            {!hasActiveTrip && <Spinner />}
             <NavigationButton path="/" text="Getting Started!" />
 
             <List>

@@ -46,9 +46,7 @@ export default function Trip() {
     // If options are provided in the location state, it'll overwrite the default options
     const options = { ...defaultOptions, ...location.state };
 
-    const mapHeight = document.getElementById('trip-map')?.offsetHeight;
-    const windowHeight = window.innerHeight;
-    const anchors = [60, windowHeight - 45 - mapHeight, windowHeight - 45 - mapHeight/3*2];
+    const [anchors, setAnchors] = useState([60]);
 
 
     const handlePhotoCaptured = (dataUri) => {
@@ -116,7 +114,7 @@ export default function Trip() {
             if ((lastSentTimestamp && ct - lastSentTimestamp < sendInterval) || isUploading) {
                 return; // Do not send update yet
             }
-    
+
             lastSentTimestamp = ct;
             const latLng = {
                 lat: position.coords.latitude,
@@ -189,10 +187,9 @@ export default function Trip() {
                 setIsLoading(false);
             });
     }
-
     return (
         <div>
-            {isLoading && <Spinner />}
+            {(isLoading || !trip || !tripForGoal) && <Spinner />}
             <NavigationButton path="/start" text="Trip" />
 
             <TripMap
@@ -201,6 +198,11 @@ export default function Trip() {
                 autoCentering={autoCentering}
                 images={trip?.images}
                 trip={trip}
+                onMapHeightChange={(newHeight) => {
+                    const mapHeight = newHeight;
+                    const windowHeight = window.innerHeight;
+                    setAnchors([60, windowHeight - 45 - mapHeight, windowHeight - 45 - mapHeight / 3 * 2]);
+                }}
             />
             {tripForGoal && tripForGoal.quiz && <QuizComponent quizData={tripForGoal.quiz} afterSubmit={fetchTripDetails} />}
 
@@ -227,7 +229,7 @@ export default function Trip() {
 
                     <TripStatistics trip={tripForGoal} realSpeed={speed} />
 
-                    <h3 style={{paddingTop:"1px", fontSize:"20px"}}>Goals</h3>
+                    <h3 style={{ paddingTop: "1px", fontSize: "20px" }}>Goals</h3>
                     <FitnessGoalProgress trip={tripForGoal} />
                     {trip && trip.isEdugaming && <>
                         <BirdCountGoalProgress goals={tripForGoal?.birdCountGoals} /></>}
