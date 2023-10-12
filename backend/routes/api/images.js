@@ -1,4 +1,5 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const { Trip, Image, User, Bird } = require("../../db/schema");
 const { verifyToken } = require("../../middleware/auth.js");
 const router = express.Router();
@@ -48,7 +49,11 @@ const upload = multer({
 });
 
 router.post('/upload', verifyToken, upload.single('photo'), async (req, res) => {
+    const session = await mongoose.startSession();
+    session.startTransaction();
     if (!req.file) {
+        await session.commitTransaction();
+        session.endSession();
         return res.status(400).send('No file uploaded');
     }
 
@@ -57,14 +62,20 @@ router.post('/upload', verifyToken, upload.single('photo'), async (req, res) => 
         const activeTrip = await Trip.findOne({ userId: req.user._id, isActive: true });
 
         if (!activeTrip) {
+            await session.commitTransaction();
+            session.endSession();
             return res.status(400).send('No active trip found. Please start a trip before uploading photos.');
         }
 
         if (!activeTrip.isEdugaming) {
+            await session.commitTransaction();
+            session.endSession();
             return res.status(403).send('EduGaming is not enabled for this trip. Cannot upload bird images.');
         }
 
         if (activeTrip.quiz) {
+            await session.commitTransaction();
+            session.endSession();
             return res.status(400).send('You have Quiz to do!');
         }
 
@@ -160,8 +171,12 @@ router.post('/upload', verifyToken, upload.single('photo'), async (req, res) => 
         }
 
         await activeTrip.save();
+        await session.commitTransaction();
+        session.endSession();
         res.status(201).send('Image uploaded successfully');
     } catch (error) {
+        await session.abortTransaction();
+        session.endSession();
         console.error(error);
         res.status(500).send('Error uploading image');
     }

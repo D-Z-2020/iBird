@@ -1,4 +1,5 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const { User, Trip, Bird, Image } = require("../../db/schema");
 const { verifyToken } = require("../../middleware/auth.js");
 const router = express.Router();
@@ -114,19 +115,27 @@ router.post("/startNewTrip", verifyToken, async (req, res) => {
 });
 
 router.post("/addLocation", verifyToken, async (req, res) => {
+    const session = await mongoose.startSession();
+    session.startTransaction();
     const userId = req.user._id;
     const { latitude, longitude, timestamp } = req.body;
     let goalModified = false;
 
     const trip = await Trip.findOne({ userId, isActive: true });
 
-    if (!trip) return res.status(400).send("No active trip found.");
+    if (!trip) {
+        await session.commitTransaction();
+        session.endSession();
+        return res.status(400).send("No active trip found.");
+    }
 
     if (trip.locations.length > 0) {
         const lastLocation = trip.locations[trip.locations.length - 1];
 
         // If the new location matches the last location, skip it.
         if (latitude === lastLocation.latitude && longitude === lastLocation.longitude) {
+            await session.commitTransaction();
+            session.endSession();
             return res.status(200).json(trip);
         }
 
@@ -144,7 +153,7 @@ router.post("/addLocation", verifyToken, async (req, res) => {
             const originDistance = trip.distance;
             const distanceGoogle = Math.round(response.data.rows[0].elements[0].distance.value);
             const distanceHav = Math.round(haversineDistance(lastLocation.latitude, lastLocation.longitude, latitude, longitude));
-            
+
             const lastTime = new Date(lastLocation.timestamp).getTime();
             const thisTime = new Date(timestamp).getTime();
             const timeDifferenceSeconds = (thisTime - lastTime) / 1000; // Convert difference from milliseconds to seconds
@@ -254,6 +263,8 @@ router.post("/addLocation", verifyToken, async (req, res) => {
             if (timeDifference > 1800000) { // 30 minutes in milliseconds
                 trip.isActive = false;
                 await trip.save();
+                await session.commitTransaction();
+                session.endSession();
                 return res.status(400).send("Trip ended due to long time inactivated.");
             } else if (distance > 500) { // More than 500 meters
                 if (trip.suspiciousLocation) {
@@ -273,6 +284,8 @@ router.post("/addLocation", verifyToken, async (req, res) => {
             }
 
             await trip.save();
+            await session.commitTransaction();
+            session.endSession();
             if (goalModified) {
                 return res.status(207).json(trip);  // 207 Multi-Status
             } else {
@@ -280,6 +293,8 @@ router.post("/addLocation", verifyToken, async (req, res) => {
             }
 
         } catch (error) {
+            await session.abortTransaction();
+            session.endSession();
             console.error(error);
             return res.status(500).send("Error computing distance using Google Maps.");
         }
@@ -288,6 +303,8 @@ router.post("/addLocation", verifyToken, async (req, res) => {
         trip.startDate = new Date(timestamp);
         trip.endDate = new Date(timestamp);
         await trip.save();
+        await session.commitTransaction();
+        session.endSession();
         return res.status(200).json(trip);
     }
 });
@@ -572,14 +589,14 @@ function haversineDistance(lat1, lon1, lat2, lon2) {
     const R = 6371e3; // Earth radius in meters
     const dLat = toRadians(lat2 - lat1);
     const dLon = toRadians(lon2 - lon1);
-    
-    const a = 
+
+    const a =
         Math.sin(dLat / 2) * Math.sin(dLat / 2) +
         Math.cos(toRadians(lat1)) * Math.cos(toRadians(lat2)) *
         Math.sin(dLon / 2) * Math.sin(dLon / 2);
 
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    
+
     return R * c;
 }
 
