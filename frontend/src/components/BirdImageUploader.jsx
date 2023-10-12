@@ -89,26 +89,34 @@ export default function BirdImageUploader({ onUploadComplete, location, timestam
         }
     };
 
-    const handleUpload = async () => {
+    const handleUpload = async (retryCount = 10) => { // Set default retry count to 3
         setIsUploading(true);
         const token = localStorage.getItem('token');
 
         if (upImg && token) {
             const imageEl = imgRef.current;
             const croppedBlob = await getCroppedImg(imageEl);
-            uploadImage(token, croppedBlob, location, timestamp) //selectedFile or croppedBlob
+    
+            uploadImage(token, croppedBlob, location, timestamp)
                 .then(res => {
                     console.log('Successfully uploaded');
                     onUploadComplete();
                     closeCropPopup();
+                    setIsUploading(false);  // Set to false on success
                 })
                 .catch(error => {
-                    alert("please try again!")
                     console.error('Error uploading image:', error);
-                })
-                .finally(() => {
-                    setIsUploading(false);
+                    if (retryCount > 1) {
+                        // If there are remaining retries, call handleUpload again with reduced retry count
+                        handleUpload(retryCount - 1);
+                    } else {
+                        // If no more retries left, show alert and set isUploading to false
+                        alert("Sorry, please try again.");
+                        setIsUploading(false);
+                    }
                 });
+        } else {
+            setIsUploading(false); // Set to false if token or upImg is not available
         }
     };
 
