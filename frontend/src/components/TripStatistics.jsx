@@ -8,9 +8,9 @@ export default function TripStatistics({ trip, realSpeed }) {
         var startTime = new Date(startDate);
         var endTime = new Date(endDate);
         let start_hour = startTime.getHours();
-        let start_min = startTime.getMinutes();
+        let start_min = String(startTime.getMinutes()).padStart(2, '0');
         let end_hour = endTime.getHours();
-        let end_min = endTime.getMinutes();
+        let end_min = String(endTime.getMinutes()).padStart(2, '0');
         let start_bp = "a.m.";
         let end_bp = "a.m.";
         if (start_hour >= 12) {
