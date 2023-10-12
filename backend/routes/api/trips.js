@@ -141,9 +141,26 @@ router.post("/addLocation", verifyToken, async (req, res) => {
             });
 
             // This value is in meters
-            const distance = response.data.rows[0].elements[0].distance.value;
+            // let distance = response.data.rows[0].elements[0].distance.value;
+            let distance = haversineDistance(lastLocation.latitude, lastLocation.longitude, latitude, longitude);
+            distance = Math.round(distance);
             const originDistance = trip.distance;
-            trip.distance += distance;
+
+            const lastTime = new Date(lastLocation.timestamp).getTime();
+            const thisTime = new Date(timestamp).getTime();
+            const timeDifferenceSeconds = (thisTime - lastTime) / 1000; // Convert difference from milliseconds to seconds
+            const estimatedWalkingDistance = Math.round(2.0 * timeDifferenceSeconds);
+
+            if (distance > estimatedWalkingDistance) {
+                console.log("distance before:", distance);
+                
+                trip.distance += estimatedWalkingDistance;
+                distance = estimatedWalkingDistance;
+                
+                console.log("distance after:", distance);
+            } else {
+                trip.distance += distance;
+            }
             trip.scores += DISTANCE_COEFFECIENT * distance;
 
             const lastTwoPoints = [
@@ -558,6 +575,25 @@ async function getElevationGainBetweenTwoPoints(path) {
     } catch (error) {
         throw error;
     }
+}
+
+function haversineDistance(lat1, lon1, lat2, lon2) {
+    const R = 6371e3; // Earth radius in meters
+    const dLat = toRadians(lat2 - lat1);
+    const dLon = toRadians(lon2 - lon1);
+    
+    const a = 
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(toRadians(lat1)) * Math.cos(toRadians(lat2)) *
+        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    
+    return R * c;
+}
+
+function toRadians(degrees) {
+    return degrees * (Math.PI / 180);
 }
 
 module.exports = router;

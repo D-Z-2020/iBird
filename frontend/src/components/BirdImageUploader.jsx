@@ -147,6 +147,7 @@ export default function BirdImageUploader({ onUploadComplete, location, timestam
                             <Button color='primary' onClick={handleUpload} disabled={IsUploading}>Upload</Button>
                             <Button color='primary' onClick={closeCropPopup} disabled={IsUploading}>Discard</Button>
                         </div>
+                        <p style={{ color: "blue", backgroundColor: "white", padding: "3px" }}>Please select the bird portion for better AI prediction accuracy.</p>
                     </div>
                 </div>
             )}
