@@ -42,13 +42,13 @@ export default function BirdDetails() {
                     <p><strong>Other Names:</strong> {bird.otherNames.join(", ")}</p>
                     <p><strong>Conservation Status:</strong> {bird.conservationStatus}</p>
 
-                    <p><strong>weight:</strong> {bird.weight}</p>
-                    <p><strong>length:</strong> {bird.length}</p>
-                    <p><strong>food:</strong> {bird.food}</p>
-                    <p><strong>habitat:</strong> {bird.habitat}</p>
+                    <p><strong>Weight:</strong> {bird.weight}</p>
+                    <p><strong>Length:</strong> {bird.length}</p>
+                    <p><strong>Food:</strong> {bird.food}</p>
+                    <p><strong>Habitat:</strong> {bird.habitat}</p>
                     <p><strong>Rarity:</strong>{'🌟'.repeat(bird.rarity)}</p>
                     <br />
-                    <p><strong>description:</strong> {bird.description}</p>
+                    <p><strong>Description:</strong> {bird.description}</p>
                     <br />
                 </div>
                 <div className="bird-images">

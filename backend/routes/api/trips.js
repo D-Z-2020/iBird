@@ -493,13 +493,14 @@ const checkChallenges = (user) => {
 
 
 router.post('/submitQuizResults', verifyToken, async (req, res) => {
+    let activeTrip;
     try {
         const userId = req.user._id;
         const user = await User.findById(req.user._id);
         const quizResults = req.body.quizResults;
 
         // Find the active trip and set the quiz to null
-        const activeTrip = await Trip.findOne({ userId: userId, isActive: true });
+        activeTrip = await Trip.findOne({ userId: userId, isActive: true });
         let birdRarity = 0;
         const isFlowHelper = activeTrip.quiz.isFlowHelper;
         const birdName = activeTrip.quiz.birdName;
@@ -586,6 +587,10 @@ router.post('/submitQuizResults', verifyToken, async (req, res) => {
         res.status(200).send('Quiz results processed successfully');
     } catch (error) {
         console.log(error.message)
+        if (activeTrip) {
+            activeTrip.quiz = null;
+            await activeTrip.save();
+        }
         res.status(500).send('Server Error');
     }
 });
