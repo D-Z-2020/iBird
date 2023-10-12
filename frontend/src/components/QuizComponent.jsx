@@ -17,6 +17,7 @@ export default function QuizComponent({ quizData, afterSubmit }) {
             await submitQuizResults(localStorage.getItem('token'), quizSummary);
             await afterSubmit();
         } catch (error) {
+            await afterSubmit();
             console.error("Error submitting quiz results:", error);
         } finally {
             setIsLoading(false);
