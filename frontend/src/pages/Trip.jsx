@@ -132,7 +132,7 @@ export default function Trip() {
                     }));
 
                     if (res.status === 207) {
-                        alert('Your goal has been modified based on your current average speed.');
+                        alert('Based on your current average speed, we reduced your target distance. Have fun!');
                     }
 
                     setTripForGoal(res.data);
