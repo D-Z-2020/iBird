@@ -4,12 +4,12 @@ import NavigationButton from '../components/NavigationButton';
 
 export default function TripOption() {
     const [isEdugaming, setIsEdugaming] = useState(true);
-    const [fitnessLevel, setFitnessLevel] = useState('mid');
+    const [level, setLevel] = useState('1000 meters');
 
     const navigate = useNavigate();
 
     const handleStart = () => {
-        navigate('/start/trip', { state: { isEdugaming, fitnessLevel } });
+        navigate('/start/trip', { state: { isEdugaming, level } });
     };
 
     return (
@@ -33,12 +33,17 @@ export default function TripOption() {
                 </div>
 
                 <div className='cloumn'>
-                    <label htmlFor="level">Fitness Level:</label>
+                    <label htmlFor="level">Level:</label>
                     <p>
-                        <select id="level" value={fitnessLevel} onChange={e => setFitnessLevel(e.target.value)}>
-                            <option value="low">Low</option>
-                            <option value="mid">Mid</option>
-                            <option value="high">High</option>
+                        <select id="level" value={level} onChange={e => setLevel(e.target.value)}>
+                            <option value="1000 meters">1000 meters</option>
+                            <option value="2000 meters">2000 meters</option>
+                            <option value="3000 meters">3000 meters</option>
+                            <option value="4000 meters">4000 meters</option>
+                            <option value="5000 meters">5000 meters</option>
+                            <option value="6000 meters">6000 meters</option>
+                            <option value="7000 meters">7000 meters</option>
+                            <option value="8000 meters">8000 meters</option>
                         </select>
                     </p>
               

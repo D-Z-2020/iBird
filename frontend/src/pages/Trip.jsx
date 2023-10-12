@@ -41,7 +41,7 @@ export default function Trip() {
     // Set the default options
     const defaultOptions = {
         isEdugaming: true,
-        fitnessLevel: 'mid'
+        level: '1000 meters'
     };
     // If options are provided in the location state, it'll overwrite the default options
     const options = { ...defaultOptions, ...location.state };
@@ -83,7 +83,7 @@ export default function Trip() {
                     }));
                     setPath(existingPath);
                 } else {
-                    return startNewTrip(token, options.isEdugaming, options.fitnessLevel)
+                    return startNewTrip(token, options.isEdugaming, options.level)
                         .then((res) => {
                             setTrip(res.data);
                         });
@@ -158,7 +158,7 @@ export default function Trip() {
                     setPath(existingPath);
                     trackLocation();
                 } else {
-                    startNewTrip(token, options.isEdugaming, options.fitnessLevel)
+                    startNewTrip(token, options.isEdugaming, options.level)
                         .then((res) => {
                             setTrip(res.data);
                             trackLocation();

@@ -48,7 +48,12 @@ const { selectRandomQuestions } = require('./utility')
 const {
     LEVEL_1_DISTANCE_GOAL,
     LEVEL_2_DISTANCE_GOAL,
-    LEVEL_3_DISTANCE_GOAL } = require('../../goals_setting/fitnessGoal');
+    LEVEL_3_DISTANCE_GOAL,
+    LEVEL_4_DISTANCE_GOAL,
+    LEVEL_5_DISTANCE_GOAL,
+    LEVEL_6_DISTANCE_GOAL,
+    LEVEL_7_DISTANCE_GOAL,
+    LEVEL_8_DISTANCE_GOAL } = require('../../goals_setting/fitnessGoal');
 
 const client = new Client({});
 
@@ -59,20 +64,35 @@ router.post("/startNewTrip", verifyToken, async (req, res) => {
     if (trip) return res.status(400).send("You can only have one active trip").populate('images');
 
     // Check for required fields
-    if (typeof req.body.isEdugaming !== 'boolean' || !req.body.fitnessLevel) {
-        return res.status(400).send("Both isEdugaming and fitnessLevel are required");
+    if (typeof req.body.isEdugaming !== 'boolean' || !req.body.level) {
+        return res.status(400).send("Both isEdugaming and level are required");
     }
 
     let distanceGoal;
-    switch (req.body.fitnessLevel) {
-        case 'low':
+    switch (req.body.level) {
+        case '1000 meters':
             distanceGoal = LEVEL_1_DISTANCE_GOAL;
             break;
-        case 'mid':
+        case '2000 meters':
             distanceGoal = LEVEL_2_DISTANCE_GOAL;
             break;
-        case 'high':
+        case '3000 meters':
             distanceGoal = LEVEL_3_DISTANCE_GOAL;
+            break;
+        case '4000 meters':
+            distanceGoal = LEVEL_4_DISTANCE_GOAL;
+            break;
+        case '5000 meters':
+            distanceGoal = LEVEL_5_DISTANCE_GOAL;
+            break;
+        case '6000 meters':
+            distanceGoal = LEVEL_6_DISTANCE_GOAL;
+            break;
+        case '7000 meters':
+            distanceGoal = LEVEL_7_DISTANCE_GOAL;
+            break;
+        case '8000 meters':
+            distanceGoal = LEVEL_8_DISTANCE_GOAL;
             break;
         default:
             return res.status(400).send("Invalid fitness level provided");
@@ -99,7 +119,7 @@ router.post("/startNewTrip", verifyToken, async (req, res) => {
         newTrip = await Trip.create({
             userId: userId,
             isEdugaming: req.body.isEdugaming,
-            fitnessLevel: req.body.fitnessLevel,
+            level: distanceGoal.level,
             distanceGoal: distanceGoal,
             birdCountGoals: [birdCountGoal]
         });
@@ -107,7 +127,7 @@ router.post("/startNewTrip", verifyToken, async (req, res) => {
         newTrip = await Trip.create({
             userId: userId,
             isEdugaming: req.body.isEdugaming,
-            fitnessLevel: req.body.fitnessLevel,
+            level: distanceGoal.level,
             distanceGoal: distanceGoal
         });
     }
@@ -187,7 +207,7 @@ router.post("/addLocation", verifyToken, async (req, res) => {
                 if (trip.distance >= distanceGoal && duration <= distanceGoalDurationLimit) {
                     distanceGoalSuccess = true;
                     trip.distanceGoal.status = 'success';
-                    trip.scores += EXERCISE_GOAL_COEFFECIENT;
+                    trip.scores += EXERCISE_GOAL_COEFFECIENT * trip.level;
                 }
                 else if (duration > distanceGoalDurationLimit) {
                     trip.distanceGoal.endDistance = originDistance;
