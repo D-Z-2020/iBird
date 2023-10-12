@@ -89,7 +89,7 @@ export default function BirdImageUploader({ onUploadComplete, location, timestam
         }
     };
 
-    const handleUpload = async (retryCount = 10) => { // Set default retry count to 3
+    const handleUpload = async (retryCount = 10) => { // Set default retry count to 10
         setIsUploading(true);
         const token = localStorage.getItem('token');
 
