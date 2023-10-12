@@ -387,40 +387,50 @@ router.get("/getTrip/:tripId", verifyToken, async (req, res) => {
 });
 
 router.post("/endTrip", verifyToken, async (req, res) => {
-    const userId = req.user._id;
-    const user = await User.findById(req.user._id);
+    const session = await mongoose.startSession();
+    session.startTransaction();
+    try {
+        const userId = req.user._id;
+        const user = await User.findById(req.user._id);
 
-    const trip = await Trip.findOne({ userId, isActive: true });
-    if (!trip) return res.status(400).send("No active trip found.");
+        const trip = await Trip.findOne({ userId, isActive: true });
+        if (!trip) return res.status(400).send("No active trip found.");
 
-    if (trip.distanceGoal.status === 'inProgress') {
-        trip.distanceGoal.status = 'failed';
-    }
+        if (trip.distanceGoal.status === 'inProgress') {
+            trip.distanceGoal.status = 'failed';
+        }
 
-    if (trip.isEdugaming) {
-        // Update bird count goals that are inProgress to failed
-        for (let goal of trip.birdCountGoals) {
-            if (goal.status === 'inProgress') {
-                goal.status = 'failed';
+        if (trip.isEdugaming) {
+            // Update bird count goals that are inProgress to failed
+            for (let goal of trip.birdCountGoals) {
+                if (goal.status === 'inProgress') {
+                    goal.status = 'failed';
+                }
             }
         }
+
+        trip.isActive = false;
+        trip.endDate = Date.now();
+        trip.quiz = null;
+
+        user.totalWalkingDistance += trip.distance;
+        user.totalElevationGain += trip.elevationGain;
+
+        user.scores += trip.scores;
+
+        checkChallenges(user);
+
+        await trip.save();
+        await user.save();
+        await session.commitTransaction();
+        session.endSession();
+        return res.status(200).json(trip);
     }
-
-    trip.isActive = false;
-    trip.endDate = Date.now();
-    trip.quiz = null;
-
-    user.totalWalkingDistance += trip.distance;
-    user.totalElevationGain += trip.elevationGain;
-
-    user.scores += trip.scores;
-
-    checkChallenges(user);
-
-    await trip.save();
-    await user.save();
-
-    return res.status(200).json(trip);
+    catch (error) {
+        await session.abortTransaction();
+        session.endSession();
+        return res.status(500).send('Server Error');
+    }
 });
 
 const checkChallenges = (user) => {
