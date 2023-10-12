@@ -152,7 +152,7 @@ export default function BirdImageUploader({ onUploadComplete, location, timestam
                             <img src={upImg} ref={imgRef} />
                         </ReactCrop>
                         <div style={{ display: 'flex', justifyContent: 'center', gap: '10px', margin: '10px 0' }}>
-                            <Button color='primary' onClick={handleUpload} disabled={IsUploading}>Upload</Button>
+                            <Button color='primary' onClick={() => handleUpload(10)} disabled={IsUploading}>Upload</Button>
                             <Button color='primary' onClick={closeCropPopup} disabled={IsUploading}>Discard</Button>
                         </div>
                         <p style={{ color: "blue", backgroundColor: "white", padding: "3px" }}>Please select the bird portion for better AI prediction accuracy.</p>
