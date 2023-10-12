@@ -141,26 +141,17 @@ router.post("/addLocation", verifyToken, async (req, res) => {
             });
 
             // This value is in meters
-            // let distance = response.data.rows[0].elements[0].distance.value;
-            let distance = haversineDistance(lastLocation.latitude, lastLocation.longitude, latitude, longitude);
-            distance = Math.round(distance);
             const originDistance = trip.distance;
-
+            const distanceGoogle = Math.round(response.data.rows[0].elements[0].distance.value);
+            const distanceHav = Math.round(haversineDistance(lastLocation.latitude, lastLocation.longitude, latitude, longitude));
+            
             const lastTime = new Date(lastLocation.timestamp).getTime();
             const thisTime = new Date(timestamp).getTime();
             const timeDifferenceSeconds = (thisTime - lastTime) / 1000; // Convert difference from milliseconds to seconds
-            const estimatedWalkingDistance = Math.round(2.0 * timeDifferenceSeconds);
+            const estimatedDistance = Math.round(2.5 * timeDifferenceSeconds);
 
-            if (distance > estimatedWalkingDistance) {
-                console.log("distance before:", distance);
-                
-                trip.distance += estimatedWalkingDistance;
-                distance = estimatedWalkingDistance;
-                
-                console.log("distance after:", distance);
-            } else {
-                trip.distance += distance;
-            }
+            const distance = Math.min(distanceGoogle, distanceHav, estimatedDistance);
+            trip.distance += distance;
             trip.scores += DISTANCE_COEFFECIENT * distance;
 
             const lastTwoPoints = [
