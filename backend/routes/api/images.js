@@ -171,12 +171,12 @@ router.post('/upload', verifyToken, upload.single('photo'), async (req, res) => 
 router.get('/getImage/*', verifyToken, async (req, res) => {
     try {
         const key = req.params[0];  // This captures everything after '/getImage/'
-
+        
         // If the key contains "/", which mean it is a public url for image, return that directly back
         if (key.includes("/")) {
             return res.status(200).send(key);
         }
-        
+
         const image = await Image.findOne({ s3Key: key });
 
         if (!image) {

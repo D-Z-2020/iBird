@@ -37,6 +37,7 @@ export default function Start() {
                     <List.Item onClick={()=> navigate("/start/option")}>Start a trip!</List.Item>}   
                 <List.Item onClick={()=> navigate("/start/history")}>Trip History</List.Item>
             </List>
+
         </div>
     )
 }

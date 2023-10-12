@@ -16,7 +16,7 @@ export default function UserRegister() {
                 setUsername(username);
                 navigate("/", { replace: true });
             })
-            .catch((err) => { alert(err); })
+            .catch((err) => { alert(err.response.data); })
     }
 
     return (
