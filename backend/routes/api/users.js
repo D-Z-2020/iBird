@@ -21,7 +21,7 @@ router.post("/create", async (req, res) => {
 
     // duplicate usernames not allowed
     let user = await User.findOne({ username });
-    if (user) return res.sendStatus(409);
+    if (user) return res.status(409).send("Username already exists");
 
     // create user
     user = await User.create({
