@@ -336,7 +336,7 @@ const birds = [
             {
                 question: "What is the Conservation status of the European goldfinch?",
                 answers: ["Endangered", "Least Concern", "Introduced and Naturalised"],
-                correctAnswer: "2"
+                correctAnswer: "3"
             }
         ]
     },
@@ -346,7 +346,7 @@ const birds = [
         maoriName: "Kākāriki",
         scientificName: "Chloris chloris",
         otherNames: ["Greenfinch"],
-        conservationStatus: "Least Concern",
+        conservationStatus: "Introduced and Naturalised",
         weight: "20-32 g",
         length: "15-16 cm",
         food: "Seeds, insects",
@@ -391,7 +391,7 @@ const birds = [
             {
                 question: "What is the Conservation status of the European greenfinch?",
                 answers: ["Endangered", "Least Concern", "Introduced and Naturalised"],
-                correctAnswer: "2"
+                correctAnswer: "3"
             }
         ]
     },
