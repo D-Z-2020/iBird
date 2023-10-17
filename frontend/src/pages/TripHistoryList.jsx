@@ -6,7 +6,7 @@ import { List, Switch } from 'antd-mobile'
 import Spinner from "../components/Spinner";
 // import './TripHistoryList.css';
 
-
+// This page displays a list of all past trips.
 export default function TripHistoryList() {
     const [trips, setTrips] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -51,12 +51,14 @@ export default function TripHistoryList() {
         <div>
             <NavigationButton path="/start" text="TripHistory" />
 
+            {/* Loading, error, and list display */}
             {isLoading ? (
                 <Spinner />
             ) : error ? (
                 <p>Error loading trips. Please try again.</p>
             ) : (
                 <List>
+                    {/* Display the list of trips */}
                     {trips.length !== 0 ? trips.map((trip, index) => (
                         <List.Item key={index} className="list-item" onClick={() => navigate(`/start/history/${trip._id}`, { replace: true })}>
                             <p>{createTime(trip.startDate)}</p>

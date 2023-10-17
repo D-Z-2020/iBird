@@ -7,14 +7,14 @@ import UserContext from '../../UserContext';
 import { useFriendData } from '../hooks/useFriendData';
 import { Button,SearchBar } from 'antd-mobile'
 
-
+// This page serves as the interface for finding and adding new friends.
 export default function FindFriend() {
     const [users, setUsers] = useState([]);
     const [search, setSearch] = useState('');
     const { username } = useContext(UserContext);
     const { friends, fetchFriends } = useFriendData();
 
-
+    // Fetch all users
     useEffect(() => {
         getAllUsers(localStorage.getItem('token'))
             .then((res) => {
@@ -27,6 +27,7 @@ export default function FindFriend() {
         const searchTerm =e;
         setSearch(searchTerm);
 
+        // Fetch users based on the search term
         if (searchTerm === '') {
             getAllUsers(localStorage.getItem('token'))
                 .then((res) => {
@@ -43,12 +44,15 @@ export default function FindFriend() {
     return (
         <div>
             <NavigationButton path="/community" text="Find Friends" />
+
+            {/* Search bar for finding users */}
             <div className='tx_center_button'>
                 <SearchBar className='searchBar' 
                     onChange={handleSearchChange}  
                     placeholder="Search users by username"/>
             </div>
 
+            {/* List of users with friend actions enabled */}
             <UserList users={users} allowFriendActions={true} onFriendActionSuccess={fetchFriends} cantAddedFriendUsernames={friends} excludedUsers={[username]} />
         </div>
     );

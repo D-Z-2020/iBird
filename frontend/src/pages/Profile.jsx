@@ -10,6 +10,7 @@ import BirdCollection from '../components/BirdCollection';
 import Challenges from '../components/Challenges';
 import KiwiInfo from '../components/KiwiInfo';
 
+// This page serves as the user profile page, displaying various user profile data and collections.
 export default function Profile() {
     const [taragetUser, setTaragetUser] = useState(null);
     const paramUsername = useParams().username;
@@ -18,6 +19,7 @@ export default function Profile() {
     const { username } = useContext(UserContext);
     const { handleAddFriend, handleRemoveFriend } = useFriendActions();
 
+    // Fetch user information based on the username
     useEffect(() => {
         getUserInfo(localStorage.getItem("token"), paramUsername)
             .then((res) => {
@@ -52,8 +54,14 @@ export default function Profile() {
                 </div> :
                 <p className='Profile_text_box'>Not Found</p>
             }
+
+            {/* Display Kiwi information */}
             <KiwiInfo username={paramUsername} canLevelUp={false} />
+
+            {/* Display the user's bird collection */}
             <BirdCollection username={paramUsername} showRemainBird={false} />
+
+            {/* Display the user's challenges */}
             <Challenges username={paramUsername} />
 
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
