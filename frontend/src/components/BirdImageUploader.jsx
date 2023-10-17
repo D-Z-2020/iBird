@@ -6,6 +6,7 @@ import 'react-image-crop/dist/ReactCrop.css'
 import Spinner from './Spinner';
 // import './BirdImageUploader.css';
 
+// BirdImageUploader component for uploading bird images
 export default function BirdImageUploader({ onUploadComplete, location, timestamp, showCropPopup, setShowCropPopup, IsUploading, setIsUploading }) {
     const [selectedFile, setSelectedFile] = useState(null);
     const imgRef = useRef(null);

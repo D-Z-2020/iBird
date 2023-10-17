@@ -3,6 +3,7 @@ import BirdCard from '../components/BirdCard';
 import { getAllbirds, getUserbirds } from '../api/api';
 import Spinner from './Spinner';
 
+// BirdCollection component to display a collection of birds
 export default function BirdCollection({ username, showRemainBird }) {
     const [myBirds, setMyBirds] = useState([]);
     const [allBirds, setAllBirds] = useState([]);
@@ -41,6 +42,7 @@ export default function BirdCollection({ username, showRemainBird }) {
 
     return (
         <div>
+            {/* Conditionally render all birds or only owned birds */}
             {showRemainBird ? <div className='Bird_Box'>
                 {allBirds.length > 0 ? <div>
                     {allBirds.map((bird) => (

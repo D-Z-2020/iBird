@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { ProgressCircle, Space } from 'antd-mobile'
 import Spinner from "./Spinner";
 
-
+// The Challenges component displays a list of challenges and the user's progress.
 export default function Challenges({ username }) {
     const [user, setUser] = useState(null);
 
@@ -12,7 +12,7 @@ export default function Challenges({ username }) {
     const totalBadgeCount = 12;
     const progressPercentage = (achievedBadgeCount / totalBadgeCount) * 100;
 
-
+    // Fetch user information
     useEffect(() => {
         if (username) {
             getUserInfo(localStorage.getItem('token'), username)
@@ -29,12 +29,15 @@ export default function Challenges({ username }) {
 
     return (
         <div className="Challenges_box">
+            {/* Loop through each challenge type and level to display ChallengeCards */}
             {challengeTypes.map(type => (
                 challengeLevels.map(level => {
                     const achieved = user.achievedChallanges.some(ch => ch.type === type && ch.level === level);
                     return <ChallengeCard key={`${type}-${level}`} type={type} level={level} achieved={achieved} />;
                 })
             ))}
+
+            {/* Display progress circle if the badge counts are available */}
             {achievedBadgeCount !== null && totalBadgeCount !== null && (
                 <div className="progress_circle">
                     <Space style={{ '--gap': '150px' }}>

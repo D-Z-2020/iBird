@@ -1,6 +1,7 @@
 import { useNavigator } from '../hooks/useNavigator';
 import './BirdCard.css';
 
+// BirdCard component to display bird information
 function BirdCard({ bird, owned = true }) {
     const navigateWithState = useNavigator();
 
@@ -14,6 +15,7 @@ function BirdCard({ bird, owned = true }) {
                 {bird.name}
             </h3>
 
+            {/* Display bird image if available */}
             {bird.images && bird.images.length > 0 ? (
                 <img
                     className={`bird-image ${!owned ? 'grayscale' : ''}`}
@@ -25,6 +27,8 @@ function BirdCard({ bird, owned = true }) {
             ) : (
                 <p className="no-image">No Image Available</p>
             )}
+
+            {/* Display bird rarity using star emojis */}
             <p className="bird-rarity">{'🌟'.repeat(bird.rarity)}</p>
         </div>
     );

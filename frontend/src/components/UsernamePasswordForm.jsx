@@ -4,6 +4,8 @@ import {
     Input,
     Button,
   } from 'antd-mobile'
+
+// Used to display the username and password form
 export default function UsernamePasswordForm({ buttonText, onSubmit }) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
