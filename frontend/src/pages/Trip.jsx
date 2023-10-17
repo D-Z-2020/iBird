@@ -21,7 +21,8 @@ export const center = {
     lng: aucklandLng
 };
 
-
+// This page handles the user's trip, 
+// including tracking location, uploading bird images, and displaying trip data.
 export default function Trip() {
     const [path, setPath] = useState([]);
     const [currentPosition, setCurrentPosition] = useState(center);
@@ -191,7 +192,8 @@ export default function Trip() {
         <div>
             {(isLoading || !trip || !tripForGoal) && <Spinner />}
             <NavigationButton path="/start" text="Trip" />
-
+            
+            {/* Map component */}
             <TripMap
                 path={path}
                 center={currentPosition}
@@ -204,8 +206,11 @@ export default function Trip() {
                     setAnchors([60, windowHeight - 45 - mapHeight, windowHeight - 45 - mapHeight / 3 * 2]);
                 }}
             />
+            
+            {/* Quiz component */}
             {tripForGoal && tripForGoal.quiz && <QuizComponent quizData={tripForGoal.quiz} afterSubmit={fetchTripDetails} />}
 
+            {/* Floating panel for additional controls and information */}
             <FloatingPanel anchors={anchors} className={`${showCropPopup ? "locked-panel" : ""}`}>
                 <div className="floatingpanel_box">
                     <div className="margin_bottom">

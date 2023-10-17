@@ -5,7 +5,9 @@ import NavigationButton from '../components/NavigationButton';
 import './BirdDetails.css';
 import Spinner from '../components/Spinner';
 
+// This page serves as the main page for displaying the details of a specific bird.
 export default function BirdDetails() {
+    // State variables to hold bird details, loading status, and any errors
     const [bird, setBird] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -13,6 +15,7 @@ export default function BirdDetails() {
     const token = localStorage.getItem('token');
     const previousPath = useLocation().state?.from?.pathname || '/';
 
+    // Fetching bird details
     useEffect(() => {
         const fetchBirdDetails = async () => {
             try {
@@ -32,6 +35,7 @@ export default function BirdDetails() {
 
     return (
         <div>
+            {/* Displaying a spinner while loading */}
             {loading && <Spinner />}
             <NavigationButton path={previousPath} text="Bird Detail" />
             {bird && <div className="bird-details-container">

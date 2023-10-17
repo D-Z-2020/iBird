@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import NavigationButton from '../components/NavigationButton';
 
+// This page allows the user to select goals for a new trip.
 export default function TripOption() {
     const [isEdugaming, setIsEdugaming] = useState(true);
     const [level, setLevel] = useState('1000 meters');
@@ -17,6 +18,7 @@ export default function TripOption() {
             <NavigationButton path={'/start'} text={'Trip Options'} />
 
             <main  className='Trip_option_box'>
+                {/* Edugaming option */}
                 <div className='cloumn'>
                     <label htmlFor="checkbox">
                         Include edugaming concept:      </label>
@@ -32,6 +34,7 @@ export default function TripOption() {
               
                 </div>
 
+                {/* Level selection */}
                 <div className='cloumn'>
                     <label htmlFor="level">Level:</label>
                     <p>

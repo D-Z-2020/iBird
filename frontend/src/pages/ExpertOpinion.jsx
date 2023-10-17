@@ -7,7 +7,7 @@ import { useNavigator } from '../hooks/useNavigator';
 import { Button } from 'antd-mobile'
 import './ExpertOpinion.css';
 
-
+// This page is for experts to review and verify bird images.
 export default function ExpertOpinion() {
     const [images, setImages] = useState([]);
     const [birds, setBirds] = useState([]);
@@ -90,14 +90,20 @@ export default function ExpertOpinion() {
                     onClick={() => navigateWithState(`/birds/collection`, { replace: true })}>
                     View Bird Collection
                 </Button>
+
+                {/* Section to display images that need verification */}
                 <div className="section-container">
                     <h3 className="section-title">Pleasr verify these birds</h3>
                     <ExpertImagesTable images={images.filter(img => img.expertStatus === 'inProgress')} handleUpdateClick={handleUpdateClick} />
                 </div>
+
+                {/* Section to display images that have been verified */}
                 <div className="section-container">
                     <h3 className="section-title">Verified</h3>
                     <ExpertImagesTable images={images.filter(img => img.expertStatus === 'done')} handleUpdateClick={handleUpdateClick} />
                 </div>
+
+                {/* Modal for expert to select a bird type for an image */}
                 {showModal && (
                     <div className="overlay">
                         <div className="modal-form">

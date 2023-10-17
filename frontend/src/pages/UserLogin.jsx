@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import './UserLogin.css';
 import logo from '../../public/iBirdLogo.png';
 
+// UserLogin component for handling user login
 export default function UserLogin() {
     const { setUsername } = useContext(UserContext);
     const navigate = useNavigate();

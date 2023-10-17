@@ -9,7 +9,7 @@ import TripStatistics from '../components/TripStatistics';
 import { FloatingPanel } from 'antd-mobile';
 import Spinner from '../components/Spinner';
 
-
+// This page displays the history of a specific trip.
 export default function TripHistory() {
     const { tripId } = useParams();
     const [trip, setTrip] = useState(null);
@@ -19,6 +19,7 @@ export default function TripHistory() {
 
     const [anchors, setAnchors] = useState([60]);
 
+    // Fetch trip details by ID
     useEffect(() => {
         if (tripId) {
             getTripById(token, tripId)
@@ -49,6 +50,8 @@ export default function TripHistory() {
         <div>
             {(!trip || !tripPath) && <Spinner />}
             <NavigationButton path="/start/history" text={trip ? createTime(trip.startDate) : ""} />
+            
+            {/* Map component */}   
             {trip &&
                 <TripMap
                     className="ma_tp"

@@ -6,6 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import './UserRegister.css';
 import logo from '../../public/iBirdLogo.png';
 
+// UserRegister component for handling user registration
 export default function UserRegister() {
     const { setUsername } = useContext(UserContext);
     const navigate = useNavigate();
@@ -26,6 +27,8 @@ export default function UserRegister() {
             <div className="logo-container">
                 <img src={logo} alt="Project Logo" className="logo" /> 
             </div>
+
+            {/* Registration Text */}
             <div className='Login_text_box'>
                 <h1>Create Account</h1>
                 <p>Fill your information below</p>
