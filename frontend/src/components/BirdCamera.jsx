@@ -4,7 +4,7 @@ import 'react-html5-camera-photo/build/css/index.css';
 import { useState } from 'react';
 import {Button} from 'antd-mobile'
 
-
+// BirdCamera component for capturing bird photos
 export default function BirdCamera({ onPhotoCaptured }) {
     const [showCamera, setShowCamera] = useState(false);
     const [photoSrc, setPhotoSrc] = useState('');
@@ -36,8 +36,10 @@ export default function BirdCamera({ onPhotoCaptured }) {
 
     return (
         <div>
+            {/* Show camera interface */}
             {showCamera ? (
                 <div style={cameraStyle}>
+                    {/* Show captured photo if available */}
                     {photoSrc ? (
                         <div>
                             <img src={photoSrc} alt="Captured" style={{width:"100vw"}}/>
@@ -47,6 +49,7 @@ export default function BirdCamera({ onPhotoCaptured }) {
                         </div>
                     ) : (
                         <div>
+                            {/* Camera component */}
                             <Camera onTakePhoto={(dataUri) => handleTakePhoto(dataUri)} idealFacingMode="environment" />
                             <Button color='primary'   onClick={closeCamera}>Back</Button>
                         </div>

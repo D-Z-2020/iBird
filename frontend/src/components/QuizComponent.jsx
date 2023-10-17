@@ -6,6 +6,7 @@ import QuizWelcome from './QuizWelcome';
 import Spinner from './Spinner';
 import './QuizComponent.css';
 
+// Manage the quiz flow and displaying the quiz questions and results.
 export default function QuizComponent({ quizData, afterSubmit }) {
     const [quizStarted, setQuizStarted] = useState(false);
     const [correctQuestions, setCorrectQuestions] = useState(0);

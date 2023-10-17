@@ -3,7 +3,7 @@ import { levelUp, getUserInfo } from "../api/api";
 import { Button, ProgressBar, Space } from 'antd-mobile';
 import Spinner from '../components/Spinner';
 
-
+// The KiwiInfo component displays the user's Kiwi bird level and experience information.
 export default function KiwiInfo({ username, canLevelUp }) {
     const [user, setUser] = useState(null);
 
@@ -29,15 +29,18 @@ export default function KiwiInfo({ username, canLevelUp }) {
 
     if (!user) return <Spinner />;
 
+    // Calculate the experience needed for the next level
     const expNeededForNextLevel = user.kiwiLevel * 1000;
 
     return (
         <div className="Kiwi_box">
+            {/* Display the Kiwi bird image */}
             <div className="medal_box">
                 <img src={`https://ibird-images.s3.ap-southeast-2.amazonaws.com/evolution/${user.kiwiStage}.png`} alt="Kiwi Bird" width={'300px'} />
             </div>
 
             <div className="row">
+                {/* Display the Kiwi level */}
                 <div className="cloumn">
                     <p className="cloumn_name">Level: </p>
                     <div className="cloumn_progress">
@@ -47,6 +50,7 @@ export default function KiwiInfo({ username, canLevelUp }) {
                     </div>
                 </div>
 
+                {/* Display the experience bar*/}
                 {user.kiwiLevel < 100 &&
                     <div className="cloumn">
                         <div className="cloumn_name">EXP:</div>
@@ -57,6 +61,7 @@ export default function KiwiInfo({ username, canLevelUp }) {
                         </div>
                     </div>}
 
+                {/* Display the scores and level-up button if canLevelUp is true */}
                 {canLevelUp && <>
                     <div className="cloumn">
                         <p className="cloumn_name">My Scores: </p>

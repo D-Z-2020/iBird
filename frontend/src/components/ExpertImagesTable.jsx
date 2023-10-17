@@ -3,6 +3,7 @@ import { useNavigator } from '../hooks/useNavigator'
 import { Button} from 'antd-mobile'
 import './ExpertImagesTable.css';
 
+// The ExpertImagesTable component displays a table of images for expert review.
 export default function ExpertImagesTable({ images, handleUpdateClick }) {
     const navigateWithState = useNavigator();
     return (
@@ -18,11 +19,14 @@ export default function ExpertImagesTable({ images, handleUpdateClick }) {
             <tbody>
                 {images.map(image => (
                     <tr key={image._id} className="table-row">
+                        {/* Username cell with clickable navigation */}
                         <td className="clickable-cell"
                             onClick={() => navigateWithState(`/users/${image.userId.username}`, { replace: true })}
                             style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}>
                             {image.userId.username}
                         </td>
+
+                        {/* Image cell */}
                         <td>
                             <img
                                 src={image.imageUrl}
@@ -30,6 +34,8 @@ export default function ExpertImagesTable({ images, handleUpdateClick }) {
                                 width="100"
                             />
                         </td>
+
+                        {/* Bird name cell with clickable navigation */}
                         {image.birdId ?
                             <td className="clickable-cell"
                                 onClick={() => navigateWithState(`/bird/${image.birdId.name}`, { replace: true })}

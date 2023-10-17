@@ -4,6 +4,7 @@ import { QUIZ_CORRECT_QUESTION_REWARD_COEFFICIENT } from '../gameConstants'
 import {Button} from 'antd-mobile'
 import './CustomResultPage.css';
 
+// The CustomResultPage component displays the results of a quiz.
 export default function CustomResultPage({ totalQuestions, correctQuestions, onSubmitAndClose, birdRarity }) {
     return (
         <div className="result-container">
@@ -14,6 +15,7 @@ export default function CustomResultPage({ totalQuestions, correctQuestions, onS
 
             {totalQuestions === correctQuestions && <p className="result-text">Full Marks Reward: {QUIZ_FULL_MARKS_REWARD_COEFFICIENT} × {birdRarity} = {QUIZ_FULL_MARKS_REWARD_COEFFICIENT * birdRarity}</p>}
 
+            {/* Display the total reward */}
             {totalQuestions === correctQuestions ?
                 <p className="result-text result-total">Total: {QUIZ_CORRECT_QUESTION_REWARD_COEFFICIENT * correctQuestions + QUIZ_FULL_MARKS_REWARD_COEFFICIENT * birdRarity}</p> :
                 <p className="result-text result-total">Total: {QUIZ_CORRECT_QUESTION_REWARD_COEFFICIENT * correctQuestions}</p>

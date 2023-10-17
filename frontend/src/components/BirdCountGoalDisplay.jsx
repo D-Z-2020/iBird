@@ -1,5 +1,6 @@
 import React from 'react'
 
+// BirdCountGoalDisplay component to display the status of a bird count goal
 export default function BirdCountGoalDisplay({ goal }) {
     if (!goal) return null;
 
