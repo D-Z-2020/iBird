@@ -22,6 +22,7 @@ AWS.config.update({
     region: process.env.AMAZON_REGION
 });
 const s3 = new AWS.S3();
+const {uploadingTrips} = require('../sharedState');
 
 
 const upload = multer({
@@ -78,6 +79,7 @@ router.post('/upload', verifyToken, upload.single('photo'), async (req, res) => 
             session.endSession();
             return res.status(400).send('You have Quiz to do!');
         }
+        uploadingTrips[activeTrip._id] = true;
 
         // Get the location and timestamp from the request
         const location = req.body.location ? JSON.parse(req.body.location) : null;
@@ -173,11 +175,15 @@ router.post('/upload', verifyToken, upload.single('photo'), async (req, res) => 
         await activeTrip.save();
         await session.commitTransaction();
         session.endSession();
+        delete uploadingTrips[activeTrip._id];
         res.status(201).send('Image uploaded successfully');
     } catch (error) {
         await session.abortTransaction();
         session.endSession();
         console.error(error);
+        if (activeTrip) {
+            delete uploadingTrips[activeTrip._id];
+        }
         res.status(500).send('Error uploading image');
     }
 });

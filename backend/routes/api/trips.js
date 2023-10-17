@@ -56,6 +56,7 @@ const {
     LEVEL_8_DISTANCE_GOAL } = require('../../goals_setting/fitnessGoal');
 
 const client = new Client({});
+const {uploadingTrips} = require('../sharedState');
 
 router.post("/startNewTrip", verifyToken, async (req, res) => {
     const userId = req.user._id;
@@ -149,6 +150,10 @@ router.post("/addLocation", verifyToken, async (req, res) => {
         return res.status(400).send("No active trip found.");
     }
 
+    // uploading photo, do not process add location
+    if (uploadingTrips[trip._id]) {
+        return res.status(200).json(trip);
+    }
     if (trip.locations.length > 0) {
         const lastLocation = trip.locations[trip.locations.length - 1];
 
