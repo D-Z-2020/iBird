@@ -1,4 +1,4 @@
-
+// The FitnessGoalInfDisplay component displays information about the user's fitness goal.
 export default function FitnessGoalInfDisplay({ goal, currentValue, target, title, endGrade }) {
     if (goal.status === "failed") {
         return <>

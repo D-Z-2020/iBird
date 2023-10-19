@@ -4,7 +4,7 @@ import { List, Switch, Image } from 'antd-mobile'
 import { AddOutline, MinusOutline } from 'antd-mobile-icons'
 import { useEffect } from 'react';
 
-
+// Show userList contents in Community page
 export default function UserList({ users, allowFriendActions = false, onFriendActionSuccess = () => { }, cantAddedFriendUsernames = [], excludedUsers = [] }) {
     const navigateWithState = useNavigator();
     const { handleAddFriend, handleRemoveFriend } = useFriendActions();

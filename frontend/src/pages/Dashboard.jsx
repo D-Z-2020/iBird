@@ -13,6 +13,8 @@ import './Dashboard.css';
 import logo from '../../public/iBirdLogo.png';
 
 
+// This page serves as the main dashboard for the user, 
+// providing quick navigation to various features of the application.
 export default function Dashboard() {
     const { username, setUsername } = useContext(UserContext);
     const location = useLocation();
@@ -27,6 +29,7 @@ export default function Dashboard() {
         setUsername(null);
     };
 
+    // Fetch user information when the username changes
     useEffect(() => {
         if (!username) return;
         getUserInfo(localStorage.getItem('token'), username)
@@ -41,6 +44,8 @@ export default function Dashboard() {
                     <p className='title'>Welcome, {username}</p>
                     <img src={logo} alt="Project Logo" className="logo" />
                 </div>
+
+                {/* List of navigation items */}
                 <List>
                     <List.Item onClick={()=> navigate("/start")}>Getting Started!</List.Item>
                     <List.Item onClick={()=>  navigate("/community")}>Community</List.Item>
@@ -49,6 +54,7 @@ export default function Dashboard() {
                     <List.Item onClick={()=>  navigate("/challengesPage")}>Challenges</List.Item>
                     <List.Item onClick={()=>  navigate("/myKiwi")}>My Kiwi</List.Item>
                     
+                    {/* Conditionally render Expert Opinion if the user is an expert */}
                     {isExpert && <>
                         <List.Item onClick={()=>  navigate("/expertOpinion")}>Expert Opinion</List.Item>
                         <br />
@@ -58,26 +64,6 @@ export default function Dashboard() {
                 <div className='tx_center_button'>
                     <Button fill='outline' color='primary' onClick={handleLogout}>Logout</Button>
                 </div>
-
-
-                {/* <NavigationButton path="/start" text="Getting Started!" />
-                <br />
-                <NavigationButton path="/community" text="Community" />
-                <br />
-                <NavigationButton path={`/users/${username}`} text="My Profile" state={{ from: location }} />
-                <br />
-                <NavigationButton path="/birds/collection" text="Bird Collection" />
-                <br />
-                <NavigationButton path="/challengesPage" text="Challenges" />
-                <br />
-                <NavigationButton path="/myKiwi" text="My Kiwi" />
-                <br />
-                {isExpert && <>
-                    <NavigationButton path="/expertOpinion" text="Expert Opinion" />
-                    <br />
-                </>} */}
-
-
         </div>
     )
 }

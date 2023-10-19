@@ -4,7 +4,7 @@ import { useNavigator } from '../hooks/useNavigator';
 import { requestExpertOpinion } from '../api/api';
 import './BirdTableRow.css';
 
-
+// The BirdTableRow component displays a single row in the bird table.
 export default function BirdTableRow({ image, setMapCenter, setSelectedImage }) {
     const [imageUrl, setImageUrl] = useState(null);
     const [expertStatus, setExpertStatus] = useState(image.expertStatus);
@@ -29,6 +29,7 @@ export default function BirdTableRow({ image, setMapCenter, setSelectedImage }) 
             });
     };
 
+    // Fetch the image URL
     useEffect(() => {
         getImageByKey(localStorage.getItem('token'), image.s3Key)
             .then(res => {
@@ -41,7 +42,10 @@ export default function BirdTableRow({ image, setMapCenter, setSelectedImage }) 
 
     return (
         <tr>
+            {/* Display the bird image */}
             <td>{imageUrl && <img src={imageUrl} alt="Bird" width="100" />}</td>
+            
+            {/* Display the bird name if available */}
             {image.birdId ?
                 <td className="clickable-cell"
                     onClick={() => navigateWithState(`/bird/${image.birdId.name}`, { replace: true })}
@@ -51,12 +55,15 @@ export default function BirdTableRow({ image, setMapCenter, setSelectedImage }) 
                 <td>No Bird</td>
             }
 
+            {/* Display the map icon to show bird location */}
             {/* <td>{image.timestamp}</td> */}
             <td className="clickable-cell"
                 onClick={() => handleBirdLocationClick()}
                 >
                 <p className="map-icon">🗺️</p>
             </td>
+
+            {/* Display the expert opinion status */}
             <td>
                 {expertStatus === 'NA' && (
                     <button className="request-button" onClick={handleExpertRequest}>Need Expert</button>

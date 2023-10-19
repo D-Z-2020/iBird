@@ -12,6 +12,7 @@ const mapContainerStyle = {
 
 const googleMapsApiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
 
+// Main TripMap component
 export default function TripMap({ path, center, autoCentering, images, isHistory, trip, onMapHeightChange }) {
     const { selectedImage, setSelectedImage } = useContext(UserContext);
     const [imageUrls, setImageUrls] = useState({});

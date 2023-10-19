@@ -3,11 +3,13 @@ import { useNavigator } from '../hooks/useNavigator'
 import {Button} from 'antd-mobile'
 import './QuizWelcome.css';
 
+// Display the quiz introduction and options to start or reject the quiz.
 export default function QuizWelcome({ quizData, onAccept, onReject }) {
     const navigateWithState = useNavigator();
 
     return (
         <div className="quiz-welcome-container">
+            {/* Display different messages based on whether the quiz is a flow helper or not */}
             {quizData.isFlowHelper ?
                 <p className="quiz-description">Looks like you haven't found any birds for a while. Answering this quiz correctly will reward you <span onClick={() => navigateWithState(`/bird/${quizData.birdName}`, { replace: true })}
                     style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}>

@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
 import FitnessGoalInfDisplay from "./FitnessGoalInfDisplay";
 
+// The FitnessGoalProgress component displays the progress of the user's fitness goal.
 export default function FitnessGoalProgress({ trip }) {
     const [remainingTimeDistance, setRemainingTimeDistance] = useState(null);
 
+    // Effect to calculate the remaining time for the distance goal
     useEffect(() => {
         if (trip && trip.distanceGoal) {
             const startTime = new Date(trip.distanceGoal.startDate).getTime();
@@ -33,6 +35,7 @@ export default function FitnessGoalProgress({ trip }) {
         <div style={{ marginBottom: "10px", marginTop: "10px" }}>
             {trip &&
                 <div className='Text_column_box'>
+                    {/* Display the fitness goal information */}
                     <FitnessGoalInfDisplay
                         goal={trip.distanceGoal}
                         currentValue={trip.distance}
@@ -40,6 +43,8 @@ export default function FitnessGoalProgress({ trip }) {
                         title="Distance Goal"
                         endGrade={trip.distanceGoal.endDistance}
                     />
+
+                    {/* Display the remaining time if the goal is in progress */}
                     {trip.distanceGoal.status === "inProgress" &&
                         <p>
                             <span className='cloumn_name'>Remaining Time</span>

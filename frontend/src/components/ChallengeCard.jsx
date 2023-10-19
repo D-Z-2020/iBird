@@ -17,6 +17,7 @@ import {
     ELEVATION_GAIN_CHALLANGES_GOLD,
 } from '../gameConstants'
 
+// The ChallengeCard component displays a single challenge card with its badge and description.
 export default function ChallengeCard({ type, level, achieved }) {
     const badgeUrls = {
         bronze: achieved ? 'https://ibird-images.s3.ap-southeast-2.amazonaws.com/badges/bronze.png' : 'https://ibird-images.s3.ap-southeast-2.amazonaws.com/badges/bronze_black.png',
@@ -24,6 +25,7 @@ export default function ChallengeCard({ type, level, achieved }) {
         gold: achieved ? 'https://ibird-images.s3.ap-southeast-2.amazonaws.com/badges/gold.png' : 'https://ibird-images.s3.ap-southeast-2.amazonaws.com/badges/gold_black.png'
     };
 
+    // Descriptions for the challenges based on type and level
     const challenges = {
         birdCollection: {
             bronze: `Collect ${BIRD_COLLECTION_CHALLANGES_BRONZE} birds`,
