@@ -1,3 +1,31 @@
+/* This file contains the constants for the game.
+
+QUIZ_FULL_MARKS_REWARD_COEFFICIENT: When participants answer all the quiz questions correctly,
+the reward they receive equals this constant times the rarity of the bird in that quiz.
+
+QUIZ_CORRECT_QUESTION_REWARD_COEFFICIENT: When participants answer one quiz question correctly,
+the reward they receive equals this constant times the rarity of the bird in that quiz.
+
+BIRD_COLLECTION_CHALLANGES_BRONZE
+BIRD_COLLECTION_CHALLANGES_SILVER
+BIRD_COLLECTION_CHALLANGES_GOLD
+The number of birds needed to be collected for each challenge level: bronze, silver, or gold.
+
+CORRECT_QUIZZES_CHALLANGES_BRONZE
+CORRECT_QUIZZES_CHALLANGES_SILVER
+BCORRECT_QUIZZES_CHALLANGES_GOLD
+The number of quizzes that need to be answered correctly for each challenge level: bronze, silver, or gold.
+
+WALKING_DISTANCE_CHALLANGES_BRONZE
+WALKING_DISTANCE_CHALLANGES_SILVER
+WALKING_DISTANCE_CHALLANGES_GOLD
+The walking distance required for each challenge level: bronze, silver, or gold.
+
+ELEVATION_GAIN_CHALLANGES_BRONZE
+ELEVATION_GAIN_CHALLANGES_SILVER
+ELEVATION_GAIN_CHALLANGES_GOLD
+The elevation gain required for each challenge level: bronze, silver, or gold.
+*/
 const QUIZ_FULL_MARKS_REWARD_COEFFICIENT = 500;
 const QUIZ_CORRECT_QUESTION_REWARD_COEFFICIENT = 100;
 
