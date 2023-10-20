@@ -21,6 +21,7 @@ import ChallengesPage from './pages/ChallengesPage';
 import MyKiwi from './pages/MyKiwi';
 import ExpertOpinion from './pages/ExpertOpinion';
 
+// root component of our application
 function App() {
     const [username, setUsername] = useState(null);
     const [selectedImage, setSelectedImage] = useState(null);

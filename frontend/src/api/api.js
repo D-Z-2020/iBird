@@ -1,6 +1,6 @@
-/**
- * Wrap axios calls in our own functions
- */
+/* 
+    Wrap axios calls in our own functions.
+*/
 
 import axios from "axios";
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -134,7 +134,7 @@ export const removeFriend = (token, username) => {
 
 // =============================
 
-
+// player start a new trip
 export const startNewTrip = (token, isEdugaming, level) => {
     return axios.post(START_NEW_TRIP_URL, {
         isEdugaming: isEdugaming,
@@ -144,12 +144,14 @@ export const startNewTrip = (token, isEdugaming, level) => {
     });
 }
 
+// player add a location
 export const addLocation = (token, latitude, longitude, timestamp) => {
     return axios.post(ADD_LOCATION_URL, { latitude, longitude, timestamp }, {
         headers: { authorization: `Bearer ${token}`, "ngrok-skip-browser-warning": true }
     });
 }
 
+// get the active trip for player
 export const getActiveTrip = (token) => {
     return axios.get(
         GET_ACTIVE_TRIP_URL,
@@ -157,6 +159,7 @@ export const getActiveTrip = (token) => {
     );
 }
 
+// get the inactive trip for player
 export const getInactiveTrips = (token) => {
     return axios.get(
         GET_INACTIVE_TRIPS_URL,
@@ -164,6 +167,7 @@ export const getInactiveTrips = (token) => {
     );
 }
 
+// get the trip by id
 export const getTripById = (token, id) => {
     return axios.get(
         `${GET_TRIP_BY_ID_URL}/${id}`,
@@ -171,12 +175,14 @@ export const getTripById = (token, id) => {
     );
 }
 
+// end a trip
 export const endTrip = (token) => {
     return axios.post(END_TRIP_URL, {}, {
         headers: { authorization: `Bearer ${token}`, "ngrok-skip-browser-warning": true }
     });
 }
 
+// submit the results for quiz
 export const submitQuizResults = (token, quizResults) => {
     return axios.post(SUBMIT_QUIZ_URL, { quizResults }, {
         headers: { authorization: `Bearer ${token}`, "ngrok-skip-browser-warning": true }
@@ -211,12 +217,14 @@ export const getImageByKey = (token, key) => {
     );
 }
 
+// request expert to confirm the AI recognition results
 export const requestExpertOpinion = (token, imageId) => {
     return axios.post(REQUEST_EXPERT_URL, { imageId }, {
         headers: { authorization: `Bearer ${token}`, "ngrok-skip-browser-warning": true }
     });
 }
 
+// get the bird image and show to the expert
 export const getImagesForExpertReview = (token) => {
     return axios.get(
         `${IMAGES_FOR_EXPERT_URL}`,
@@ -224,6 +232,7 @@ export const getImagesForExpertReview = (token) => {
     );
 }
 
+// expert update the bird recognition results
 export const expertUpdateBird = (token, imageId, selectedBirdId) => {
     return axios.post(EXPERT_UPDATE_BIRD_URL, { imageId, selectedBirdId }, {
         headers: { authorization: `Bearer ${token}`, "ngrok-skip-browser-warning": true }
@@ -232,6 +241,7 @@ export const expertUpdateBird = (token, imageId, selectedBirdId) => {
 
 // ============================================
 
+// get all birds
 export const getAllbirds = (token) => {
     return axios.get(
         GET_AII_BIRDS_URL,
@@ -239,6 +249,7 @@ export const getAllbirds = (token) => {
     );
 }
 
+// get current user's birds
 export const getMybirds = (token) => {
     return axios.get(
         GET_MY_BIRDS_URL,
@@ -246,6 +257,7 @@ export const getMybirds = (token) => {
     );
 }
 
+// get a user's birds by user name
 export const getUserbirds = (token, username) => {
     return axios.get(
         `${GET_USER_BIRDS_URL}/${username}`,
@@ -253,6 +265,7 @@ export const getUserbirds = (token, username) => {
     );
 }
 
+// get all avaliable birds
 export const getBird = (token, name) => {
     return axios.get(
         `${GET_BIRD_URL}/${name}`,
