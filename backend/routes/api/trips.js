@@ -1,3 +1,6 @@
+/*
+This file handles the '/trips' path.
+*/
 const express = require('express');
 const mongoose = require('mongoose');
 const { User, Trip, Bird, Image } = require("../../db/schema");
@@ -58,6 +61,7 @@ const {
 const client = new Client({});
 const {uploadingTrips} = require('../sharedState');
 
+// Player start a new trip
 router.post("/startNewTrip", verifyToken, async (req, res) => {
     const userId = req.user._id;
 
@@ -135,6 +139,7 @@ router.post("/startNewTrip", verifyToken, async (req, res) => {
     return res.status(201).json(newTrip);
 });
 
+// Player add a new location to the map
 router.post("/addLocation", verifyToken, async (req, res) => {
     const session = await mongoose.startSession();
     session.startTransaction();
@@ -334,6 +339,7 @@ router.post("/addLocation", verifyToken, async (req, res) => {
     }
 });
 
+// Get all active trips for a player
 router.get("/getActiveTrip", verifyToken, async (req, res) => {
     const userId = req.user._id;
 
@@ -355,6 +361,7 @@ router.get("/getActiveTrip", verifyToken, async (req, res) => {
     return res.status(200).json(trip);
 });
 
+// Get all inactive trips for a player.
 router.get("/getInactiveTrips", verifyToken, async (req, res) => {
     const userId = req.user._id;
     const trip = await Trip.find({ userId, isActive: false });
@@ -391,6 +398,7 @@ router.get("/getTrip/:tripId", verifyToken, async (req, res) => {
     return res.status(200).json(trip);
 });
 
+// Player ends a trip
 router.post("/endTrip", verifyToken, async (req, res) => {
     const session = await mongoose.startSession();
     session.startTransaction();
@@ -438,6 +446,7 @@ router.post("/endTrip", verifyToken, async (req, res) => {
     }
 });
 
+// Check if challenges have been met after end trip.
 const checkChallenges = (user) => {
     // Bird Collection Challenge
     if (user.myBirds.length >= BIRD_COLLECTION_CHALLANGES_BRONZE && !user.achievedChallanges.some(ch => ch.type === 'birdCollection' && ch.level === 'bronze')) {
@@ -496,7 +505,7 @@ const checkChallenges = (user) => {
     }
 }
 
-
+// Player subtmit their results for quizzes
 router.post('/submitQuizResults', verifyToken, async (req, res) => {
     let activeTrip;
     try {
@@ -600,6 +609,7 @@ router.post('/submitQuizResults', verifyToken, async (req, res) => {
     }
 });
 
+// get the elevation gain between 2 coordinates.
 async function getElevationGainBetweenTwoPoints(path) {
     // If array does not has 2 points, return elevation gain as 0
     if (path.length !== 2) {
@@ -625,6 +635,7 @@ async function getElevationGainBetweenTwoPoints(path) {
     }
 }
 
+// The implementation of haversine formula to calculate the distance between 2 coordinates
 function haversineDistance(lat1, lon1, lat2, lon2) {
     const R = 6371e3; // Earth radius in meters
     const dLat = toRadians(lat2 - lat1);
@@ -640,6 +651,7 @@ function haversineDistance(lat1, lon1, lat2, lon2) {
     return R * c;
 }
 
+// function to change from degrees to radians.
 function toRadians(degrees) {
     return degrees * (Math.PI / 180);
 }

@@ -1,3 +1,6 @@
+/*
+This file handles the '/friends' path.
+*/
 const express = require('express');
 const { User } = require("../../db/schema");
 const { verifyToken } = require("../../middleware/auth.js");

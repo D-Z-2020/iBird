@@ -3,6 +3,10 @@ const { Bird } = require('./schema');
 const dotenv = require('dotenv');
 dotenv.config();
 
+/*
+This program connects to the MongoDB database and removes all quiz questions
+that ask about scientific names for birds.
+*/
 mongoose.connect(process.env.DB_URL, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
         console.log('Connected to MongoDB');

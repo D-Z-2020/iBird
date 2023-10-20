@@ -3,6 +3,11 @@ const { Bird } = require('./schema')
 const dotenv = require('dotenv');
 dotenv.config();
 
+/* 
+This program connects to the MongoDB database, clears the existing bird data, 
+populates the database with bird data an array.
+*/
+
 // MongoDB connection
 mongoose
     .connect(process.env.DB_URL, { useNewUrlParser: true })

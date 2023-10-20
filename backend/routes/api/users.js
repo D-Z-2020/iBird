@@ -1,3 +1,6 @@
+/*
+This file handles the '/users' path.
+*/
 const express = require('express');
 const { User } = require("../../db/schema");
 const bcrypt = require("bcrypt");
@@ -155,6 +158,7 @@ router.post("/levelUp", verifyToken, async (req, res) => {
     }
 });
 
+// this function determine the stage of Kiwi bird.
 const getKiwiStage = (level) => {
     if (level < KIWI_STAGE2_LEVEL) return 1;
     if (level < KIWI_STAGE3_LEVEL) return 2;

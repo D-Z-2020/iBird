@@ -1,11 +1,15 @@
+/*
+This file handles the '/birds' path.
+*/
 const express = require('express');
 const { User, Bird } = require("../../db/schema");
 const { verifyToken } = require("../../middleware/auth.js");
 const router = express.Router();
 
+// Fetch all birds from the Bird collection
 router.get("/getAllbirds", verifyToken, async (req, res) => {
     try {
-        const birds = await Bird.find({});  // Fetch all birds from the Bird collection
+        const birds = await Bird.find({});
         return res.json(birds);
     } catch (err) {
         console.error(err);
@@ -28,6 +32,7 @@ router.get("/getMybirds", verifyToken, async (req, res) => {
     }
 });
 
+// get a user's bird by username
 router.get("/getUserbirds/:username", verifyToken, async (req, res) => {
     try {
         // Find the user and populate their myBirds list

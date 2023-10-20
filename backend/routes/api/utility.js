@@ -1,3 +1,4 @@
+// A function to select random questions as quiz for a bird.
 const selectRandomQuestions = (bird) => {
     const selectedQuestions = [];
     const questionIndices = Array.from({ length: bird.questions.length }, (_, i) => i);

@@ -2,6 +2,9 @@ const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
+// This file defines the schema for the MongoDB database.
+
+// DB Schema for a challange
 const challengeSchema = new Schema({
 	type: { type: String, enum: ['birdCollection', 'correctQuizzes', 'walkingDistance', 'elevationGain'] },
 	level: { type: String, enum: ['bronze', 'silver', 'gold'] },
@@ -24,6 +27,7 @@ const userSchema = new Schema({
 	isExpert: { type: Boolean, default: false }
 });
 
+// DB Schema for a distance goal
 const distanceGoalSchema = new mongoose.Schema({
 	distance: { type: Number, required: true },  // in meters
 	duration: { type: Number, required: true },  // in minutes
@@ -34,6 +38,7 @@ const distanceGoalSchema = new mongoose.Schema({
 	endDistance: { type: Number }
 });
 
+// DB Schema for a bird-finding goal
 const BirdCountGoalSchema = new mongoose.Schema({
 	count: { type: Number, required: true },
 	status: { type: String, enum: ['inProgress', 'success', 'failed'], default: 'inProgress' },
@@ -41,6 +46,7 @@ const BirdCountGoalSchema = new mongoose.Schema({
 	birdsFound: { type: Number, default: 0 }
 });
 
+// DB Schema for a quiz question
 const questionSchema = new Schema({
 	question: { type: String, required: true },
 	questionType: { type: String, default: "text" },
@@ -82,6 +88,7 @@ const tripSchema = new Schema({
 	fitnessAssessed: { type: Boolean, default: false }
 });
 
+// DB Schema for an image
 const imageSchema = new Schema({
 	userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
 	s3Key: { type: String, required: true },
@@ -105,6 +112,7 @@ const imageSchema = new Schema({
 	}
 });
 
+// DB Schema for a bird
 const birdSchema = new Schema({
 	name: { type: String, unique: true, required: true },
 	maoriName: { type: String },

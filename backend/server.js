@@ -1,3 +1,6 @@
+/*
+This file is the server that directs requests to their respective paths.
+*/
 const dotenv = require('dotenv');
 dotenv.config();
 const path = require('path');

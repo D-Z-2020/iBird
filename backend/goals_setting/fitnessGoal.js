@@ -1,4 +1,6 @@
-// duration = distance / 5000 * 1.25 (5000m/speed for normal adult, give 25% more time for quizzes.)
+// This files define the exercise goal setting, with 8 levels (1 to 8) from 1000m to 8000m.
+// The duration is determined by the following formula:
+// duration (in hours) = distance / 5000 * 1.25 (5000m/h is the speed for normal adult, with an additional 25% time allocated for quizzes.)
 
 const LEVEL_1_DISTANCE_GOAL = {
     distance: 1000,  // in meters

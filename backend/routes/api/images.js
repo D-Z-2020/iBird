@@ -1,3 +1,6 @@
+/*
+This file handles the '/images' path.
+*/
 const express = require('express');
 const mongoose = require('mongoose');
 const { Trip, Image, User, Bird } = require("../../db/schema");
@@ -49,6 +52,7 @@ const upload = multer({
     }
 });
 
+// upload image
 router.post('/upload', verifyToken, upload.single('photo'), async (req, res) => {
     const session = await mongoose.startSession();
     session.startTransaction();
@@ -222,6 +226,7 @@ router.get('/getImage/*', verifyToken, async (req, res) => {
     }
 });
 
+// Player requests expert opinion on bird species
 router.post('/requestExpertOpinion', verifyToken, async (req, res) => {
     try {
         const { imageId } = req.body;
@@ -249,6 +254,7 @@ router.post('/requestExpertOpinion', verifyToken, async (req, res) => {
     }
 });
 
+// Get images of bird for expert to review
 router.get('/imagesForExpertReview', verifyToken, async (req, res) => {
     try {
         // Check if the user is an expert
@@ -271,6 +277,7 @@ router.get('/imagesForExpertReview', verifyToken, async (req, res) => {
     }
 });
 
+// Let expert update the bird identified by AI
 router.post('/updateBirdForImage', verifyToken, async (req, res) => {
     try {
         const { imageId, selectedBirdId } = req.body;
