@@ -21,7 +21,7 @@ export default function TripOption() {
                 {/* Edugaming option */}
                 <div className='cloumn'>
                     <label htmlFor="checkbox">
-                        Include edugaming concept:      </label>
+                        I want to go bird watching!      </label>
                         <p>
                             <input
                                 id="checkbox"
