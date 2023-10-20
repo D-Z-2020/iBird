@@ -8,6 +8,9 @@
 
 **We conducted a user study with 20 participants, and our results show that the bird-watching edugaming concept can boost the level of physical activity, enjoyment, and perceived usefulness and can reduce people's pressure. It is very motivating for players! So join us on iBird!**
 
+## GitHub Repository Link
+[https://github.com/D-Z-2020/COMPSCI-715-Group-3-Project-12-iBird](https://github.com/D-Z-2020/COMPSCI-715-Group-3-Project-12-iBird)
+
 ## Deployment
 If you simply want to run our app without installing the necessary requirements on your machine to run it locally, visit the link below. We have deployed our application to a cloud service:
 
