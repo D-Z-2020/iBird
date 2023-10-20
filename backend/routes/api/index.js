@@ -8,6 +8,7 @@ const tripRoutes = require("./trips.js")
 const imageRoutes = require("./images.js")
 const birdRoutes = require("./birds.js")
 
+// Mount each route module onto the router under their respective paths.
 router.use("/users", userRoutes);
 router.use("/friends", friendRoutes);
 router.use("/trips", tripRoutes);
