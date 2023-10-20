@@ -93,7 +93,7 @@ export default function ExpertOpinion() {
 
                 {/* Section to display images that need verification */}
                 <div className="section-container">
-                    <h3 className="section-title">Pleasr verify these birds</h3>
+                    <h3 className="section-title">Please verify these birds</h3>
                     <ExpertImagesTable images={images.filter(img => img.expertStatus === 'inProgress')} handleUpdateClick={handleUpdateClick} />
                 </div>
 
