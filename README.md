@@ -1,3 +1,13 @@
+Note: This is a copy of the original project (which is private). My free trial for AWS and Google Maps APIs has expired, and hosting the website on Heroku incurs a monthly cost, so I have shut them down. As a result, the links on this page won't work, and you will encounter errors if you try to run the application locally.
+
+**If you want a quick overview of how the application works, you can watch this demo video:** [Demo Video](https://drive.google.com/file/d/1jad15xlHMvNvJSfSi1ciaRD9_Hqq8J9U/view?usp=sharing)
+
+<br />
+<br />
+<br />
+<br />
+
+
 # COMPSCI-715-Group-3-Project-12-iBird
 
 <p align="center">
@@ -8,8 +18,36 @@
 
 **We conducted a user study with 20 participants, and our results show that the bird-watching edugaming concept can boost the level of physical activity, enjoyment, and perceived usefulness and can reduce people's pressure. It is very motivating for players! So join us on iBird!**
 
-## GitHub Repository Link
-[https://github.com/D-Z-2020/COMPSCI-715-Group-3-Project-12-iBird](https://github.com/D-Z-2020/COMPSCI-715-Group-3-Project-12-iBird)
+## Overview
+The web application is designed to integrate educational gaming (edugaming) with exercise gaming (exergaming). It encourages users to engage in physical activities, such as walking, while learning about different bird species through a birdwatching feature. The application tracks users' exercise metrics and provides quizzes related to the birds they encounter. Users are rewarded with points, badges, and levels based on their achievements in both physical and educational tasks. The application aims to maintain user engagement by dynamically adjusting game settings to keep users in an optimal flow state, balancing challenge and skill.
+
+## Features
+### Edugame Module
+- **Bird Collection**: Users collect various birds, categorized by rarity, either through photo uploads or quiz completion.
+- **AI Recognition**: An AI identifies bird species from user-uploaded photos, aiding in the bird collection process.
+- **Quizzes**: Users answer multiple-choice questions related to birds, with difficulty scaling based on the bird's rarity.
+
+### Task Module
+- **Goals**: Users are assigned goals related to walking distances and birdwatching, with eight levels for exergaming and five levels for edugaming goals.
+- **Challenges**: Long-term tasks that track cumulative achievements, such as total distance walked or the number of different birds collected, with rewards in the form of badges.
+
+### Exergame Module
+- Tracks users' physical activity metrics, including location, speed, distance, and elevation gain, using GPS and formulas to calculate distances and elevation changes.
+
+### Reward Module
+- Provides scores and badges based on users' accomplishments, incorporating both the difficulty of tasks and progressive rewards to enhance engagement and learning quality.
+
+### Attractiveness and Effectiveness Module
+- Uses the dual flow model to adjust the game's difficulty dynamically, ensuring that users remain engaged by balancing their skills with the challenges presented.
+
+### Level Module
+- Users level up their Kiwi bird avatars as they accumulate points, with the bird evolving visually every 20 levels, adding a gamified progression element.
+
+### Social Module
+- Allows users to interact with each other by adding friends, viewing profiles, and sharing achievements.
+
+
+
 
 ## Deployment
 If you simply want to run our app without installing the necessary requirements on your machine to run it locally, visit the link below. We have deployed our application to a cloud service:
